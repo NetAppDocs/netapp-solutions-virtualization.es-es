@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-getting-started-vmdc.html 
+keywords: vmware, getting, started, overview, netapp, vm, data, collector, vmdc 
+summary:  
+---
+= Obtenga información sobre cómo evaluar su infraestructura VMware mediante el Recopilador de datos de máquinas virtuales
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Virtual Machine Data Collector (VMDC) es una herramienta gratuita y liviana con una GUI diseñada para entornos VMware.  Recopila datos de inventario y rendimiento de máquinas virtuales, hosts, almacenamiento y redes, ofreciendo información para la optimización de recursos y la planificación de la capacidad.
+
+
+
+== Introducción
+
+Virtual Machine Data Collector (VMDC) es un kit de herramientas gratuito, liviano y simple basado en GUI para entornos VMware que permite a los usuarios recopilar información de inventario detallada sobre sus máquinas virtuales (VM), hosts, almacenamiento y redes.
+
+Para obtener más información sobre el recopilador de datos de máquinas virtuales, consultelink:../assess/vmw-vmdc.html["Documentación del recopilador de datos de máquinas virtuales"] .
+
+
+
+== Capacidades de VMDC
+
+VMDC es simplemente un trampolín para recopilar estadísticas rápidas e instantáneas para proyectar posibilidades de optimización para las licencias de núcleo de VMWare junto con vCPU y RAM.  NetApp Data Infrastructure Insights , que requiere la instalación de AU y recopiladores de datos, debería ser el siguiente paso obvio para comprender la topología detallada de las máquinas virtuales, la agrupación de las máquinas virtuales mediante anotaciones para dimensionar correctamente las cargas de trabajo y preparar la infraestructura para el futuro.
+
+Muestreo de las métricas recopiladas con VMDC:
+
+* Información de la máquina virtual
++
+** Nombre de la máquina virtual
+** Estado de energía de la máquina virtual
+** Información de la CPU de la máquina virtual
+** Información de memoria de la máquina virtual
+** Ubicación de la máquina virtual
+** Información de red de VM
+** y más
+
+
+* Rendimiento de la máquina virtual
++
+** Datos de rendimiento de las máquinas virtuales en el intervalo seleccionado
+** Información de lectura/escritura de VM
+** Información de IOPS de VM
+** Latencia de la máquina virtual
+** y más
+
+
+* Información del host ESXi
++
+** Información del centro de datos del host
+** Información del clúster de host
+** Información del modelo de host
+** Información de la CPU del host
+** Información de la memoria del host
+** y más
+
+
+

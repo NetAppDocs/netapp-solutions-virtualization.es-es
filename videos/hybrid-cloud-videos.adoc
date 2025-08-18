@@ -1,0 +1,36 @@
+---
+sidebar: sidebar 
+permalink: videos/hybrid-cloud-videos.html 
+summary: Vídeos y demostraciones que muestran soluciones de virtualización de nube híbrida con NetApp 
+keywords: hybrid cloud, rosa, fsx ontap, azure vmware, netapp hci, videos, demos 
+---
+= Vea videos sobre la virtualización multicloud híbrida con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Descubra cómo NetApp permite la virtualización de la nube híbrida en las principales plataformas multicloud híbridas.  Vea videos que demuestran Red Hat OpenShift Service en AWS (ROSA) con soluciones FSx ONTAP y NetApp HCI para cargas de trabajo virtualizadas.
+
+
+
+== Servicio Red Hat OpenShift en AWS (ROSA) con FSx ONTAP
+
+.Amazon FSx for NetApp ONTAP con Red Hat OpenShift Service en AWS mediante plano de control alojado
+video::213061d2-53e6-4762-a68f-b21401519023[panopto,width=360]
+.Integración de FSx ONTAP con Trident
+video::621ae20d-7567-4bbf-809d-b01200fa7a68[panopto,width=360]
+.Instantánea/restauración para aplicaciones en clústeres de Red Hat OpenShift Service en AWS (ROSA) con almacenamiento de Amazon FSx ONTAP
+video::36ecf505-5d1d-4e99-a6f8-b11c00341793[panopto,width=360]
+.Conmutación por error y recuperación de aplicaciones en ROSA con FSx ONTAP
+video::e9a07d79-42a1-4480-86be-b01200fa62f5[panopto,width=360]
+
+
+== Soluciones NetApp HCI
+
+.NetApp HCI para Red Hat OpenShift en Red Hat Virtualization
+video::13b32159-9ea3-4056-b285-b01200f0873a[panopto,width=360]

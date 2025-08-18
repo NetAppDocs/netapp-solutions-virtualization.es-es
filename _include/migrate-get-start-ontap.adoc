@@ -1,0 +1,21 @@
+= Casos de uso
+:allow-uri-read: 
+
+
+Esta migración permite una integración perfecta, una mejor protección de datos y una mayor flexibilidad en la gestión de entornos virtualizados, lo que garantiza una transición fluida con un tiempo de inactividad mínimo.
+
+
+
+== Casos de uso
+
+Hay muchas opciones con la migración en términos de origen y destino cuando se considera migrar a almacenes de datos respaldados por ONTAP .
+
+* Migración de sistemas de almacenamiento de terceros (incluido vSAN) a almacenes de datos ONTAP .
+* Migración de máquinas virtuales en el mismo clúster de vSphere
+* Migración de máquinas virtuales entre varios clústeres de vSphere
+* Migración de máquinas virtuales entre servidores vCenter en el mismo dominio SSO
+* Migración de máquinas virtuales entre servidores vCenter en diferentes dominios SSO
+* Migración de máquinas virtuales entre ubicaciones de centros de datos
+* Migración de sistemas de almacenamiento de terceros (incluido vSAN) a almacenes de datos ONTAP .
+* Migración de máquinas virtuales en un entorno de nube híbrida
+

@@ -1,0 +1,94 @@
+---
+sidebar: sidebar 
+permalink: migration/shift-toolkit-overview.html 
+keywords: netapp, vmware, esxi, vm, migration, openshift, virtualization, hyper-v, proxmox 
+summary:  
+---
+= Obtenga información sobre la migración de máquinas virtuales entre entornos de virtualización mediante NetApp Shift Toolkit
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+El kit de herramientas Shift de NetApp es un producto independiente diseñado para simplificar y acelerar las migraciones de máquinas virtuales entre hipervisores, como VMware ESXi y Microsoft Hyper-V. También admite conversiones a nivel de disco entre diversos formatos de discos virtuales.
+
+
+
+== Caso de uso
+
+Ahora todas las organizaciones ven el beneficio de tener un entorno de múltiples hipervisores.  Con los recientes cambios en el mercado, cada organización está decidiendo la mejor estrategia sopesando los riesgos técnicos y comerciales, incluyendo la migración de máquinas virtuales de carga de trabajo a hipervisores alternativos, y centrándose en alcanzar los objetivos definidos por el negocio y controlando la dependencia de un proveedor. Esto les permite operar de forma optimizada en cuanto a costos de licencias y extender el presupuesto de TI a las áreas adecuadas en lugar de invertir en los núcleos no utilizados en un hipervisor específico.  Sin embargo, el desafío siempre ha sido el tiempo de migración y el tiempo de inactividad asociado.
+
+Con el kit de herramientas NetApp Shift, migrar máquinas virtuales (VM) ya no es una preocupación.  Este producto independiente permite una migración rápida y eficiente de máquinas virtuales de VMware ESXi a Microsoft Hyper-V. Además, admite conversiones a nivel de disco entre varios formatos de discos virtuales.  Gracias a las capacidades listas para usar que ofrece ONTAP, estas migraciones pueden ser increíblemente rápidas, con un tiempo de inactividad mínimo.  Por ejemplo, convertir un archivo VMDK de 1 TB normalmente demora un par de horas, pero con el kit de herramientas Shift, se puede completar en segundos.
+
+
+
+== Descripción general del kit de herramientas
+
+El kit de herramientas NetApp Shift es una solución de interfaz gráfica de usuario (GUI) fácil de usar que permite migrar máquinas virtuales (VM) entre diferentes hipervisores y convertir formatos de discos virtuales.  Utiliza la tecnología NetApp FlexClone para convertir rápidamente discos duros de VM.  Además, el kit de herramientas administra la creación y configuración de las máquinas virtuales de destino.
+
+El kit de herramientas Shift proporciona flexibilidad en un entorno de múltiples hipervisores al admitir la conversión bidireccional entre los siguientes hipervisores:
+
+* VMware ESXi a Microsoft Hyper-V
+* Microsoft Hyper-V a VMware ESXi (próxima versión)
+
+
+El kit de herramientas Shift admite conversiones a nivel de disco de discos virtuales entre hipervisores para los siguientes formatos de disco:
+
+* VMware ESX a Microsoft Hyper-V (formato de disco de máquina virtual [VMDK] a disco duro virtual [VHDX])
+* Hipervisores compatibles con VMware ESX a KVM (VMDK a QCOW2)
+
+
+image:shift-toolkit-001.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+El kit de herramientas Shift se puede descargarlink:https://mysupport.netapp.com/site/tools/tool-eula/netapp-shift-toolkit["aquí"] y está disponible únicamente para sistemas Windows.
+
+
+
+=== Beneficios de la portabilidad de VM
+
+ONTAP es ideal para cualquier hipervisor y en cualquier hiperescalar.  Con tecnología FlexClone .  La portabilidad de las máquinas virtuales en minutos es una realidad en lugar de esperar tiempos de inactividad más prolongados o conformarse con opciones de transferencia directa.
+
+Kit de herramientas de cambio:
+
+* Ayuda a minimizar el tiempo de inactividad y mejora la productividad empresarial.
+* ofrece opciones y flexibilidad al reducir los costos de licencia, el bloqueo y los compromisos con un solo proveedor.
+* Permite a las organizaciones que buscan optimizar los costos de licencias de máquinas virtuales y ampliar los presupuestos de TI.
+* Reduce los costos de virtualización con la portabilidad de VM y se ofrece de forma gratuita desde NetApp.
+
+
+
+
+=== Cómo funciona el kit de herramientas Shift
+
+En el momento de la conversión, el kit de herramientas Shift se conecta a los hosts VMware ESXi y Microsoft Hyper-V y al almacenamiento compartido de NetApp .  El kit de herramientas Shift aprovecha FlexClone para convertir discos duros de máquinas virtuales de un hipervisor a otro mediante tres tecnologías clave de NetApp :
+
+* Volumen único y múltiples protocolos
++
+Con NetApp ONTAP, se pueden usar fácilmente múltiples protocolos para acceder a un solo volumen.  Por ejemplo, VMware ESXi puede acceder a un volumen habilitado con el protocolo Sistema de archivos de red (NFS) y Microsoft Hyper-V puede acceder al mismo volumen con el protocolo CIFS/SMB.
+
+* Tecnología FlexClone
++
+FlexClone permite la clonación rápida de archivos o volúmenes completos sin copia de datos.  Los bloques comunes del sistema de almacenamiento se comparten entre varios archivos o volúmenes.  Como resultado, los discos VM grandes se pueden clonar muy rápidamente.
+
+* Conversión de discos de VM
++
+El kit de herramientas NetApp PowerShell y el kit de herramientas Shift contienen una gran cantidad de flujos de trabajo que se pueden usar para realizar diversas acciones en un controlador de almacenamiento NetApp .  Se incluyen cmdlets de PowerShell que convierten discos virtuales a diferentes formatos.  Por ejemplo, VMware VMDK se puede convertir a Microsoft VHDX y viceversa.  Estas conversiones se realizan con FlexClone, que permite una clonación y conversión muy rápida de formatos de disco en un solo paso.
+
+
+
+image:shift-toolkit-002.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+
+
+
+==== Protocolos y métodos de comunicación
+
+El kit de herramientas Shift utiliza los siguientes protocolos durante las operaciones de conversión o migración.
+
+* HTTPS: lo utiliza el kit de herramientas Shift para comunicarse con el clúster Data ONTAP .
+* VI Java (openJDK), VMware PowerCLI: se utiliza para comunicarse con VMware ESXi.
+* Módulo de Windows PowerShell: se utiliza para comunicarse con Microsoft Hyper-V.
+

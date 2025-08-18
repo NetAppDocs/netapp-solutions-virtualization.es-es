@@ -1,0 +1,33 @@
+---
+section: migration
+title: Soluciones de migración de máquinas virtuales
+url: "/migration/index.html"
+entries:
+- title: Utilice Shift Toolkit para migrar o convertir máquinas virtuales
+  pdf-filename: Utilice Shift Toolkit para migrar o convertir máquinas virtuales
+  entries:
+  - title: Acerca de Shift Toolkit
+    url: "/migration/shift-toolkit-overview.html"
+  - title: Instalar Shift Toolkit
+    url: "/migration/shift-toolkit-install.html"
+  - title: Configurar el kit de herramientas Shift
+    url: "/migration/shift-toolkit-ui.html"
+  - title: Migrar máquinas virtuales mediante Shift Toolkit
+    url: "/migration/shift-toolkit-migration.html"
+  - title: Convertir máquinas virtuales mediante Shift Toolkit
+    url: "/migration/shift-toolkit-conversion.html"
+  - title: Próximos pasos
+    url: "/migration/shift-toolkit-summary.html"
+- title: Migrar máquinas virtuales a ONTAP
+  url: "/migration/migrate-vms-to-ontap-datastore.html"
+- title: Migrar máquinas virtuales a Amazon EC2
+  pdf-filename: Migrar máquinas virtuales a Amazon EC2 mediante FSx ONTAP
+  entries:
+  - title: Acerca de la migración de máquinas virtuales a Amazon EC2
+    url: "/migration/migrate-vms-to-ec2-fsxn-overview.html"
+  - title: Requisitos de migración
+    url: "/migration/migrate-vms-to-ec2-fsxn-arch.html"
+  - title: Migrar máquinas virtuales a Amazon EC2
+    url: "/migration/migrate-vms-to-ec2-fsxn-deploy.html"
+  - title: Más opciones de migración
+    url: "/migration/migrate-vms-to-ec2-fsxn-summary.html"

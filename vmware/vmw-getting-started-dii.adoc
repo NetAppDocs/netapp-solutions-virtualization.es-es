@@ -1,0 +1,40 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-getting-started-dii.html 
+keywords: vmware, getting, started, overview, netapp, data, infrastructure, insights, dii 
+summary:  
+---
+= Obtenga información sobre cómo monitorear una infraestructura completa utilizando NetApp Data Infrastructure Insights
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+NetApp Data Infrastructure Insights (anteriormente Cloud Insights) monitorea los sistemas locales y en la nube, ofreciendo visibilidad de todo su entorno de TI, incluidos los sistemas de almacenamiento VMware vSphere y ONTAP .  Permite capacidades como seguimiento del rendimiento, detección de problemas y optimización de recursos en sus entornos públicos y privados.
+
+
+
+== Introducción
+
+Con Data Infrastructure Insights, puede supervisar, solucionar problemas y optimizar todos sus recursos, incluidas sus nubes públicas y sus centros de datos privados.
+
+Para obtener más información sobre Data Infrastructure Insights, consultelink:https://docs.netapp.com/us-en/data-infrastructure-insights/index.html["Documentación de Data Infrastructure Insights"] .
+
+
+
+== Capacidades de Data Infrastructure Insights
+
+* Data Infrastructure Insights proporciona monitoreo multicloud híbrido, lo que le brinda capacidad de observación completa de la infraestructura y las cargas de trabajo.
+* Recopiladores de datos para infraestructuras y cargas de trabajo heterogéneas, incluido Kubernetes
+* Recopilador Telegraf abierto y API abiertas para una fácil integración
+* Alertas y notificaciones completas
+* Aprendizaje automático para obtener información inteligente
+* Optimizar la utilización de recursos
+* Paneles de control integrados o personalizables con filtros avanzados para minimizar el ruido de la pantalla y responder preguntas
+* Descubra la salud de sus operaciones de almacenamiento de ONTAP 
+* Proteja su activo empresarial más valioso, los datos, del ransomware o ataques de destrucción de datos.
+

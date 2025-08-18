@@ -1,0 +1,11 @@
+---
+section: proxmox
+title: Virtualización de Proxmox
+url: "/proxmox/index.html"
+entries:
+- title: Acerca de Proxmox VE
+  pdf-filename: Descripción general de la virtualización de Proxmox en NetApp
+  url: "/proxmox/proxmox-overview.html"
+- title: Aprovisionar almacenamiento ONTAP para Proxmox VE
+  pdf-filename: Almacenamiento de NetApp para Proxmox VE
+  url: "/proxmox/proxmox-ontap.html"

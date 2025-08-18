@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-provision.html 
+keywords: vmware, vcf, provision, principal, storage 
+summary:  
+---
+= Proporcionar un entorno VCF con ONTAP como solución de almacenamiento principal
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+El almacenamiento NetApp ONTAP es una solución de almacenamiento principal ideal para la administración de VMware Cloud Foundation (VCF) y los dominios de carga de trabajo de infraestructura virtual (VI).  ONTAP ofrece alto rendimiento, escalabilidad, gestión de datos avanzada e integración perfecta para mejorar la eficiencia operativa y la protección de datos.
+
+Consulte las siguientes soluciones para conocer los detalles técnicos sobre cómo aprovisionar un entorno VCF en el dominio apropiado y con el protocolo apropiado.
+
+* link:vmw-vcf-mgmt-principal-fc.html["Dominio de gestión con FC"]
+* link:vmw-vcf-mgmt-principal-nfs.html["Dominio de gestión con NFS"]
+* link:vmw-vcf-viwld-principal-fc.html["Dominio de carga de trabajo de infraestructura virtual con FC"]
+* link:vmw-vcf-viwld-principal-nfs.html["Dominio de carga de trabajo de infraestructura virtual con NFS"]
+

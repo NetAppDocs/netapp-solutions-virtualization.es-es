@@ -1,0 +1,76 @@
+---
+indexpage:
+  title: Soluciones de virtualización de NetApp
+  summary: NetApp ofrece soluciones de virtualización integrales que permiten a las
+    organizaciones optimizar su infraestructura de TI en múltiples hipervisores y
+    plataformas.  Descubra estrategias para modernizar entornos VMware, migrar a hipervisores
+    alternativos y aprovechar las funciones avanzadas de gestión de datos e integración
+    en la nube de NetApp.
+  lead: NetApp ofrece soluciones de virtualización integrales que permiten a las organizaciones
+    optimizar su infraestructura de TI en múltiples hipervisores y plataformas.  Descubra
+    estrategias para modernizar entornos VMware, migrar a hipervisores alternativos
+    y aprovechar las funciones avanzadas de gestión de datos e integración en la nube
+    de NetApp.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Qué hay de nuevo
+      url: "/whats-new.html"
+    - title: Obtenga más información sobre la virtualización con NetApp
+      url: "/virtualization/virt-overview.html"
+    - title: Utilice NetApp para cualquier solución de virtualización
+      url: "/virtualization/virt-options-on-netapp.html"
+    - title: Blogs
+      url: "/blogs.html"
+    - title: Vídeos y demostraciones
+      url: "/videos/index.html"
+  - title: Soluciones NetApp para virtualización
+    links:
+    - title: VMware local y en la nube
+      url: "/vmware/index.html"
+    - title: Microsoft Hyper-V
+      url: hyperv/index.html
+    - title: Virtualización de Red Hat OpenShift
+      url: "/openshift/index.html"
+    - title: Entorno virtual Proxmox
+      url: "/proxmox/index.html"
+    - title: KVM y libvirt
+      url: "/kvm/index.html"
+  - title: Migración y conversión de máquinas virtuales
+    links:
+    - title: Migrar máquinas virtuales mediante Shift Toolkit
+      url: "/migration/shift-toolkit-migration.html"
+    - title: Convertir máquinas virtuales mediante Shift Toolkit
+      url: "/migration/shift-toolkit-conversion.html"
+    - title: Migrar máquinas virtuales a almacenes de datos de ONTAP
+      url: "/migration/migrate-vms-to-ontap-datastore.html"
+    - title: Migrar máquinas virtuales a Amazon EC2
+      url: "/migration/migrate-vms-to-ec2-fsxn-overview.html"
+  - title: Herramientas de gestión e integraciones
+    links:
+    - title: ONTAP tools for VMware vSphere
+      url: "/vmware/vmw-getting-started-otv.html"
+    - title: API de ONTAP y VMware para administración
+      url: "/vmware/vmw-getting-started-automation.html"
+    - title: Data Infrastructure Insights para la monitorización
+      url: "/vmware/vmw-getting-started-dii.html"
+    - title: Migración de la carga de trabajo de VM para una mayor eficiencia
+      url: "/vmware/vmw-getting-started-migration.html"
+  - title: Protección de datos y recuperación ante desastres
+    links:
+    - title: Protéjase con MetroCluster y SnapMirror Active Sync
+      url: "/vmware/vmw-getting-started-vmsc.html"
+    - title: Proteger y recuperar datos contra ransomware
+      url: "/vmware/vmw-getting-started-security.html"
+    - title: Plugin de SnapCenter para VMware vSphere
+      url: "/vmware/vmw-getting-started-snapcenter.html"
+    - title: BlueXP disaster recovery
+      url: "/vmware/vmw-dr-gs.html"
+  - title: Solicitudes de soluciones y comentarios
+    links:
+    - title: Automatización de solicitudes
+      url: https://github.com/NetAppDocs/netapp-solutions/issues/new?body=[Request%20Automation]%0d%0a%0d%0aSolution%20Name:%20%0d%0aRequest%20Title:%20%0d%0aDescription:%0d%0aSuggestions:&title=Request%20Automation%20-%20%3Crequest_title%3E
+    - title: Proponer una nueva solución
+      url: https://github.com/NetAppDocs/netapp-solutions/issues/new?body=[Request%20Solution]%0d%0a%0d%0aSolution%20Use%20Case:%20%0d%0aSolution%20Description:%20%0d%0aAdditional%20Comments:&title=Request%20Solution%20-%20%3Csolution%3E
+    - title: Proporcionar retroalimentación sobre la solución
+      url: https://github.com/NetAppDocs/netapp-solutions/issues/new?body=[Solution%20Feedback]%0d%0a%0d%0aSolution%20Name:%20%0d%0aSolution%20Feedback:%20%0d%0aAdditional%20Comments:&title=Solution%20Feedback%20-%20%3Csolution%3E

@@ -1,0 +1,80 @@
+---
+indexpage:
+  title: Soluciones de virtualización NetApp OpenShift
+  summary: Las soluciones de virtualización NetApp OpenShift son un conjunto de capacidades
+    estratégicas y tecnológicas que demuestran las capacidades del almacenamiento
+    de NetApp para la virtualización mediante Red Hat OpenShift Virtualization.
+  lead: Las soluciones de virtualización NetApp OpenShift son un conjunto de capacidades
+    estratégicas y tecnológicas que demuestran las capacidades del almacenamiento
+    de NetApp para la virtualización mediante Red Hat OpenShift Virtualization.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Acerca de OpenShift Virtualization
+      url: osv-overview.html
+    - title: Aprovisionamiento de almacenamiento para OpenShift
+      url: os-netapp-overview.html
+    - title: Integración de almacenamiento NetApp Trident
+      url: os-storint-overview.html
+    - title: Mejores prácticas para la implementación
+      url: os-osv-bpg.html
+    - title: Blogs
+      url: "../blogs.html"
+    - title: Vídeos
+      url: "../videos/openshift-videos.html"
+  - title: Implementar en las instalaciones
+    links:
+    - title: Requisitos de implementación
+      url: osv-deployment-prerequisites.html
+    - title: Implementar Red Hat OpenShift Virtualization con ONTAP
+      url: osv-deployment.html
+    - title: Crear máquinas virtuales
+      url: osv-workflow-create-vm.html
+    - title: Clonar máquinas virtuales
+      url: osv-workflow-clone-vm.html
+    - title: Crear máquinas virtuales a partir de una instantánea
+      url: osv-workflow-vm-from-snapshot.html
+  - title: Migrar máquinas virtuales
+    links:
+    - title: Migrar máquinas virtuales de VMware a un clúster de OpenShift
+      url: osv-workflow-vm-migration-mtv.html
+    - title: Migrar máquinas virtuales entre dos nodos del clúster
+      url: osv-workflow-vm-live-migration.html
+  - title: Proteja sus datos con Trident Protect
+    links:
+    - title: Instalar Trident
+      url: osv-trident-install.html
+    - title: Proteja las máquinas virtuales con instantáneas y copias de seguridad
+      url: osv-vm-dp-using-tp.html
+    - title: Configurar conmutación por error y recuperación
+      url: osv-vm-dr-using-tp.html
+  - title: Proteger los datos utilizando herramientas de terceros
+    links:
+    - title: Proteja las máquinas virtuales mediante OADP y Velero
+      url: osv-vm-dp-using-velero-overview.html
+    - title: Instalar OADP
+      url: osv-oadp-installation.html
+    - title: Copia de seguridad de máquinas virtuales con Velero
+      url: osv-vm-dp-using-velero.html
+    - title: Restaurar máquinas virtuales mediante Velero
+      url: osv-vm-restore-using-velero.html
+    - title: Eliminar copias de seguridad y restauraciones
+      url: osv-vm-dp-delete-using-velero.html
+  - title: Supervise las máquinas virtuales con Data Infrastructure Insights
+    links:
+    - title: Acerca de Data Infrastructure Insights
+      url: os-ci-overview.html
+    - title: Configurar Data Infrastructure Insights
+      url: os-ci-integration.html
+    - title: Supervisar máquinas virtuales mediante Data Infrastructure Insights
+      url: os-ci-samples.html
+  - title: Recursos adicionales
+    links:
+    - title: Virtualización de Red Hat OpenShift
+      url: https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization
+    - title: 'OpenShift Virtualization: Liberando el poder de los entornos virtuales'
+      url: https://www.redhat.com/en/blog/openshift-virtualization-unleashing-the-power-of-cloud-native-virtual-environments
+    - title: Documentación de Red Hat OpenShift
+      url: https://docs.openshift.com/container-platform/4.15/virt/about_virt/about-virt.html
+    - title: Blogs de Red Hat
+      url: https://www.redhat.com/en/blog/products

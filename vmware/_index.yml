@@ -1,0 +1,66 @@
+---
+indexpage:
+  title: Soluciones de virtualización VMware de NetApp
+  summary: Las soluciones de virtualización VMware de NetApp son un conjunto de capacidades
+    estratégicas y tecnológicas que demuestran las capacidades del almacenamiento
+    de NetApp para la virtualización mediante VMware en las instalaciones y en la
+    nube.
+  lead: Las soluciones de virtualización VMware de NetApp son un conjunto de capacidades
+    estratégicas y tecnológicas que demuestran las capacidades del almacenamiento
+    de NetApp para la virtualización mediante VMware en las instalaciones y en la
+    nube.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Acerca de ONTAP para VMware vSphere
+      url: vmw-getting-started-overview.html
+    - title: Acerca de las plataformas NetApp para VMware
+      url: vmw-getting-started-ntap-options.html
+    - title: Blogs
+      url: "../blogs.html"
+    - title: Vídeos
+      url: "../videos/vmware-videos.html"
+  - title: VMware Cloud Foundation en NetApp
+    links:
+    - title: Acerca de VMware Cloud Foundation y ONTAP
+      url: vmw-vcf-overview.html
+    - title: Proteja las cargas de trabajo de VCF con SnapCenter
+      url: vmw-vcf-protect-sc.html
+    - title: Proteja los almacenes de datos de VMware con BlueXP
+      url: vmw-vcf-disaster-recovery.html
+    - title: Integrar la alta disponibilidad de ONTAP con vMSC
+      url: vmw-vcf-protect-vmsc.html
+    - title: Proteger y recuperar datos contra ransomware
+      url: vmw-nfs-arp.html
+    - title: Supervise el almacenamiento local con DII
+      url: vmw-dii.html
+  - title: VMware vSphere Foundation en NetApp
+    links:
+    - title: Acerca de VMware vSphere Foundation en NetApp
+      url: vmw-vvf-overview.html
+    - title: Implementar VMFS para vSphere 8
+      url: vmw-vmfs-deploy.html
+    - title: Utilice la función NFS nConnect
+      url: vmw-vsphere8-nfs-nconnect.html
+    - title: Configurar almacenes de datos NFS
+      url: vmw-nfs-otv10.html
+    - title: Configurar la recuperación ante desastres
+      url: vmw-nfs-vlsr.html
+  - title: Herramientas y utilidades de VMware
+    links:
+    - title: Recopilador de datos de máquinas virtuales
+      url: "../assess/vmw-vmdc.html"
+    - title: ONTAP tools for VMware vSphere
+      url: https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere/index.html
+    - title: VMware Site Recovery Manager (SRM) con NetApp ONTAP 9
+      url: https://docs.netapp.com/us-en/ontap-apps-dbs/vmware/vmware-srm-overview.html
+    - title: Herramienta de matriz de interoperabilidad de NetApp
+      url: https://mysupport.netapp.com/matrix/#welcome
+    - title: Guía de compatibilidad de hardware de VMware
+      url: https://www.vmware.com/resources/compatibility/search.php?deviceCategory=san&details=1&partner=64&isSVA=0&page=1&display_interval=10&sortColumn=Partner&sortOrder=Asc
+  - title: Recursos adicionales
+    links:
+    - title: Mejores prácticas de VMware vSphere con ONTAP
+      url: https://docs.netapp.com/us-en/ontap-apps-dbs/vmware/vmware-vsphere-overview.html
+    - title: Volúmenes virtuales de VMware vSphere (vVols) con NetApp ONTAP
+      url: https://docs.netapp.com/us-en/ontap-apps-dbs/vmware/vmware-vvols-overview.html

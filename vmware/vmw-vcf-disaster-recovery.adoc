@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-disaster-recovery.html 
+keywords: vmware, vcf, dr, disaster recovery, draas, bluexp 
+summary:  
+---
+= Obtenga información sobre cómo proteger los almacenes de datos de VMware mediante la BlueXP disaster recovery
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Obtenga información sobre las soluciones de NetApp para recuperación ante desastres utilizando la BlueXP disaster recovery para VMware.  Esto proporciona soluciones sólidas para la recuperación ante desastres mediante el uso de replicación a nivel de bloque desde un sitio principal a un sitio de recuperación ante desastres.
+
+BlueXP DRaaS es un método eficaz y económico para proteger las cargas de trabajo contra fallas del sitio y problemas de integridad de los datos, incluidos ataques de ransomware.  Además, NetApp BlueXP DRaaS mejora esta estrategia al proporcionar una solución de recuperación ante desastres administrada y basada en la nube, que garantiza una recuperación rápida y un tiempo de inactividad mínimo durante los desastres.
+
+Consulte las siguientes soluciones para obtener detalles técnicos.
+
+* link:vmw-disaster-recovery-vmfs.html["Recuperación ante desastres con BlueXP DRaaS para almacenes de datos VMFS"]
+* link:vmw-disaster-recovery-nfs.html["Recuperación ante desastres con BlueXP DRaaS para almacenes de datos NFS"]
+

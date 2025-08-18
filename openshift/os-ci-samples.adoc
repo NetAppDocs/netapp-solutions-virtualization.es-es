@@ -1,0 +1,63 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-ci-samples.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization, cloud Insights 
+summary: Monitoreo mediante Cloud Insights para máquinas virtuales en Red Hat OpenShift Virtualization 
+---
+= Supervise las máquinas virtuales en Red Hat OpenShift Virtualization mediante Data Infrastructure Insights
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+NetApp Data Infrastructure Insights (anteriormente Cloud Insights) proporciona sólidas capacidades de monitoreo para máquinas virtuales en OpenShift Virtualization, incluido monitoreo basado en eventos, creación de alertas y mapeo de almacenamiento de back-end.  También ofrece análisis de cambios para rastrear los cambios del clúster y ayudar con la resolución de problemas.
+
+
+
+== **Monitoreo basado en eventos y creación de alertas**
+
+Aquí se muestra un ejemplo donde se monitorea el espacio de nombres que contiene una máquina virtual en OpenShift Virtualization en función de eventos.  En este ejemplo, se crea un monitor basado en **logs.kubernetes**.event para el espacio de nombres especificado en el clúster.
+
+image:redhat-openshift-ci-samples-001.png["Muestras de Cloud Insights"]
+
+Esta consulta proporciona todos los eventos de la máquina virtual en el espacio de nombres.  (Solo hay una máquina virtual en el espacio de nombres).  También se puede construir una consulta avanzada para filtrar según el evento donde el motivo sea "fallido" o "FailedMount". Estos eventos generalmente se crean cuando hay un problema al crear un PV o al montar el PV en un pod, lo que indica problemas en el aprovisionador dinámico para crear volúmenes persistentes para la VM.  Al crear el Monitor de alertas como se muestra arriba, también puede configurar la notificación a los destinatarios.  También puede proporcionar acciones correctivas o información adicional que pueda ser útil para resolver el error.  En el ejemplo anterior, se podría necesitar información adicional para consultar la configuración del backend de Trident y las definiciones de clase de almacenamiento para resolver el problema.
+
+
+
+== **Análisis de cambios**
+
+Con Change Analytics, puede obtener una vista de lo que cambió en el estado de su clúster, incluido quién realizó ese cambio, lo que puede ayudar a solucionar problemas.
+
+image:redhat-openshift-ci-samples-002.png["Muestras de Cloud Insights"]
+
+En el ejemplo anterior, el análisis de cambios se configura en el clúster OpenShift para el espacio de nombres que contiene una máquina virtual de virtualización OpenShift.  El panel muestra los cambios a lo largo de la línea de tiempo.  Puede explorar en profundidad para ver qué cambió y hacer clic en Todos los cambios Diferencia para ver la diferencia de los manifiestos.  Desde el manifiesto, puede ver que se creó una nueva copia de seguridad de los discos persistentes.
+
+image:redhat-openshift-ci-samples-003.png["Muestras de Cloud Insights"]
+
+image:redhat-openshift-ci-samples-004.png["Muestras de Cloud Insights"]
+
+
+
+== **Mapeo de almacenamiento de backend**
+
+Con Cloud Insights, puede ver fácilmente el almacenamiento de backend de los discos de VM y varias estadísticas sobre las PVC.
+
+image:redhat-openshift-ci-samples-005.png["Muestras de Cloud Insights"]
+
+Puede hacer clic en los enlaces debajo de la columna del backend, que extraerán datos directamente del almacenamiento ONTAP del backend.
+
+image:redhat-openshift-ci-samples-006.png["Muestras de Cloud Insights"]
+
+Otra forma de ver todo el mapeo de pods a almacenamiento es creando una consulta Todas las métricas desde el menú Observabilidad en Explorar.
+
+image:redhat-openshift-ci-samples-007.png["Muestras de Cloud Insights"]
+
+Al hacer clic en cualquiera de los enlaces obtendrá los detalles correspondientes del almacenamiento ONTP.  Por ejemplo, al hacer clic en el nombre de un SVM en la columna storageVirtualMachine, se extraerán detalles sobre el SVM de ONTAP.  Al hacer clic en el nombre de un volumen interno, se obtendrán detalles sobre el volumen en ONTAP.
+
+image:redhat-openshift-ci-samples-008.png["Muestras de Cloud Insights"]
+
+image:redhat-openshift-ci-samples-009.png["Muestras de Cloud Insights"]

@@ -1,0 +1,19 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vsphere-with-ontap.html 
+keywords:  
+summary:  
+---
+= Obtenga información sobre el uso de VMware vSphere 8 con almacenamiento ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+ONTAP ha sido una solución de almacenamiento líder para entornos VMware vSphere durante casi dos décadas y continúa agregando capacidades innovadoras para simplificar la administración y reducir los costos.  Este documento presenta la solución ONTAP para vSphere, incluida la información más reciente del producto y las mejores prácticas, para optimizar la implementación, reducir el riesgo y simplificar la administración.
+
+Para obtener más información, visitelink:https://docs.netapp.com/us-en/ontap-apps-dbs/vmware/vmware-vsphere-overview.html["VMware vSphere con ONTAP"]

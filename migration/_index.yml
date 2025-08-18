@@ -1,0 +1,35 @@
+---
+indexpage:
+  title: Soluciones de migración de máquinas virtuales
+  summary: Las soluciones de migración de máquinas virtuales de NetApp proporcionan
+    herramientas y utilidades integrales para migrar y convertir máquinas virtuales
+    en diferentes plataformas y sistemas de almacenamiento.
+  lead: Las soluciones de migración de máquinas virtuales de NetApp proporcionan herramientas
+    y utilidades integrales para migrar y convertir máquinas virtuales en diferentes
+    plataformas y sistemas de almacenamiento.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Acerca de Shift Toolkit
+      url: shift-toolkit-overview.html
+    - title: Acerca de la migración de máquinas virtuales a almacenes de datos de
+        ONTAP
+      url: migrate-get-start-ontap.html
+    - title: Acerca de la migración de máquinas virtuales a Amazon EC2
+      url: migrate-vms-to-ec2-fsxn-overview.html
+  - title: Utilice el kit de herramientas Shift
+    links:
+    - title: Instalar Shift Toolkit
+      url: shift-toolkit-install.html
+    - title: Configurar el kit de herramientas Shift
+      url: shift-toolkit-ui.html
+    - title: Migrar máquinas virtuales mediante Shift Toolkit
+      url: shift-toolkit-migration.html
+    - title: Convertir máquinas virtuales mediante Shift Toolkit
+      url: shift-toolkit-conversion.html
+  - title: Migrar máquinas virtuales locales y en la nube
+    links:
+    - title: Migrar máquinas virtuales a almacenes de datos de ONTAP
+      url: migrate-vms-to-ontap-datastore.html
+    - title: Migrar máquinas virtuales a Amazon EC2
+      url: migrate-vms-to-ec2-fsxn-deploy.html

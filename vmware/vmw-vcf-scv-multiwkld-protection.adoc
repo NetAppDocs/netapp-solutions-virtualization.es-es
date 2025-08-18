@@ -1,0 +1,142 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-scv-multiwkld-protection.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, scv, workload, domain, backup 
+summary:  
+---
+= Proteja los dominios de administración y carga de trabajo de VCF mediante el complemento SnapCenter para VMware vSphere
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Utilice el SnapCenter Plug-in for VMware vSphere para proteger varios dominios VCF.  Este procedimiento incluye la configuración del complemento para cada dominio, la configuración de políticas de respaldo y la realización de operaciones de restauración.
+
+Los dominios de carga de trabajo de VMware Cloud Foundation (VCF) permiten a las organizaciones separar lógicamente los recursos en diferentes dominios para agrupar diferentes cargas de trabajo, mejorar la seguridad y la tolerancia a fallas.
+
+
+
+== Introducción
+
+Los dominios pueden escalar de forma independiente, cumplir con normativas específicas y proporcionar multitenencia.  La protección de datos para VMware Cloud Foundation (VCF) es un aspecto fundamental para garantizar la disponibilidad, integridad y capacidad de recuperación de los datos en todo el dominio de administración y los dominios de carga de trabajo.  El SnapCenter Plug-in for VMware vSphere NetApp SnapCenter para VMware vSphere (SCV) es una potente herramienta que integra las capacidades de protección de datos de NetApp en los entornos VMware.  Simplifica la copia de seguridad, la restauración y la clonación de máquinas virtuales (VM) VMware vSphere alojadas en el almacenamiento de NetApp .
+
+Este documento proporciona pasos de implementación sobre cómo proteger múltiples dominios VCF con SCV.
+
+
+
+== Audiencia
+
+Arquitectos de soluciones o administradores de almacenamiento que garantizan la protección de datos y la recuperación ante desastres para dominios de carga de trabajo de VMware VCF.
+
+
+
+== Descripción general de la arquitectura
+
+SCV se implementa como un dispositivo virtual Linux que utiliza un archivo OVA para brindar operaciones de respaldo y restauración rápidas, eficientes en términos de espacio, consistentes ante fallos y consistentes con las máquinas virtuales para máquinas virtuales, almacenes de datos, archivos y carpetas.  SCV utiliza una arquitectura de complemento remoto.  Se implementaron y alojaron varios SCV en el dominio de administración VCF vCenter.  El dominio SCV y VCF tienen una relación de uno a uno, por lo tanto, el dominio de administración de VCF y cada dominio de carga de trabajo requieren un SCV.
+
+Datos que se encuentran en los sistemas primarios ONTAP FAS, AFF o All SAN Array (ASA) y se replican en los sistemas secundarios ONTAP FAS, AFF o ASA .  SCV también funciona con SnapCenter Server para soportar operaciones de respaldo y restauración basadas en aplicaciones en entornos VMware para complementos específicos de la aplicación SnapCenter .  Para más información consultar,link:https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/index.html["Documentación del SnapCenter Plug-in for VMware vSphere ."]
+
+image:vmware-vcf-aff-050.png["Dominio de múltiples cargas de trabajo VCF con SCV"]
+
+La regla de copia de seguridad 3-2-1 es una estrategia de protección de datos que implica hacer tres copias de los datos, almacenarlas en dos tipos de medios diferentes y mantener una copia fuera del sitio. BlueXP backup and recovery es una herramienta basada en la nube para la gestión de datos que proporciona un único plano de control para una amplia gama de operaciones de respaldo y recuperación en entornos locales y en la nube.  Parte de la suite de BlueXP backup and recovery NetApp BlueXP es una función que se integra con SCV (en las instalaciones) para extender una copia de los datos al almacenamiento de objetos en la nube. Esto establece una tercera copia de los datos fuera del sitio que proviene de las copias de seguridad del almacenamiento primario o secundario. La BlueXP backup and recovery facilita la configuración de políticas de almacenamiento que transfieren copias de sus datos desde cualquiera de estas dos ubicaciones locales.  Para más detalles, consultelink:https://docs.netapp.com/us-en/netapp-solutions-cloud/vmware/vmw-hybrid-321-dp-scv.html["Protección de datos 3-2-1 para VMware con complemento SnapCenter y BlueXP backup and recovery para máquinas virtuales"^] .
+
+
+
+== Implementar un VCF con dominio de administración y múltiples dominios de carga de trabajo
+
+Un dominio de carga de trabajo VCF es un grupo de hosts ESXi con uno o más clústeres vSphere, aprovisionados por SDDC Manager y listos para aplicaciones.  En el siguiente ejemplo de VCF, se implementaron un dominio de administración y dos dominios de carga de trabajo.  Para obtener más detalles sobre cómo implementar VCF con almacenamiento NetApp , consultelink:vmw-vcf-overview.html["Documentación de implementación de NetApp VCF."]
+
+image:vmware-vcf-aff-051.png["VCF un dominio de administración y dos dominios de carga de trabajo"]
+
+
+
+== Pasos de implementación, configuración y restauración de SCV
+
+En función de la cantidad de dominios de carga de trabajo y del dominio de administración, es necesario implementar varios SCV.  Con dos dominios de carga de trabajo y un dominio de administración, el siguiente ejemplo muestra que se implementan tres SCV en el dominio de administración de VCF vCenter.image:vmware-vcf-aff-063.png["uno a uno entre el dominio VCF y SCV"]
+
+.Implementar SCV para el dominio de administración y cada dominio de carga de trabajo  
+[%collapsible%open]
+====
+. link:https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_download_the_ova_open_virtual_appliance.html["Descargue el dispositivo virtual abierto (OVA)."]
+. Inicie sesión con vSphere Client en vCenter Server.  Vaya a Administración > Certificados > Administración de certificados.  Agregue certificados raíz de confianza e instale cada certificado en la carpeta certs.  Una vez instalados los certificados, se puede verificar e implementar OVA.
+. Inicie sesión en el dominio de carga de trabajo VCF vCenter e implemente la plantilla OVF para iniciar el asistente de implementación de VMware.image:vmware-vcf-aff-052.png["Implementar plantilla SCV OVF"]
++
+{nbsp}
+
+. Encienda OVA para iniciar SCV y luego haga clic en Instalar herramientas de VMware.
+. Genere el token MFA desde la consola OVA, menú de configuración del sistema.image:vmware-vcf-aff-053.png["MFA para iniciar sesión en la interfaz web de administración de SnapCenter"]
++
+{nbsp}
+
+. Inicie sesión en la GUI de administración de SCV con el nombre de usuario y la contraseña de administrador configurados en el momento de la implementación y el token MFA generado mediante la consola de mantenimiento.
+`https://<appliance-IP-address>:8080` para acceder a la GUI de administración.
++
+image:vmware-vcf-aff-054.png["Configuración web de NetApp SnapCenter para VMware vSphere"]
+
+
+
+====
+.Configurar SCV
+[%collapsible%open]
+====
+Para realizar una copia de seguridad o restaurar máquinas virtuales, primero agregue los clústeres de almacenamiento o las máquinas virtuales que alojan los almacenes de datos, luego cree políticas de copia de seguridad para la retención y la frecuencia, y configure un grupo de recursos para proteger los recursos.image:vmware-vcf-aff-055.png["Introducción a SCV"]
+
+. Inicie sesión en el cliente web de vCenter y haga clic en Menú en la barra de herramientas y seleccione SnapCenter Plug-in for VMware vSphere y Agregar un almacenamiento.  En el panel de navegación izquierdo del complemento SCV, haga clic en Sistemas de almacenamiento y luego seleccione Agregar opción.  En el cuadro de diálogo Agregar sistema de almacenamiento, ingrese la información básica del SVM o clúster y seleccione Agregar.  Ingrese la dirección IP de almacenamiento de NetApp e inicie sesión.
+. Para crear una nueva política de respaldo, en el panel de navegación izquierdo del complemento SCV, haga clic en Políticas y seleccione Nueva política.  En la página Nueva política de respaldo, ingrese la información de configuración de la política y haga clic en Agregar.
++
+image:vmware-vcf-aff-056.png["Crear una política de respaldo"]
+
+. En el panel de navegación izquierdo del complemento SCV, haga clic en Grupos de recursos y luego seleccione Crear.  Ingrese la información requerida en cada página del asistente Crear grupo de recursos, seleccione las máquinas virtuales y los almacenes de datos que se incluirán en el grupo de recursos y, a continuación, seleccione las políticas de respaldo que se aplicarán al grupo de recursos y especifique la programación de respaldo.
+
+
+image:vmware-vcf-aff-057.png["Crear grupo de recursos"]
+
+====
+.Restaurar copia de seguridad de máquinas virtuales y archivos o carpetas
+[%collapsible%open]
+====
+Se pueden restaurar máquinas virtuales, VMDK, archivos y carpetas de las copias de seguridad.  La máquina virtual se puede restaurar en el host original o en un host alternativo en el mismo vCenter Server, o en un host ESXi alternativo administrado por el mismo vCenter.  Puede montar un almacén de datos tradicional desde una copia de seguridad si desea acceder a los archivos de la copia de seguridad.  Puede montar la copia de seguridad en el mismo host ESXi donde se creó la copia de seguridad o en un host ESXi alternativo que tenga el mismo tipo de VM y configuraciones de host. Un almacén de datos puede montarse varias veces en un host.  También se pueden restaurar archivos y carpetas individuales en una sesión de restauración de archivos de invitado, que adjunta una copia de respaldo de un disco virtual y luego restaura los archivos o carpetas seleccionados.  También se pueden restaurar archivos y carpetas.
+
+*Pasos para restaurar la máquina virtual*
+
+. En la GUI del cliente VMware vSphere, haga clic en Menú en la barra de herramientas y seleccione Máquinas virtuales y plantillas en la lista desplegable, haga clic con el botón derecho en una máquina virtual y seleccione SnapCenter Plug-in for VMware vSphere en la lista desplegable y, luego, seleccione Restaurar en la lista desplegable secundaria para iniciar el asistente.
+. En el Asistente de restauración, seleccione la instantánea de copia de seguridad que desea restaurar y seleccione Toda la máquina virtual en el campo Alcance de la restauración, seleccione la ubicación de restauración y luego ingrese la información de destino donde se debe montar la copia de seguridad.  En la página Seleccionar ubicación, seleccione la ubicación para el almacén de datos restaurado.  Revise la página Resumen y haga clic en Finalizar.
++
+image:vmware-vcf-aff-059.png["Restauración de máquina virtual"]
+
+. Supervise el progreso de la operación haciendo clic en Tareas recientes en la parte inferior de la pantalla.
+
+
+*Pasos para restaurar el almacén de datos*
+
+. Haga clic con el botón derecho en un almacén de datos y seleccione SnapCenter Plug-in for VMware vSphere > Montar copia de seguridad.
+. En la página Montar almacén de datos, seleccione una copia de seguridad y una ubicación de copia de seguridad (principal o secundaria) y, luego, haga clic en Montar.
+
+
+image:vmware-vcf-aff-062.png["Restauración del almacén de datos"]
+
+*Pasos para restaurar archivos y carpetas*
+
+. Cuando adjunta un disco virtual para operaciones de restauración de archivos o carpetas invitados, la máquina virtual de destino para la adjuntación debe tener credenciales configuradas antes de realizar la restauración.  Desde el SnapCenter Plug-in for VMware vSphere , en complementos, seleccione la sección Restaurar archivos de invitado y ejecutar como credenciales e ingrese las credenciales de usuario.  Para el nombre de usuario, debe ingresar “Administrador”.
++
+image:vmware-vcf-aff-060.png["Restaurar credenciales"]
+
+. Haga clic con el botón derecho en la máquina virtual desde el cliente vSphere y seleccione SnapCenter Plug-in for VMware vSphere > Restaurar archivos invitados.  En la página Ámbito de restauración, especifique el nombre de la copia de seguridad, el disco virtual VMDK y la ubicación: principal o secundaria.  Haga clic en Resumen para confirmar.
++
+image:vmware-vcf-aff-061.png["Restauración de archivos y carpetas"]
+
+
+
+====
+NetApp SnapCenter para múltiples dominios VCP centraliza la protección de datos, reduce de manera eficiente el tiempo y el espacio de almacenamiento necesarios para las copias de seguridad mediante instantáneas de NetApp , admite entornos VMware a gran escala con funciones robustas de copia de seguridad y replicación, y permite la recuperación granular de máquinas virtuales completas, VMDK específicos o archivos individuales.
+
+
+
+== Demostración en video para proteger múltiples dominios VCF con SCV
+
+.Proteja varios dominios de VMware VCF con NetApp SCV
+video::25a5a06c-1def-4aa4-ab00-b28100142194[panopto,width=360]

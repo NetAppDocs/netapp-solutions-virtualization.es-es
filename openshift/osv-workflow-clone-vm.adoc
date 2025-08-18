@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-workflow-clone-vm.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift con NetApp ONTAP 
+---
+= Clonar una máquina virtual con Red Hat OpenShift Virtualization
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Clonar una máquina virtual en OpenShift Virtualization usando Trident.  Este procedimiento incluye el aprovechamiento de la clonación de volúmenes Trident CSI, lo que le permite crear una nueva máquina virtual apagando la máquina virtual de origen o manteniéndola en funcionamiento.
+
+
+
+== Clonación de máquinas virtuales
+
+La clonación de una máquina virtual existente en OpenShift se logra con el soporte de la función de clonación Volume CSI de Trident.  La clonación de volumen CSI permite la creación de un nuevo PVC utilizando un PVC existente como fuente de datos mediante la duplicación de su PV.  Una vez creado el nuevo PVC, funciona como una entidad separada y sin ningún vínculo o dependencia del PVC de origen.
+
+image:redhat-openshift-057.png["Arquitectura de clonación de máquinas virtuales"]
+
+Existen ciertas restricciones a tener en cuenta con la clonación de volúmenes CSI:
+
+. El PVC de origen y el PVC de destino deben estar en el mismo proyecto.
+. Se admite la clonación dentro de la misma clase de almacenamiento.
+. La clonación solo se puede realizar cuando los volúmenes de origen y destino usan la misma configuración VolumeMode; por ejemplo, un volumen de bloque solo se puede clonar en otro volumen de bloque.
+
+
+Las máquinas virtuales en un clúster OpenShift se pueden clonar de dos maneras:
+
+. Apagando la máquina virtual de origen
+. Manteniendo activa la máquina virtual de origen
+
+
+
+
+=== Apagando la máquina virtual de origen
+
+Clonar una máquina virtual existente apagándola es una función nativa de OpenShift que se implementa con el soporte de Trident.  Complete los siguientes pasos para clonar una máquina virtual.
+
+. Vaya a Cargas de trabajo > Virtualización > Máquinas virtuales y haga clic en los puntos suspensivos junto a la máquina virtual que desea clonar.
+. Haga clic en Clonar máquina virtual y proporcione los detalles de la nueva máquina virtual.
++
+image:redhat-openshift-058.png["clonar máquina virtual"]
+
+. Haga clic en Clonar máquina virtual; esto apaga la máquina virtual de origen e inicia la creación de la máquina virtual clonada.
+. Una vez completado este paso, podrá acceder y verificar el contenido de la máquina virtual clonada.
+
+
+
+
+=== Manteniendo activa la máquina virtual de origen
+
+También se puede clonar una VM existente clonando el PVC existente de la VM de origen y luego creando una nueva VM usando el PVC clonado.  Este método no requiere que apague la máquina virtual de origen.  Complete los siguientes pasos para clonar una máquina virtual sin apagarla.
+
+. Vaya a Almacenamiento > PersistentVolumeClaims y haga clic en los puntos suspensivos junto a la PVC que está conectada a la máquina virtual de origen.
+. Haga clic en Clonar PVC y proporcione los detalles del nuevo PVC.
++
+image:redhat-openshift-059.png["clon de PVC"]
+
+. Luego haga clic en Clonar.  Esto crea una PVC para la nueva VM.
+. Vaya a Cargas de trabajo > Virtualización > Máquinas virtuales y haga clic en Crear > Con YAML.
+. En la sección especificación > plantilla > especificación > volúmenes, adjunte el PVC clonado en lugar del disco contenedor.  Proporcione todos los demás detalles para la nueva máquina virtual según sus requisitos.
++
+[source, cli]
+----
+- name: rootdisk
+  persistentVolumeClaim:
+    claimName: rhel8-short-frog-rootdisk-28dvb-clone
+----
+. Haga clic en Crear para crear la nueva máquina virtual.
+. Una vez creada correctamente la máquina virtual, acceda y verifique que la nueva máquina virtual sea un clon de la máquina virtual de origen.
+

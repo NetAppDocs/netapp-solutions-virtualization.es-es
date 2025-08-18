@@ -1,0 +1,75 @@
+---
+section: osv
+title: Virtualización de OpenShift
+url: "/openshift/index.html"
+entries:
+- title: Empezar
+  pdf-filename: Descripción general de Red Hat OpenShift Virtualization
+  entries:
+  - title: Acerca de OpenShift Virtualization
+    url: "/openshift/osv-overview.html"
+  - title: Aprovisionamiento de almacenamiento para OpenShift
+    url: "/openshift/os-netapp-overview.html"
+  - title: Integración de almacenamiento NetApp Trident
+    url: "/openshift/os-storint-overview.html"
+- title: Mejores prácticas para la implementación
+  pdf-filename: Mejores prácticas para la virtualización de Red Hat OpenShift en NetApp
+  url: "/openshift/os-osv-bpg.html"
+- title: Instalar Trident
+  pdf-filename: Instalar Trident
+  url: "/openshift/osv-trident-install.html"
+- title: Implementar en las instalaciones
+  pdf-filename: Implementar Red Hat OpenShift Virtualization en las instalaciones
+  entries:
+  - title: Requisitos de implementación
+    url: "/openshift/osv-deployment-prerequisites.html"
+  - title: Implementar la virtualización OpenShift
+    url: "/openshift/osv-deployment.html"
+  - title: Crear máquinas virtuales
+    url: "/openshift/osv-workflow-create-vm.html"
+  - title: Migrar máquinas virtuales desde VMware
+    url: "/openshift/osv-workflow-vm-migration-mtv.html"
+  - title: Migrar máquinas virtuales entre dos nodos del clúster
+    url: "/openshift/osv-workflow-vm-live-migration.html"
+  - title: Clonar máquinas virtuales
+    url: "/openshift/osv-workflow-clone-vm.html"
+  - title: Crear máquinas virtuales a partir de una instantánea
+    url: "/openshift/osv-workflow-vm-from-snapshot.html"
+- title: Implementar en ROSA con FSxN
+  pdf-filename: Implemente Red Hat OpenShift Virtualization en ROSA con Amazon FSx
+    para ONTAP
+  entries:
+  - title: Implementar OpenShift en ROSA
+    url: "/openshift/osv-rosa-overview.html"
+  - title: Reiniciar o migrar en vivo las máquinas virtuales
+    url: "/openshift/osv-rosa-vm-workflows.html"
+- title: Proteja sus datos con Trident Protect
+  entries:
+  - title: Proteja las máquinas virtuales con instantáneas y copias de seguridad
+    url: "/openshift/osv-vm-dp-using-tp.html"
+  - title: Configurar conmutación por error y recuperación
+    url: "/openshift/osv-vm-dr-using-tp.html"
+- title: Proteger los datos utilizando herramientas de terceros
+  pdf-filename: Protección de datos de virtualización de Red Hat OpenShift
+  entries:
+  - title: Proteja las máquinas virtuales mediante OADP y Velero
+    url: "/openshift/osv-vm-dp-using-velero-overview.html"
+  - title: Instalar OADP
+    url: "/openshift/osv-oadp-installation.html"
+  - title: Copia de seguridad de máquinas virtuales con Velero
+    url: "/openshift/osv-vm-dp-using-velero.html"
+  - title: Restaurar máquinas virtuales mediante Velero
+    url: "/openshift/osv-vm-restore-using-velero.html"
+  - title: Eliminar copias de seguridad y restauraciones
+    url: "/openshift/osv-vm-dp-delete-using-velero.html"
+- title: Supervisar máquinas virtuales con DII
+  pdf-filename: Monitoreo de virtualización de Red Hat OpenShift
+  entries:
+  - title: Acerca de DII
+    url: "/openshift/os-ci-overview.html"
+  - title: Configurar D II
+    url: "/openshift/os-ci-integration.html"
+  - title: Supervisar máquinas virtuales mediante DII
+    url: "/openshift/os-ci-samples.html"
+- title: Recursos adicionales
+  url: "/openshift/os-additional-information.html"

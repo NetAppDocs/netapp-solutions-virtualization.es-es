@@ -1,0 +1,250 @@
+---
+sidebar: sidebar 
+permalink: migration/migrate-vms-to-ec2-fsxn-deploy.html 
+keywords: netapp, vmware, amazon, ec2, fsxn, migration, iscsi, deploy 
+summary: 'Este informe técnico cubre cómo migrar máquinas virtuales VMware vSphere locales a una instancia de Amazon EC2 con discos de datos ubicados en LUN iSCSI de FSx ONTAP utilizando la funcionalidad de "movilidad de datos como código" de MigrateOps de Cirrus Migrate Cloud (CMC).' 
+---
+= Migrar máquinas virtuales a Amazon EC2 mediante Amazon FSx para ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Implemente Amazon FSx for NetApp ONTAP para migrar máquinas virtuales a Amazon EC2.  Este procedimiento incluye la configuración del entorno FSx ONTAP , la configuración de conexiones iSCSI y el uso de MigrateOps de Cirrus Data para una transferencia de datos sin inconvenientes.
+
+
+
+== Configurar FSx ONTAP y Cirrus Data para operaciones de migración
+
+Este https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/getting-started-step1.html["guía de implementación paso a paso"] muestra cómo agregar un volumen FSx ONTAP a una VPC.  Dado que estos pasos son de naturaleza secuencial, asegúrese de cubrirlos en orden.
+
+Para los fines de esta demostración, "DRaaSDemo" es el nombre del sistema de archivos creado.
+
+image:migrate-ec2-fsxn-002.png["Imagen de la interfaz de usuario del sistema de archivos de demostración"]
+
+Una vez que su AWS VPC esté configurado y FSx ONTAP esté aprovisionado según sus requisitos de rendimiento, inicie sesión enlink:http://cloud.cirrusdata.com/["nube.cirrusdata.com"] ylink:https://customer.cirrusdata.com/cdc/kb/articles/get-started-with-cirrus-data-cloud-4eDqjIxQpg["crear un nuevo proyecto"] o acceder a un proyecto existente.
+
+image:migrate-ec2-fsxn-003.png["Imagen de la interfaz de usuario de los proyectos de Cirrus Data"]
+
+Antes de crear la receta para MigrationOps, se debe agregar AWS Cloud como integración.  CMC proporciona integración incorporada con FSx ONTAP y AWS.  La integración con FSx ONTAP proporciona las siguientes funcionalidades automatizadas:
+
+*Prepare su sistema de archivos FSx ONTAP :*
+
+* Cree nuevos volúmenes y LUN que coincidan con los volúmenes de origen
+
+
+*Nota*: Un disco de destino en el modelo FSx ONTAP FS es un "LUN" que se crea en un "Volumen" que tiene suficiente capacidad para contener el LUN más una cantidad razonable de sobrecarga para facilitar instantáneas y metadatos.  La automatización de CMC se encarga de todos estos detalles para crear el volumen y el LUN adecuados con parámetros opcionales definidos por el usuario.
+
+* Cree una entidad de host (llamada iGroups en FSx) con el IQN del iniciador de host
+* Asigne volúmenes recién creados a entidades host apropiadas mediante asignaciones
+* Crea todas las demás configuraciones necesarias
+
+
+*Preparar el host de producción para la conexión iSCSI:*
+
+* Si es necesario, instale y configure la función iSCSI y configure el iniciador.
+* Si es necesario, instale y configure multipath (MPIO para Windows) con identificadores de proveedor adecuados.
+* Ajuste la configuración del sistema, si es necesario, de acuerdo con las mejores prácticas del proveedor, por ejemplo, con la configuración de udev en Linux.
+* Cree y administre conexiones iSCSI como destinos iSCSI persistentes/favoritos en Windows.
+
+
+Para configurar la integración de CMC para FSx ONTAP y AWS, realice los siguientes pasos:
+
+. Inicie sesión en el portal de Cirrus Data Cloud.
+. Vaya al proyecto para el cual desea habilitar la integración.
+. Vaya a Integraciones -> Extras.
+. Desplácese para encontrar FSx ONTAP y haga clic en AGREGAR INTEGRACIÓN.
++
+image:migrate-ec2-fsxn-004.png["Imagen de la interfaz de usuario 'Agregar integración' de Cirrus Data"]
+
+. Proporcione un nombre descriptivo (estrictamente para fines de visualización) y agregue las credenciales apropiadas.
++
+image:migrate-ec2-fsxn-005.png["Imagen de la interfaz de usuario 'Agregar integración' de Cirrus Data"]
+
+. Una vez creada la integración, durante la creación de una nueva sesión de migración, seleccione Asignar automáticamente volúmenes de destino para asignar automáticamente nuevos volúmenes en FSx ONTAP.
++
+*Nota*: Los nuevos LUN se crearán con el mismo tamaño que el tamaño del volumen de origen, a menos que "Migrar a volúmenes más pequeños" esté habilitado para la migración.
+
++
+*Nota*: Si aún no existe una entidad anfitriona (iGroup), se creará una nueva.  Todos los IQN del iniciador iSCSI del host se agregarán a esa nueva entidad de host.
+
++
+*Nota*: Si ya existe una entidad host con cualquiera de los iniciadores iSCSI, se reutilizará.
+
+. Una vez hecho esto, agregue la integración para AWS, siguiendo los pasos en pantalla.
++
+image:migrate-ec2-fsxn-006.png["Imagen de la interfaz de usuario 'Agregar integración' de Cirrus Data"]
+
++
+*Nota*: Esta integración se utiliza al migrar máquinas virtuales desde el almacenamiento local a AWS junto con la integración de FSx ONTAP .
+
++
+*Nota*: Utilice relés de administración para comunicarse con Cirrus Data Cloud si no hay una conexión saliente directa para las instancias de producción que se migrarán.
+
+
+
+Con las integraciones agregadas, es momento de registrar los hosts con el Proyecto.  Vamos a abordar esto con un escenario de ejemplo.
+
+
+
+== Escenario de registro del host
+
+Máquinas virtuales VMware invitadas que residen en vCenter en el centro de datos local:
+
+* Windows 2016 ejecutándose con SQL Server con tres VMDK, incluidos discos de datos y sistema operativo.  Está ejecutando una base de datos activa.  La base de datos está ubicada en un volumen de datos respaldado por dos VMDK.
+
+
+*Nota*: Dado que la fuente es un entorno VMware y se utilizan VMDK, el software del iniciador iSCSI de Windows no está configurado actualmente en esta máquina virtual invitada.  Para conectarnos a nuestro almacenamiento de destino a través de iSCSI, será necesario instalar y configurar tanto iSCSI como MPIO.  La integración de Cirrus Data Cloud realizará esta instalación automáticamente durante el proceso.
+
+*Nota*: La integración configurada en la sección anterior automatiza la configuración del nuevo almacenamiento de destino al crear los nuevos discos, configurar las entidades host y sus IQN e incluso la remediación de la VM (host) de la aplicación para configuraciones iSCSI y multipath.
+
+image:migrate-ec2-fsxn-007.png["Imagen de las máquinas virtuales VMware que se migrarán"]
+
+Esta demostración migrará los VMDK de la aplicación desde cada VM a un volumen iSCSI aprovisionado y mapeado automáticamente desde FSx ONTAP.  En este caso, el VMDK del sistema operativo se migrará a un volumen de Amazon EBS, ya que las instancias de Amazon EC2 admiten este Amazon EBS solo como disco de arranque.
+
+*Nota*: El factor de escala con este enfoque de migración es el ancho de banda de la red y la conexión local a AWS VPC.  Dado que cada máquina virtual tiene configurada una sesión de host 1:1, el rendimiento general de la migración depende de dos factores:
+
+* Ancho de banda de la red
+* Tipo de instancia de destino y ancho de banda de ENI
+
+
+Los pasos de la migración son los siguientes:
+
+. Instale el agente CMC en cada host (Windows y Linux) designado para la ola de migración.  Esto se puede realizar ejecutando un comando de instalación de una línea.
++
+Para ello, acceda a Migración de datos > Hosts de migración > Haga clic en “Implementar Cirrus Migrate Cloud” y haga clic para seleccionar “Windows”.
+
++
+Luego, copia el `iex` comando al host y ejecutarlo usando PowerShell.  Una vez que la implementación del agente sea exitosa, el host se agregará al Proyecto en "Hosts de migración".
+
++
+image:migrate-ec2-fsxn-008.png["Imagen de la interfaz de instalación de Cirrus Data"]
+
++
+image:migrate-ec2-fsxn-009.png["Imagen del progreso de la instalación de Windows"]
+
+. Prepare el YAML para cada máquina virtual.
++
+*Nota*: Es un paso vital tener un YAML para cada VM que especifique la receta o el plan necesario para la tarea de migración.
+
++
+El YAML proporciona el nombre de la operación, notas (descripción) junto con el nombre de la receta como `MIGRATEOPS_AWS_COMPUTE` , el nombre del host(`system_name` ) y nombre de integración(`integration_name` ) y la configuración de origen y destino.  Se pueden especificar scripts personalizados como una acción de corte antes y después.
+
++
+[source, yaml]
+----
+operations:
+    -   name: Win2016 SQL server to AWS
+        notes: Migrate OS to AWS with EBS and Data to FSx ONTAP
+        recipe: MIGRATEOPS_AWS_COMPUTE
+        config:
+            system_name: Win2016-123
+            integration_name: NimAWShybrid
+            migrateops_aws_compute:
+                region: us-west-2
+                compute:
+                    instance_type: t3.medium
+                    availability_zone: us-west-2b
+                network:
+                    vpc_id: vpc-05596abe79cb653b7
+                    subnet_id: subnet-070aeb9d6b1b804dd
+                    security_group_names:
+                        - default
+                destination:
+                    default_volume_params:
+                        volume_type: GP2
+                    iscsi_data_storage:
+                        integration_name: DemoDRaaS
+                        default_volume_params:
+                            netapp:
+                                qos_policy_name: ""
+                migration:
+                    session_description: Migrate OS to AWS with EBS and Data to FSx ONTAP
+                    qos_level: MODERATE
+                cutover:
+                    stop_applications:
+                        - os_shell:
+                              script:
+                                  - stop-service -name 'MSSQLSERVER' -Force
+                                  - Start-Sleep -Seconds 5
+                                  - Set-Service -Name 'MSSQLSERVER' -StartupType Disabled
+                                  - write-output "SQL service stopped and disabled"
+
+                        - storage_unmount:
+                              mountpoint: e
+                        - storage_unmount:
+                              mountpoint: f
+                    after_cutover:
+                        - os_shell:
+                              script:
+                                  - stop-service -name 'MSSQLSERVER' -Force
+                                  - write-output "Waiting 90 seconds to mount disks..." > log.txt
+                                  - Start-Sleep -Seconds 90
+                                  - write-output "Now re-mounting disks E and F for SQL..." >>log.txt
+                        - storage_unmount:
+                              mountpoint: e
+                        - storage_unmount:
+                              mountpoint: f
+                        - storage_mount_all: {}
+                        - os_shell:
+                              script:
+                                  - write-output "Waiting 60 seconds to restart SQL Services..." >>log.txt
+                                  - Start-Sleep -Seconds 60
+                                  - stop-service -name 'MSSQLSERVER' -Force
+                                  - Start-Sleep -Seconds 3
+                                  - write-output "Start SQL Services..." >>log.txt
+                                  - Set-Service -Name 'MSSQLSERVER' -StartupType Automatic
+                                  - start-service -name 'MSSQLSERVER'
+                                  - write-output "SQL started" >>log.txt
+----
+. Una vez que los YAML estén en su lugar, cree la configuración de MigrateOps.  Para hacer esto, vaya a Migración de datos > MigrateOps, haga clic en "Iniciar nueva operación" e ingrese la configuración en formato YAML válido.
+. Haga clic en "Crear operación".
++
+*Nota*: Para lograr el paralelismo, cada host debe tener un archivo YAML especificado y configurado.
+
+. A menos que el `scheduled_start_time` Si el campo se especifica en la configuración, la operación se iniciará inmediatamente.
+. Ahora la operación se ejecutará y continuará.  Desde la interfaz de usuario de Cirrus Data Cloud, puede supervisar el progreso con mensajes detallados.  Estos pasos incluyen automáticamente tareas que normalmente se realizan manualmente, como realizar la asignación automática y crear sesiones de migración.
++
+image:migrate-ec2-fsxn-010.png["Imagen del progreso de la migración de datos de Cirrus"]
+
++
+*Nota*: Durante la migración de host a host, se creará un grupo de seguridad adicional con una regla que permite el puerto de entrada 4996, que permitirá el puerto requerido para la comunicación y se eliminará automáticamente una vez que se complete la sincronización.
+
++
+image:migrate-ec2-fsxn-011.png["Imagen de la regla de entrada necesaria para la migración de datos de Cirrus"]
+
+. Mientras esta sesión de migración se sincroniza, hay un paso futuro en la fase 3 (transición) con la etiqueta "Aprobación requerida".  En una receta de MigrateOps, las tareas críticas (como las migraciones) requieren la aprobación del usuario antes de poder ejecutarse.  Los operadores o administradores del proyecto pueden aprobar estas tareas desde la interfaz de usuario.  También se puede crear una ventana de aprobación futura.
++
+image:migrate-ec2-fsxn-012.png["Imagen de la sincronización de la migración de datos de Cirrus"]
+
+. Una vez aprobada, la operación de MigrateOps continúa con la transición.
+. Después de un breve momento la operación estará completa.
++
+image:migrate-ec2-fsxn-013.png["Imagen de la finalización de la migración de datos de Cirrus"]
+
++
+*Nota*: Con la ayuda de la tecnología cMotion de Cirrus Data, el almacenamiento de destino se ha mantenido actualizado con todos los últimos cambios.  Por lo tanto, una vez obtenida la aprobación, todo este proceso de transferencia final tardará muy poco tiempo (menos de un minuto) en completarse.
+
+
+
+
+
+== Verificación posterior a la migración
+
+Veamos la instancia de Amazon EC2 migrada que ejecuta el sistema operativo Windows Server y los siguientes pasos que se han completado:
+
+. Ahora se han iniciado los servicios SQL de Windows.
+. La base de datos está nuevamente en línea y está utilizando el almacenamiento del dispositivo iSCSI Multipath.
+. Todos los nuevos registros de base de datos agregados durante la migración se pueden encontrar en la base de datos recién migrada.
+. El antiguo almacenamiento ahora está fuera de línea.
+
+
+*Nota*: Con solo un clic para enviar la operación de movilidad de datos como código y un clic para aprobar la transferencia, la máquina virtual ha migrado exitosamente desde VMware local a una instancia de Amazon EC2 utilizando FSx ONTAP y sus capacidades iSCSI.
+
+*Nota*: Debido a la limitación de la API de AWS, las máquinas virtuales convertidas se mostrarán como "Ubuntu".  Este es estrictamente un problema de visualización y no afecta la funcionalidad de la instancia migrada.  Una próxima versión abordará este problema.
+
+*Nota*: Se puede acceder a las instancias de Amazon EC2 migradas usando las credenciales que se usaron en el lado local.

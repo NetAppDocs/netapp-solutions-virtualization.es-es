@@ -1,0 +1,167 @@
+---
+sidebar: sidebar 
+permalink: hyperv/hyperv-deploy-data-protection.html 
+keywords: hyperv, hyper-v, deploy, netapp, virtualization, data, protection 
+summary: La solución proporciona los pasos necesarios para implementar Hyper-V en el almacenamiento de NetApp 
+---
+= Implementar Microsoft Hyper-V en el almacenamiento de NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Implemente máquinas virtuales de Microsoft Hyper-V utilizando soluciones basadas en almacenamiento ONTAP e integración de respaldo de terceros.  Este proceso incluye el uso de copias Snapshot de ONTAP y la tecnología FlexClone para operaciones de respaldo y restauración rápidas, la configuración de CommVault IntelliSnap para la gestión de respaldo empresarial y la implementación de la replicación SnapMirror para respaldo y recuperación ante desastres en todos los sitios.
+
+Aprenda a abordar consideraciones únicas de respaldo de Hyper-V, como conflictos de identificación de disco en entornos agrupados, y optimice la protección de datos para hosts independientes y clústeres de Hyper-V.
+
+
+
+== Restaurar mediante una instantánea de almacenamiento de NetApp
+
+Realizar copias de seguridad de máquinas virtuales y recuperarlas o clonarlas rápidamente son algunas de las grandes fortalezas de los volúmenes ONTAP .  Utilice copias instantáneas para realizar copias rápidas de FlexClone de las máquinas virtuales o incluso de todo el volumen CSV sin afectar el rendimiento.  Esto permite trabajar con datos de producción sin el riesgo de corrupción de datos al clonar volúmenes de datos de producción y montarlos en entornos de control de calidad, preparación y desarrollo.  Los volúmenes FlexClone son útiles para realizar copias de prueba de datos de producción, sin tener que duplicar la cantidad de espacio necesario para copiar los datos.
+
+Tenga en cuenta que los nodos de Hyper-V asignan a cada disco una identificación única y tomar una instantánea del volumen que tiene la partición respectiva (MBR o GPT) llevará la misma identificación única.  MBR utiliza firmas de disco y GPT utiliza GUID (identificadores únicos globales).  En el caso de un host Hyper-V independiente, el volumen FlexClone se puede montar fácilmente sin ningún conflicto.  Esto se debe a que los servidores Hyper-V independientes pueden detectar automáticamente ID de disco duplicados y cambiarlos dinámicamente sin intervención del usuario.  Este enfoque se puede utilizar para recuperar las máquinas virtuales copiando los VHD según lo exija el escenario.
+
+Si bien es sencillo con los hosts Hyper-V independientes, el procedimiento es diferente para los clústeres Hyper-V.  El proceso de recuperación implica mapear el volumen FlexClone a un host Hyper-V independiente o usar diskpart para cambiar manualmente la firma mapeando el volumen FlexClone a un host Hyper-V independiente (es importante porque un conflicto de ID de disco da como resultado la imposibilidad de poner el disco en línea) y una vez hecho esto, mapear el volumen FlexClone al clúster.
+
+
+
+== Copia de seguridad y restauración mediante soluciones de terceros
+
+*Nota*: Esta sección utiliza Commvault, sin embargo esto es aplicable a otras soluciones de terceros.
+
+Al aprovechar las instantáneas de ONTAP , CommVault IntelliSnap crea instantáneas de Hyper-V basadas en hardware. Las copias de seguridad pueden automatizarse según la configuración de un hipervisor Hyper-V o un grupo de máquinas virtuales, o bien, manualmente para un grupo de máquinas virtuales o una máquina virtual específica.  IntelliSnap permite una protección rápida de los entornos Hyper-V colocando una carga mínima en la granja de virtualización de producción.  La integración de la tecnología IntelliSnap con Virtual Server Agent (VSA) permite a NetApp ONTAP Array completar copias de seguridad con una gran cantidad de máquinas virtuales y almacenes de datos en cuestión de minutos.  El acceso granular permite la recuperación de archivos y carpetas individuales desde el nivel secundario de almacenamiento junto con todos los archivos .vhd del invitado.
+
+Antes de configurar el entorno de virtualización, implemente los agentes adecuados que requieren la integración de instantáneas con la matriz.  Los entornos de virtualización de Microsoft Hyper-V requieren los siguientes agentes:
+
+* MediaAgent
+* Agente de servidor virtual (VSA)
+* Proveedor de hardware VSS (Windows Server 2012 y sistemas operativos más recientes)
+
+
+*Configurar la matriz NetApp mediante la administración de matrices*
+
+Los siguientes pasos muestran cómo configurar copias de seguridad de máquinas virtuales IntelliSnap en un entorno que utiliza una matriz ONTAP y Hyper-V.
+
+. En la cinta de la Consola CommCell, haga clic en la pestaña Almacenamiento y, a continuación, haga clic en Administración de matrices.
+. Aparece el cuadro de diálogo Administración de matrices.
+. Haga clic en Agregar.
++
+Aparece el cuadro de diálogo Propiedades de la matriz.
+
++
+image:hyperv-deploy-009.png["Imagen del cuadro de diálogo Propiedades de la matriz"]
+
+. En la pestaña General, especifique la siguiente información:
+. En la lista de proveedores de Snap, seleccione NetApp.
+. En el cuadro Nombre, ingrese el nombre de host, el nombre de dominio completo (FQDN) o la dirección TCP/IP del servidor de archivos principal.
+. En la pestaña Nodos de acceso a la matriz, seleccione los agentes de medios disponibles.
+. En la pestaña Configuración de instantánea, configure las Propiedades de configuración de instantánea según sus necesidades.
+. Haga clic en Aceptar.
+. <Paso obligatorio> Una vez hecho esto, configure también SVM en la matriz de almacenamiento NetApp utilizando la opción de detección para detectar automáticamente las máquinas virtuales de almacenamiento (SVM), luego elija una SVM y, con la opción de agregar, agregue la SVM en la base de datos de CommServe, como una entrada de administración de la matriz.
++
+image:hyperv-deploy-010.png["Imagen de la configuración del SVM como una entrada de administración de matriz"]
+
+. Haga clic en Avanzado (como se muestra en los gráficos a continuación) y seleccione la casilla de verificación "Habilitar IntelliSnap".
++
+image:hyperv-deploy-011.png["Imagen que muestra la opción Habilitar IntelliSnap"]
+
+
+
+Para conocer los pasos detallados sobre la configuración de la matriz, consultelink:https://documentation.commvault.com/11.20/configuring_netapp_array_using_array_management.html["Configuración de la matriz NetApp"] ylink:https://documentation.commvault.com/11.20/configure_storage_virtual_machine_on_netapp_storage_array.html["Configuración de máquinas virtuales de almacenamiento en matrices NetApp"]
+
+*Agregar Hyper-V como hipervisor*
+
+El siguiente paso es agregar el hipervisor Hyper-V y agregar un grupo de máquinas virtuales.
+
+*Prerrequisitos*
+
+* El hipervisor puede ser un clúster Hyper-V, un servidor Hyper-V en un clúster o un servidor Hyper-V independiente.
+* El usuario debe pertenecer al grupo de administradores de Hyper-V para Hyper-V Server 2012 y versiones posteriores.  Para un clúster Hyper-V, la cuenta de usuario debe tener permisos de clúster completos (lectura y control total).
+* Identifique uno o más nodos en los que instalará el Agente de servidor virtual (VSA) para crear nodos de acceso (proxies VSA) para operaciones de copia de seguridad y restauración.  Para descubrir servidores Hyper-V, el sistema CommServe debe tener instalado el VSA.
+* Para utilizar el seguimiento de bloques modificados para Hyper-V 2012 R2, seleccione todos los nodos en el clúster de Hyper-V.
+
+
+Los siguientes pasos muestran cómo agregar Hyper-V como hipervisor.
+
+. Una vez completada la configuración principal, en la pestaña Proteger, haga clic en el mosaico Virtualización.
+. En la página Crear plan de respaldo del servidor, escriba un nombre para el plan y luego proporcione información sobre el almacenamiento, la retención y los programas de respaldo.
+. Ahora aparece la página Agregar hipervisor > Seleccionar proveedor: Seleccione Hyper-V (ingrese la dirección IP o FQDN y las credenciales del usuario)
+. Para un servidor Hyper-V, haga clic en Descubrir nodos.  Cuando el campo Nodos esté completo, seleccione uno o más nodos en los que instalar el Agente de servidor virtual.
++
+image:hyperv-deploy-012.png["Imagen que muestra el descubrimiento de nodos de Hyper-V"]
+
+. Haga clic en Siguiente y en Guardar.
++
+image:hyperv-deploy-013.png["Imagen que muestra los resultados del paso anterior."]
+
+. En la página Agregar grupo de VM, seleccione las máquinas virtuales que desea proteger (Demogrp es el grupo de VM creado en este caso) y habilite la opción IntelliSnap como se muestra a continuación.
++
+image:hyperv-deploy-014.png["Imagen que muestra la selección de máquinas virtuales para proteger"]
+
++
+*Nota*: Cuando IntelliSnap está habilitado en un grupo de máquinas virtuales, Commvault crea automáticamente políticas de programación para las copias principales (instantáneas) y de respaldo.
+
+. Haga clic en Guardar.
+
+
+Para conocer los pasos detallados sobre la configuración de la matriz, consultelink:https://documentation.commvault.com/2023e/essential/guided_setup_for_hyper_v.html["Agregar un hipervisor"] .
+
+*Realizar una copia de seguridad:*
+
+. Desde el panel de navegación, vaya a Proteger > Virtualización.  Aparece la página de Máquinas virtuales.
+. Realice una copia de seguridad de la máquina virtual o del grupo de máquinas virtuales.  En esta demostración, se selecciona el grupo de máquinas virtuales.  En la fila del grupo de máquinas virtuales, haga clic en el botón de acción action_button y luego seleccione Hacer copia de seguridad.  En este caso, nimplan es el plan asociado a Demogrp y Demogrp01.
++
+image:hyperv-deploy-015.png["Imagen que muestra el cuadro de diálogo para seleccionar las máquinas virtuales que se respaldarán"]
+
+. Una vez que la copia de seguridad es exitosa, los puntos de restauración están disponibles como se muestra en la captura de pantalla.  Desde la copia instantánea, se puede realizar la restauración de la máquina virtual completa y la restauración de archivos y carpetas invitados.
++
+image:hyperv-deploy-016.png["Imagen que muestra los puntos de restauración de una copia de seguridad"]
+
++
+*Nota*: Para máquinas virtuales críticas y muy utilizadas, mantenga menos máquinas virtuales por CSV
+
+
+
+*Realizando una operación de restauración:*
+
+Restaure máquinas virtuales completas, archivos y carpetas de invitados o archivos de discos virtuales a través de los puntos de restauración.
+
+. Desde el panel de navegación, vaya a Proteger > Virtualización; aparecerá la página Máquinas virtuales.
+. Haga clic en la pestaña Grupos de máquinas virtuales.
+. Aparece la página del grupo de máquinas virtuales.
+. En el área de grupos de máquinas virtuales, haga clic en Restaurar para el grupo de máquinas virtuales que contiene la máquina virtual.
+. Aparece la página Seleccionar tipo de restauración.
++
+image:hyperv-deploy-017.png["Imagen que muestra los tipos de restauración para una copia de seguridad"]
+
+. Seleccione Archivos de invitado o Máquina virtual completa según la selección y active la restauración.
++
+image:hyperv-deploy-018.png["Imagen que muestra las opciones para la restauración"]
+
+
+
+Para conocer los pasos detallados para todas las opciones de restauración compatibles, consultelink:https://documentation.commvault.com/2023e/essential/restores_for_hyper_v.html["Restauraciones para Hyper-V"] .
+
+
+
+== Opciones avanzadas de NetApp ONTAP
+
+NetApp SnapMirror permite una replicación eficiente del almacenamiento de sitio a sitio, lo que hace que la recuperación ante desastres sea rápida, confiable y manejable para adaptarse a las empresas globales de la actualidad.  Al replicar datos a altas velocidades a través de redes LAN y WAN, SnapMirror proporciona alta disponibilidad de datos y recuperación rápida para aplicaciones de misión crítica, así como excelentes capacidades de deduplicación de almacenamiento y compresión de red.  Con la tecnología SnapMirror de NetApp , la recuperación ante desastres puede proteger todo el centro de datos.  Los volúmenes pueden respaldarse en una ubicación externa de manera incremental.  SnapMirror realiza una replicación incremental basada en bloques con tanta frecuencia como el RPO requerido.  Las actualizaciones a nivel de bloque reducen los requisitos de ancho de banda y tiempo, y se mantiene la consistencia de los datos en el sitio de recuperación ante desastres.
+
+Un paso importante es crear una transferencia de referencia única de todo el conjunto de datos.  Esto es necesario antes de que se puedan realizar actualizaciones incrementales.  Esta operación incluye la creación de una copia Snapshot en el origen y la transferencia de todos los bloques de datos a los que hace referencia al sistema de archivos de destino.  Una vez completada la inicialización, pueden ocurrir actualizaciones programadas o activadas manualmente.  Cada actualización transfiere únicamente los bloques nuevos y modificados del sistema de archivos de origen al de destino.  Esta operación incluye la creación de una copia instantánea en el volumen de origen, su comparación con la copia de referencia y la transferencia de solo los bloques modificados al volumen de destino.  La nueva copia se convierte en la copia base para la próxima actualización.  Debido a que la replicación es periódica, SnapMirror puede consolidar los bloques modificados y conservar el ancho de banda de la red.  El impacto en el rendimiento de escritura y la latencia de escritura es mínimo.
+
+La recuperación se realiza completando los siguientes pasos:
+
+. Conectarse al sistema de almacenamiento en el sitio secundario.
+. Romper la relación SnapMirror .
+. Asigne los LUN en el volumen SnapMirror al grupo iniciador (igroup) para los servidores Hyper-V en el sitio secundario.
+. Una vez que los LUN estén asignados al clúster Hyper-V, ponga estos discos en línea.
+. Usando los cmdlets de PowerShell del clúster de conmutación por error, agregue los discos al almacenamiento disponible y conviértalos a CSV.
+. Importe las máquinas virtuales en formato CSV al administrador de Hyper-V, hágalas altamente disponibles y luego agréguelas al clúster.
+. Encienda las máquinas virtuales.
+

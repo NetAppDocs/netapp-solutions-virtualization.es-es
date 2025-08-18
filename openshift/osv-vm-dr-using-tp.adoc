@@ -1,0 +1,239 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-vm-dr-using-tp.html 
+keywords: OpenShift, OCP, Trident, Trident protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, ROSA, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift en ROSA 
+---
+= Configurar conmutación por error y conmutación por recuperación para máquinas virtuales en Red Hat OpenShift Virtualization usando Trident Protect
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure la recuperación ante desastres para máquinas virtuales en OpenShift Virtualization usando Trident Protect.  Este procedimiento incluye la creación de un AppVault con ONTAP S3, el establecimiento de relaciones de AppMirror entre los espacios de nombres de origen y de recuperación ante desastres, la programación de la replicación y la ejecución de operaciones de conmutación por error y recuperación para mantener la disponibilidad de las máquinas virtuales durante las interrupciones del sitio.
+
+
+
+== Prerrequisitos
+
+* Debe estar instalado Trident .  Las clases de almacenamiento y backend se deben crear antes de instalar OpenShift Virtualization en el clúster mediante el operador OpenShift Virtualization.
+* Se debe instalar Trident Protect para implementar operaciones de conmutación por error y recuperación para las máquinas virtuales OpenShift.  Consulte las instrucciones aquí paralink:https://docs.netapp.com/us-en/trident/trident-protect/trident-protect-installation.html["instalar trident protect"]
+
+
+image:redhat-openshift-ocpv-tp-001.png["OCP-v trident protect instalado en el espacio de nombres trident-protect"]
+
+Una VM debe estar disponible en OpenShift Virtualization.  Para obtener detalles sobre cómo implementar una nueva VM o migrar una VM existente a OpenShift Virtualization, consulte la sección correspondiente en la documentación.
+
+image:redhat-openshift-ocpv-tp-003.png["Máquina virtual OCP-v instalada en el espacio de nombres source-ns"]
+
+
+
+== Crear App Vault con ONTAP S3
+
+Esta sección muestra cómo configurar un almacén de aplicaciones en Trident Protect usando el almacenamiento de objetos S3 de Ontap.
+
+Utilice los comandos oc y los archivos yaml que se muestran a continuación para crear un secreto y el recurso personalizado appvault para ontap s3.  Asegúrese de crearlos en el espacio de nombres de protección de tridente.
+
+[source, cli]
+----
+oc create -f app-vault-secret.yaml -n trident-protect
+oc create -f app-vault.yaml -n trident-protect
+----
+[source, yaml]
+----
+apiVersion: v1
+# You can provide the keys either as stringData or base 64 encoded data
+stringData:
+  accessKeyID: "<access key id as obtained from ONTAP>"
+  secretAccessKey: "<secret access key as obtained from ONTAP>"
+#data:
+  #accessKeyID: <base 64 encoded value of access key>
+  #secretAccessKey: <base 64 encoded value of secret access key>
+kind: Secret
+metadata:
+  name: appvault-secret
+  namespace: trident-protect
+type: Opaque
+----
+[source, yaml]
+----
+apiVersion: protect.trident.netapp.io/v1
+kind: AppVault
+metadata:
+  name: ontap-s3-appvault
+  namespace: trident-protect
+spec:
+  providerConfig:
+    azure:
+      accountName: ""
+      bucketName: ""
+      endpoint: ""
+    gcp:
+      bucketName: ""
+      projectID: ""
+    s3:
+      bucketName: trident-protect
+      endpoint: <data lif to use to access S3>
+      secure: "false"
+      skipCertValidation: "true"
+  providerCredentials:
+    accessKeyID:
+      valueFromSecret:
+        key: accessKeyID
+        name: appvault-secret
+    secretAccessKey:
+      valueFromSecret:
+        key: secretAccessKey
+        name: appvault-secret
+  providerType: OntapS3
+----
+Asegúrese de que el almacén S3 de ontap esté creado y se encuentre en estado Disponible
+
+image:redhat-openshift-ocpv-tp-002.png["Appvault de OCP-v en el espacio de nombres Trident-Protect"]
+
+
+
+== Cree una aplicación de protección Trident para la máquina virtual
+
+Cree un recurso de aplicación personalizado en el espacio de nombres donde se encuentra la máquina virtual.
+
+image:redhat-openshift-ocpv-tp-004.png["Aplicación OCP-v en el espacio de nombres source-ns"]
+
+[source, CLI]
+----
+tridentctl-protect create app source-vm -n source-ns --namespaces source-ns
+----
+image:redhat-openshift-ocpv-tp-004.png["Aplicación OCP-v en el espacio de nombres source-ns"]
+
+
+
+== Cree una aplicación de protección Trident para la máquina virtual de recuperación ante desastres en un nuevo espacio de nombres
+
+[source, CLI]
+----
+oc create ns dr-ns
+tridentctl-protect create app dr-vm -n dr-ns --namespaces dr-ns
+----
+image:redhat-openshift-ocpv-tp-005.png["Aplicación OCP-v en el espacio de nombres source-ns"]
+
+
+
+== Cree una programación de AppMirror en el espacio de nombres de origen
+
+Cree una programación para AppMirror usando yaml como se muestra.  Esto creará instantáneas utilizando la programación (cada 5 minutos) y conservará 2 instantáneas
+
+[source, CLI]
+----
+oc create -f appmirror-schedule.yaml -n source-ns
+----
+[source, yaml]
+----
+apiVersion: protect.trident.netapp.io/v1
+kind: Schedule
+metadata:
+  name: appmirror-sched1
+spec:
+  appVaultRef: ontap-s3-appvault
+  applicationRef: source-vm
+  backupRetention: "0"
+  enabled: true
+  granularity: Custom
+  recurrenceRule: |-
+    DTSTART:20240901T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  snapshotRetention: "2"
+----
+image:redhat-openshift-ocpv-tp-006.png["Espejo de la aplicación Programación del espacio de nombres source-ns"]
+
+image:redhat-openshift-ocpv-tp-007.png["Instantánea creada"]
+
+
+
+== Cree una relación appMirror en el espacio de nombres DR
+
+Cree una relación de Appmirror en el espacio de nombres Recuperación ante desastres.  Establezca el estado deseado en Establecido.
+
+[source, yaml]
+----
+apiVersion: protect.trident.netapp.io/v1
+kind: AppMirrorRelationship
+metadata:
+  name: amr1
+spec:
+  desiredState: Established
+  destinationAppVaultRef: ontap-s3-appvault
+  destinationApplicationRef: dr-vm
+  namespaceMapping:
+  - destination: dr-ns
+    source: source-ns
+  recurrenceRule: |-
+    DTSTART:20240901T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  sourceAppVaultRef: ontap-s3-appvault
+  sourceApplicationName: source-vm
+  sourceApplicationUID: "<application UID of the source VM>"
+  storageClassName: "ontap-nas"
+----
+
+NOTE: Puede obtener el UID de la aplicación de la máquina virtual de origen desde la salida json de la aplicación de origen como se muestra a continuación
+
+image:redhat-openshift-ocpv-tp-008.png["UID de la aplicación creado"]
+
+image:redhat-openshift-ocpv-tp-009.png["Crear una relación de App Mirror"]
+
+Cuando se establece la relación AppMirror, la instantánea más reciente se transfiere al espacio de nombres de destino.  La PVC se crea para la VM en el espacio de nombres dr, sin embargo, el pod de VM aún no se crea en el espacio de nombres dr.
+
+image:redhat-openshift-ocpv-tp-010.png["Se establece la relación Crear App Mirror"]
+
+image:redhat-openshift-ocpv-tp-011.png["Cambios de estado para el espejo de la aplicación"]
+
+image:redhat-openshift-ocpv-tp-012.png["El PVC se crea en el espacio de nombres de destino"]
+
+
+
+== Promover la relación con Failover
+
+Cambie el estado deseado de la relación a "Promocionado" para crear la VM en el espacio de nombres de DR.  La máquina virtual todavía se está ejecutando en el espacio de nombres de origen.
+
+[source, CLI]
+----
+oc patch amr amr1 -n dr-ns --type=merge -p '{"spec":{"desiredState":"Promoted"}}'
+----
+image:redhat-openshift-ocpv-tp-013.png["Parche de aplicación de relación de AppMirror"]
+
+image:redhat-openshift-ocpv-tp-014.png["La relación de AppMirror está en estado promocionado"]
+
+image:redhat-openshift-ocpv-tp-015.png["VM creada en el espacio de nombres DR"]
+
+image:redhat-openshift-ocpv-tp-016.png["La máquina virtual en el servidor de origen ns aún se está ejecutando"]
+
+
+
+== Establecer nuevamente la relación con Failback
+
+Cambie el estado deseado de la relación a "Establecido".  La VM se elimina en el espacio de nombres DR.  El pvc todavía existe en el espacio de nombres DR.  La máquina virtual todavía se está ejecutando en el espacio de nombres de origen.  Se establece la relación original desde el espacio de nombres de origen a DR ns. .
+
+[source, CLI]
+----
+oc patch amr amr1 -n dr-ns --type=merge -p '{"spec":{"desiredState":"Established"}}'
+----
+image:redhat-openshift-ocpv-tp-017.png["Parche al estado establecido"]
+
+image:redhat-openshift-ocpv-tp-018.png["App Mirror en estado establecido"]
+
+image:redhat-openshift-ocpv-tp-019.png["El PVC en RD ns todavía permanece"]
+
+image:redhat-openshift-ocpv-tp-020.png["El POD y el PVC en la fuente ns aún permanecen"]
+
+
+
+== Demostración en video
+
+El siguiente video muestra una demostración de cómo implementar un escenario de recuperación ante desastres para una máquina virtual OpenShift usando Trident Protect
+
+.Recuperación ante desastres con Trident Protect
+video::ae4bdcf7-b344-4f19-89ed-b2d500f94efd[panopto,width=360]

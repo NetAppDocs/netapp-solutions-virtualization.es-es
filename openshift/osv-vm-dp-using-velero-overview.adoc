@@ -1,0 +1,49 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-vm-dp-using-velero-overview.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization, OADP operator, Openshift Data Protection Application operator, velero 
+summary: Protección de datos de virtualización Red Hat OpenShift con NetApp ONTAP 
+---
+= Obtenga información sobre la protección de datos para máquinas virtuales en Red Hat OpenShift Virtualization mediante OpenShift API for Data Protection (OADP)
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+OpenShift API for Data Protection (OADP) con Velero proporciona capacidades de respaldo, restauración y recuperación ante desastres para máquinas virtuales en OpenShift Virtualization.  Utilice instantáneas Trident CSI para realizar copias de seguridad de volúmenes persistentes y metadatos de máquinas virtuales en NetApp ONTAP S3 o StorageGRID S3.  OADP se integra con las API de Velero y los controladores de almacenamiento CSI para administrar las operaciones de protección de datos para máquinas virtuales en contenedores.
+
+Las máquinas virtuales en el entorno de virtualización OpenShift son aplicaciones en contenedores que se ejecutan en los nodos de trabajo de su plataforma OpenShift Container. Es importante proteger los metadatos de las máquinas virtuales, así como los discos persistentes de las máquinas virtuales, para que cuando se pierdan o se dañen, se puedan recuperar.
+
+Los discos persistentes de las máquinas virtuales de OpenShift Virtualization pueden respaldarse con almacenamiento ONTAP integrado al clúster OpenShift mediantelink:https://docs.netapp.com/us-en/trident/["Trident CSI"] . En esta sección utilizamoslink:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.html["API de OpenShift para la protección de datos (OADP)"] para realizar copias de seguridad de las máquinas virtuales, incluidos sus volúmenes de datos.
+
+* Almacenamiento de objetos ONTAP
+* StorageGrid
+
+
+Luego restauramos desde la copia de seguridad cuando sea necesario.
+
+OADP permite la copia de seguridad, la restauración y la recuperación ante desastres de aplicaciones en un clúster OpenShift. Los datos que se pueden proteger con OADP incluyen objetos de recursos de Kubernetes, volúmenes persistentes e imágenes internas.
+
+image:redhat-openshift-oadp-001.png["API de OpenShift para la protección de datos"]
+
+Red Hat OpenShift ha aprovechado las soluciones desarrolladas por las comunidades OpenSource para la protección de datos. link:https://velero.io/["Velero"] es una herramienta de código abierto para realizar copias de seguridad y restaurar de forma segura, realizar recuperación ante desastres y migrar recursos de clústeres de Kubernetes y volúmenes persistentes. Para utilizar Velero fácilmente, OpenShift ha desarrollado el operador OADP y el complemento Velero para integrarlo con los controladores de almacenamiento CSI. El núcleo de las API de OADP que se exponen se basan en las API de Velero. Después de instalar el operador OADP y configurarlo, las operaciones de copia de seguridad y restauración que se pueden realizar se basan en las operaciones expuestas por la API de Velero.
+
+image:redhat-openshift-oadp-002.png["API de OpenShift para la protección de datos"]
+
+OADP 1.3 está disponible en el centro de operadores del clúster OpenShift 4.12 y posteriores. Tiene un Data Mover incorporado que puede mover instantáneas de volumen CSI a un almacén de objetos remoto. Esto proporciona portabilidad y durabilidad al mover instantáneas a una ubicación de almacenamiento de objetos durante la copia de seguridad. Las instantáneas estarán luego disponibles para su restauración después de un desastre.
+
+**Las siguientes son las versiones de los distintos componentes utilizados para los ejemplos de esta sección**
+
+* Clúster OpenShift 4.14
+* OpenShift Virtualization instalado a través del operadorOperador de virtualización OpenShift proporcionado por Red Hat
+* Operador OADP 1.13 proporcionado por Red Hat
+* Velero CLI 1.13 para Linux
+* Trident 24.02
+* ONTAP 9.12
+
+
+link:https://docs.netapp.com/us-en/trident/["Trident CSI"] link:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.html["API de OpenShift para la protección de datos (OADP)"] link:https://velero.io/["Velero"]

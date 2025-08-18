@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-sovereign-cloud-use-cases.html 
+keywords: NetApp solutions, vmware, sovereign cloud, netapp, use case 
+summary:  
+---
+= Integraciones de tecnología de NetApp con VMware Sovereign Cloud
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Las tecnologías de NetApp se integran con los marcos de VMware Sovereign Cloud para brindar soluciones de soberanía de datos, seguridad y cumplimiento para organizaciones gubernamentales y altamente reguladas.  Estas integraciones permiten a los proveedores de servicios mantener un control jurisdiccional total sobre datos confidenciales mientras aprovechan NetApp StorageGRID para el almacenamiento de objetos y ONTAP para los servicios de protección y almacenamiento de datos primarios.
+
+NetApp proporciona soporte para los conceptos de VMware Sovereign Cloud a través de la integración de varias tecnologías de NetApp .  Utilice los siguientes enlaces para descubrir más sobre las integraciones de la tecnología NetApp con VMware Sovereign Cloud:
+
+* link:#storageGRID["NetApp StorageGRID como extensión del almacén de objetos"]
+
+
+
+
+== NetApp StorageGRID como extensión del almacén de objetos
+
+NetApp ha colaborado con VMware para integrar NetApp StorageGRID en VMware Cloud Director en apoyo de VMware Sovereign Cloud.  Este complemento para VMware Cloud Director permite a los proveedores de servicios utilizar StorageGRID como su oferta de almacenamiento de objetos (independientemente del caso de uso) y permite la administración de StorageGRID a través de la misma solución multiinquilino de VMware (VMware Cloud Director) que utilizan los proveedores de servicios para administrar otras partes de su catálogo de ofertas.
+
+Los socios que ofrecen VMware Sovereign Clouds pueden elegir NetApp StorageGRID para ayudarlos a administrar y mantener entornos de nube con datos no estructurados.  Su compatibilidad universal en su soporte nativo para API estándares de la industria, como Amazon S3 API, ayuda a garantizar una interoperabilidad fluida entre diversos entornos de nube, y las innovaciones únicas como la gestión automatizada del ciclo de vida ayudan a garantizar una protección, un almacenamiento y una preservación a largo plazo más rentables de los datos no estructurados de los clientes.
+
+La integración de Sovereign Cloud de NetApp con Cloud Director ofrece a los clientes:
+
+* Garantía de que los datos sensibles, incluidos los metadatos, permanezcan bajo control soberano, impidiendo al mismo tiempo el acceso a ellos por parte de autoridades extranjeras que puedan violar las leyes de privacidad de datos.
+* Mayor seguridad y cumplimiento que protege las aplicaciones y los datos de vectores de ataque en rápida evolución y al mismo tiempo mantiene el cumplimiento continuo con una infraestructura local confiable, marcos integrados y expertos locales.
+* Infraestructura preparada para el futuro para reaccionar rápidamente a los cambios en las regulaciones de privacidad de datos, las amenazas a la seguridad y la geopolítica.
+* La capacidad de liberar el valor de los datos con análisis y compartición seguros de datos para impulsar la innovación sin violar las leyes de privacidad.  Se protege la integridad de los datos para garantizar información precisa.
+
+
+Para obtener más información sobre la integración de StorageGRID , consulte lo siguiente:
+
+* link:https://www.netapp.com/newsroom/press-releases/news-rel-20231107-561294/["Anuncio de NetApp"]
+

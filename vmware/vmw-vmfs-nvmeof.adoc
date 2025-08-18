@@ -1,0 +1,77 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vmfs-nvmeof.html 
+keywords: vSphere, datastore, VMFS, NVMeoF, ONTAP tools, zone, network interface, namespace, storage subsystem 
+summary: Esta página proporciona los pasos para implementar un almacenamiento NVMe/FC de NetApp ONTAP para un almacén de datos VMFS en un entorno VMware vSphere. 
+---
+= Almacén de datos VMFS de vSphere: NVMe/FC con ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta sección cubre la creación de un almacén de datos VMFS con almacenamiento ONTAP usando NVMe/FC.
+
+
+
+== Lo que necesitas
+
+* Habilidades básicas necesarias para administrar un entorno vSphere y ONTAP.
+* link:++https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-storage-7-0/about-vmware-nvme-storage/vmware-nvme-concepts/basic-vmware-nvme-architecture.html++["Comprensión básica de NVMe/FC"] .
+* Un sistema de almacenamiento ONTAP (FAS/ AFF/CVO/ ONTAP Select/ ASA) que ejecuta {ontap_version}
+* Credenciales de ONTAP (nombre de SVM, ID de usuario y contraseña)
+* WWPN de ONTAP para host, destino, SVM e información de LUN
+* link:++https://docs.netapp.com/ontap-9/topic/com.netapp.doc.exp-fc-esx-cpg/GUID-429C4DDD-5EC0-4DBD-8EA8-76082AB7ADEC.html++["Una hoja de cálculo de configuración de FC completa"]
+* Servidor vCenter
+* Información del host(s) de vSphere ({vsphere_version})
+* interruptor(es) de tela
++
+** Con puertos de datos ONTAP FC y hosts vSphere conectados.
+** Con la función de virtualización de ID N_port (NPIV) habilitada.
+** Crear una única zona objetivo del iniciador.
+** Cree una zona para cada iniciador (zona de iniciador único).
+** Para cada zona, incluya un destino que sea la interfaz lógica ONTAP FC (WWPN) para las SVM.  Debe haber al menos dos interfaces lógicas por nodo por SVM.  No utilice el WWPN de los puertos físicos.
+
+
+
+
+
+
+== Aprovisionar almacén de datos VMFS
+
+. Comprobar compatibilidad con el https://mysupport.netapp.com/matrix["Herramienta de matriz de interoperabilidad (IMT)"] .
+. link:++https://docs.netapp.com/ontap-9/topic/com.netapp.doc.exp-fc-esx-cpg/GUID-7D444A0D-02CE-4A21-8017-CB1DC99EFD9A.html++["Verifique que la configuración NVMe/FC sea compatible."]
+
+
+
+
+== Tareas de ONTAP
+
+. link:https://docs.netapp.com/us-en/ontap-cli-98/system-license-show.html["Verificar la licencia de ONTAP para FCP."]Utilice el `system license show` comando y verifique si NVMe_oF está en la lista.  Usar `license add -license-code <license code>` para agregar una licencia.
+. Verifique que el protocolo NVMe esté habilitado en la SVM.
++
+.. link:++https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-cm-sanag/GUID-CDDBD7F4-2089-4466-892F-F2DFF5798B1C.html++["Configurar SVM para NVMe."]
+
+
+. Verifique que las interfaces lógicas NVMe/FC estén disponibles en las SVM.
++
+.. Usar `Network Interface show` para verificar el adaptador FCP.
+.. Cuando se crea una SVM con la GUI, las interfaces lógicas son parte de ese proceso.
+.. Para cambiar el nombre de la interfaz de red, utilice el comando `Network Interface modify` .
+
+
+. link:++https://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-cm-sanag/GUID-BBBAB2E4-E106-4355-B95C-C3626DCD5088.html++["Crear un espacio de nombres NVMe y un subsistema"]
+
+
+
+
+== Tareas de VMware vSphere
+
+. Verifique que los controladores HBA estén instalados.  Los HBA compatibles con VMware tienen los controladores implementados de forma inmediata y deberían estar visibles enlink:++https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-ED20B7BE-0D1C-4BF7-85C9-631D45D96FEC.html++["Información del adaptador de almacenamiento"]
+. link:++https://docs.netapp.com/us-en/ontap-sanhost/nvme_esxi_7.html++["Realizar tareas de instalación y validación del controlador NVMe del host vSphere"]
+. link:++https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-storage-7-0/working-with-datastores-in-vsphere-storage-environment/creating-vsphere-datastores/create-a-vsphere-vmfs-datastore.html++["Crear un almacén de datos VMFS"]
+

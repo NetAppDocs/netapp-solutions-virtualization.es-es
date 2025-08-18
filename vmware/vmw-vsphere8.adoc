@@ -1,0 +1,26 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vsphere8.html 
+keywords: netapp, vmware, getting, started 
+summary:  
+---
+= Obtenga más información sobre el soporte de NetApp para VMware vSphere 8
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+La asociación NetApp y VMware es la única en la que un único sistema de almacenamiento aborda todos los casos de uso clave definidos por VMware.
+
+
+
+== All-Flash moderno y conectado a la nube para vSphere 8
+
+Las implementaciones de ONTAP se ejecutan en una variedad de plataformas, incluidos dispositivos diseñados por NetApp, hardware básico y en la nube pública.  ONTAP ofrece almacenamiento unificado ya sea que acceda a través de protocolos SAN o NAS y en configuraciones que van desde flash de alta velocidad hasta medios de menor costo y almacenamiento basado en la nube.  NetApp también ofrece plataformas flash especialmente diseñadas para simplificar y segmentar sus necesidades de almacenamiento sin crear silos.  Además, NetApp ofrece software que permite fácilmente el movimiento de datos entre las instalaciones locales y la nube.  Por último, NetApp BlueXP proporciona un panel único para administrar todas estas relaciones y su espacio de almacenamiento.
+
+* link:https://docs.netapp.com/us-en/ontap-systems-family/intro-family.html["Plataformas NetApp"^]
+

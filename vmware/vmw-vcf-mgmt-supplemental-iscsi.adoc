@@ -1,0 +1,358 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-mgmt-supplemental-iscsi.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, array, ontap tools, otv, sddc, iscsi 
+summary:  
+---
+= Agregue un almacén de datos iSCSI como almacenamiento complementario para un dominio de administración mediante ONTAP tools for VMware vSphere
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+En este caso de uso, describimos el procedimiento para agregar un almacén de datos iSCSI como almacenamiento complementario para un dominio de administración de VMware Cloud Foundation (VCF).  Este procedimiento resume la configuración de una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para iSCSI, la configuración de redes iSCSI en hosts ESXi, la implementación de herramientas ONTAP para VMware vSphere y la creación de un almacén de datos VMFS.
+
+
+
+== Beneficios de iSCSI
+
+*Alto rendimiento:* Ofrece un alto rendimiento para brindar velocidades de transferencia de datos rápidas y eficientes y baja latencia.  Ideal para aplicaciones empresariales exigentes y entornos virtualizados.
+
+*Facilidad de administración:* Simplifica la gestión del almacenamiento mediante el uso de herramientas y protocolos familiares basados en IP.
+
+*Rentable:* Utiliza la infraestructura Ethernet existente, lo que reduce la necesidad de hardware especializado y permite a las organizaciones lograr soluciones de almacenamiento confiables y escalables.
+
+Para obtener más información sobre el uso de iSCSI con sistemas de almacenamiento NetApp , consulte https://docs.netapp.com/us-en/ontap/san-admin/san-host-provisioning-concept.html["Aprovisionamiento de SAN con iSCSI"] .
+
+
+
+== Descripción general del escenario
+
+Este escenario cubre los siguientes pasos de alto nivel:
+
+* Cree una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para el tráfico iSCSI.
+* Cree grupos de puertos distribuidos para redes iSCSI en el dominio de administración de VCF.
+* Cree adaptadores vmkernel para iSCSI en los hosts ESXi para el dominio de administración de VCF.
+* Implementar herramientas ONTAP en el dominio de administración de VCF.
+* Cree un nuevo almacén de datos VMFS en el dominio de administración de VCF.
+
+
+
+
+== Prerrequisitos
+
+Este escenario requiere los siguientes componentes y configuraciones:
+
+* Un sistema de almacenamiento ONTAP AFF o ASA con puertos de datos físicos en conmutadores Ethernet dedicados al tráfico de almacenamiento.
+* La implementación del dominio de administración de VCF está completa y el cliente vSphere es accesible.
+
+
+NetApp recomienda diseños de red totalmente redundantes para iSCSI.  El siguiente diagrama ilustra un ejemplo de una configuración redundante, que proporciona tolerancia a fallas para sistemas de almacenamiento, conmutadores, adaptadores de red y sistemas host.  Consulte NetApplink:https://docs.netapp.com/us-en/ontap/san-config/index.html["Referencia de configuración de SAN"] Para obtener información adicional.
+
+image:vmware-vcf-asa-074.png["Diseño de red iSCSI"]{nbsp}
+
+Para rutas múltiples y conmutación por error en múltiples rutas, NetApp recomienda tener un mínimo de dos LIF por nodo de almacenamiento en redes Ethernet separadas para todas las SVM en configuraciones iSCSI.
+
+Esta documentación demuestra el proceso de creación de una nueva SVM y la especificación de la información de la dirección IP para crear múltiples LIF para el tráfico iSCSI.  Para agregar nuevos LIF a un SVM existente, consultelink:https://docs.netapp.com/us-en/ontap/networking/create_a_lif.html["Crear una LIF (interfaz de red)"] .
+
+Para obtener información adicional sobre el uso de almacenes de datos iSCSI VMFS con VMware, consultelink:vmw-vmfs-iscsi.html["vSphere VMFS Datastore: backend de almacenamiento iSCSI con ONTAP"] .
+
+
+TIP: En situaciones donde se configuran varios adaptadores VMkernel en la misma red IP, se recomienda utilizar la vinculación de puertos iSCSI de software en los hosts ESXi para garantizar que se produzca un equilibrio de carga entre los adaptadores.  Consulte el artículo de Knowledge Baselink:https://knowledge.broadcom.com/external/article?legacyId=2038869["Consideraciones para el uso de la vinculación de puertos iSCSI de software en ESX/ESXi (2038869)"] .
+
+
+
+== Pasos de implementación
+
+Para implementar ONTAP Tools y usarlo para crear un almacén de datos VMFS en el dominio de administración de VCF, complete los siguientes pasos:
+
+
+
+=== Crear SVM y LIF en el sistema de almacenamiento ONTAP
+
+El siguiente paso se realiza en ONTAP System Manager.
+
+.Cree la máquina virtual de almacenamiento y los LIF
+[%collapsible%open]
+====
+Complete los siguientes pasos para crear una SVM junto con múltiples LIF para el tráfico iSCSI.
+
+. Desde el Administrador del sistema ONTAP , navegue hasta *Máquinas virtuales de almacenamiento* en el menú de la izquierda y haga clic en *+ Agregar* para comenzar.
++
+image:vmware-vcf-asa-001.png["Haga clic en +Agregar para comenzar a crear SVM"]
+
++
+{nbsp}
+
+. En el asistente *Agregar VM de almacenamiento*, proporcione un *Nombre* para la SVM, seleccione el *Espacio IP* y luego, en *Protocolo de acceso, haga clic en la pestaña *iSCSI* y marque la casilla para *Habilitar iSCSI*.
++
+image:vmware-vcf-asa-002.png["Asistente para agregar máquinas virtuales de almacenamiento: habilitar iSCSI"]
+
+. En la sección *Interfaz de red*, complete la *Dirección IP*, la *Máscara de subred* y el *Dominio de transmisión y puerto* para el primer LIF.  Para los LIF posteriores, la casilla de verificación se puede habilitar para utilizar configuraciones comunes en todos los LIF restantes o utilizar configuraciones separadas.
++
+
+NOTE: Para rutas múltiples y conmutación por error en múltiples rutas, NetApp recomienda tener un mínimo de dos LIF por nodo de almacenamiento en redes Ethernet separadas para todas las SVM en configuraciones iSCSI.
+
++
+image:vmware-vcf-asa-003.png["Complete la información de la red para LIF"]
+
+. Elija si desea habilitar la cuenta de administración de Storage VM (para entornos de múltiples inquilinos) y haga clic en *Guardar* para crear la SVM.
++
+image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
+
+
+
+====
+
+
+=== Configurar la red para iSCSI en hosts ESXi
+
+Los siguientes pasos se realizan en el clúster de dominio de administración de VCF mediante el cliente vSphere.
+
+.Crear grupos de puertos distribuidos para el tráfico iSCSI
+[%collapsible%open]
+====
+Complete lo siguiente para crear un nuevo grupo de puertos distribuidos para cada red iSCSI:
+
+. Desde el cliente vSphere del clúster del dominio de administración, navegue a *Inventario > Redes*.  Navegue hasta el conmutador distribuido existente y elija la acción para crear *Nuevo grupo de puertos distribuidos...*.
++
+image:vmware-vcf-asa-005.png["Elija crear un nuevo grupo de puertos"]
+
++
+{nbsp}
+
+. En el asistente *Nuevo grupo de puertos distribuidos*, complete un nombre para el nuevo grupo de puertos y haga clic en *Siguiente* para continuar.
+. En la página *Configurar ajustes* complete todas las configuraciones.  Si se utilizan VLAN, asegúrese de proporcionar la ID de VLAN correcta. Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-006.png["Complete el ID de VLAN"]
+
++
+{nbsp}
+
+. En la página *Listo para completar*, revise los cambios y haga clic en *Finalizar* para crear el nuevo grupo de puertos distribuidos.
+. Repita este proceso para crear un grupo de puertos distribuidos para la segunda red iSCSI que se esté utilizando y asegúrese de haber ingresado el *VLAN ID* correcto.
+. Una vez que se hayan creado ambos grupos de puertos, navegue hasta el primer grupo de puertos y seleccione la acción *Editar configuración...*.
++
+image:vmware-vcf-asa-027.png["DPG - editar configuración"]
+
++
+{nbsp}
+
+. En la página *Grupo de puertos distribuidos - Editar configuración*, navegue a *Equipo y conmutación por error* en el menú de la izquierda y haga clic en *uplink2* para moverlo hacia abajo a *Enlaces ascendentes no utilizados*.
++
+image:vmware-vcf-asa-028.png["mover uplink2 a no utilizado"]
+
+. Repita este paso para el segundo grupo de puertos iSCSI.  Sin embargo, esta vez mueva *uplink1* a *Unused uplinks*.
++
+image:vmware-vcf-asa-029.png["mover uplink1 a no utilizado"]
+
+
+
+====
+.Cree adaptadores VMkernel en cada host ESXi
+[%collapsible%open]
+====
+Repita este proceso en cada host ESXi en el dominio de administración.
+
+. Desde el cliente vSphere, navegue a uno de los hosts ESXi en el inventario del dominio de administración.  Desde la pestaña *Configurar* seleccione *Adaptadores VMkernel* y haga clic en *Agregar red...* para comenzar.
++
+image:vmware-vcf-asa-007.png["Iniciar el asistente para agregar redes"]
+
++
+{nbsp}
+
+. En la ventana *Seleccionar tipo de conexión* elija *Adaptador de red VMkernel* y haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-008.png["Elija el adaptador de red VMkernel"]
+
++
+{nbsp}
+
+. En la página *Seleccionar dispositivo de destino*, elija uno de los grupos de puertos distribuidos para iSCSI que se crearon anteriormente.
++
+image:vmware-vcf-asa-009.png["Seleccione el grupo de puertos de destino"]
+
++
+{nbsp}
+
+. En la página *Propiedades del puerto* mantenga los valores predeterminados y haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-010.png["Propiedades del puerto VMkernel"]
+
++
+{nbsp}
+
+. En la página de *Configuración de IPv4*, complete la *dirección IP*, la *Máscara de subred* y proporcione una nueva dirección IP de puerta de enlace (solo si es necesario). Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-011.png["Configuración de IPv4 de VMkernel"]
+
++
+{nbsp}
+
+. Revise sus selecciones en la página *Listo para completar* y haga clic en *Finalizar* para crear el adaptador VMkernel.
++
+image:vmware-vcf-asa-012.png["Revisar las selecciones de VMkernel"]
+
++
+{nbsp}
+
+. Repita este proceso para crear un adaptador VMkernel para la segunda red iSCSI.
+
+
+====
+
+
+=== Implementar y usar herramientas ONTAP para configurar el almacenamiento
+
+Los siguientes pasos se realizan en el clúster de dominio de administración de VCF mediante el cliente vSphere e implican la implementación de OTV, la creación de un almacén de datos iSCSI VMFS y la migración de las máquinas virtuales de administración al nuevo almacén de datos.
+
+.Implementar ONTAP tools for VMware vSphere
+[%collapsible%open]
+====
+Las ONTAP tools for VMware vSphere (OTV) se implementan como un dispositivo de VM y proporcionan una interfaz de usuario vCenter integrada para administrar el almacenamiento de ONTAP .
+
+Complete lo siguiente para implementar ONTAP tools for VMware vSphere:
+
+. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargar a una carpeta local.
+. Inicie sesión en el dispositivo vCenter para el dominio de administración de VCF.
+. Desde la interfaz del dispositivo vCenter, haga clic con el botón derecho en el clúster de administración y seleccione *Implementar plantilla OVF…*
++
+image:vmware-vcf-aff-021.png["Implementar plantilla OVF..."]
+
++
+{nbsp}
+
+. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de las herramientas ONTAP descargado en el paso anterior.
++
+image:vmware-vcf-aff-022.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. Para los pasos 2 a 5 del asistente, seleccione un nombre y una carpeta para la máquina virtual, seleccione el recurso computacional, revise los detalles y acepte el acuerdo de licencia.
+. Para la ubicación de almacenamiento de los archivos de configuración y de disco, seleccione el almacén de datos vSAN del clúster de dominio de administración de VCF.
++
+image:vmware-vcf-aff-023.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. En la página Seleccionar red, seleccione la red utilizada para administrar el tráfico.
++
+image:vmware-vcf-aff-024.png["Seleccionar red"]
+
++
+{nbsp}
+
+. En la página Personalizar plantilla, complete toda la información requerida:
++
+** Contraseña que se utilizará para el acceso administrativo a OTV.
+** Dirección IP del servidor NTP.
+** Contraseña de la cuenta de mantenimiento de OTV.
+** Contraseña de OTV Derby DB.
+** No marque la casilla para *Habilitar VMware Cloud Foundation (VCF)*.  El modo VCF no es necesario para implementar almacenamiento complementario.
+** FQDN o dirección IP del dispositivo vCenter y proporcione credenciales para vCenter.
+** Proporcione los campos de propiedades de red requeridos.
++
+Haga clic en *Siguiente* para continuar.
+
++
+image:vmware-vcf-aff-025.png["Personalizar plantilla OTV 1"]
+
++
+image:vmware-vcf-asa-013.png["Personalizar plantilla OTV 2"]
+
++
+{nbsp}
+
+
+
+. Revise toda la información en la página Listo para completar y haga clic en Finalizar para comenzar a implementar el dispositivo OTV.
+
+
+====
+.Configurar un almacén de datos iSCSI VMFS en el dominio de administración mediante OTV
+[%collapsible%open]
+====
+Complete lo siguiente para usar OTV para configurar un almacén de datos iSCSI VMFS como almacenamiento complementario en el dominio de administración:
+
+. En el cliente vSphere, navegue al menú principal y seleccione *Herramientas de NetApp ONTAP *.
++
+image:vmware-vcf-asa-014.png["Navegar a Herramientas ONTAP"]
+
+. Una vez en * ONTAP Tools*, desde la página de Primeros pasos (o desde *Sistemas de almacenamiento*), haga clic en *Agregar* para agregar un nuevo sistema de almacenamiento.
++
+image:vmware-vcf-asa-015.png["Agregar sistema de almacenamiento"]
+
++
+{nbsp}
+
+. Proporcione la dirección IP y las credenciales del sistema de almacenamiento ONTAP y haga clic en *Agregar*.
++
+image:vmware-vcf-asa-016.png["Proporcionar IP y credenciales del sistema ONTAP"]
+
++
+{nbsp}
+
+. Haga clic en *Sí* para autorizar el certificado del clúster y agregar el sistema de almacenamiento.
++
+image:vmware-vcf-asa-017.png["Autorizar certificado de clúster"]
+
+
+
+====
+.Migrar máquinas virtuales de administración a un almacén de datos iSCSI
+[%collapsible%open]
+====
+En los casos en los que se prefiere utilizar el almacenamiento ONTAP para proteger las máquinas virtuales administradas por VCF, se puede utilizar vMotion para migrar las máquinas virtuales al almacén de datos iSCSI recién creado.
+
+Complete los siguientes pasos para migrar las máquinas virtuales de administración de VCF al almacén de datos iSCSI.
+
+. Desde vSphere Client, navegue hasta el clúster del dominio de administración y haga clic en la pestaña *VMs*.
+. Seleccione las máquinas virtuales que se migrarán al almacén de datos iSCSI, haga clic con el botón derecho y seleccione *Migrar...*.
++
+image:vmware-vcf-asa-018.png["Seleccionar las máquinas virtuales que se migrarán"]
+
++
+{nbsp}
+
+. En el asistente *Máquinas virtuales - Migrar*, seleccione *Cambiar solo almacenamiento* como tipo de migración y haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-019.png["Seleccionar el tipo de migración"]
+
++
+{nbsp}
+
+. En la página *Seleccionar almacenamiento*, seleccione el almacén de datos iSCSi y seleccione *Siguiente* para continuar.
++
+image:vmware-vcf-asa-020.png["Seleccionar el almacén de datos de destino"]
+
++
+{nbsp}
+
+. Revise las selecciones y haga clic en *Finalizar* para iniciar la migración.
+. El estado de la reubicación se puede ver desde el panel *Tareas recientes*.
++
+image:vmware-vcf-asa-021.png["Panel de tareas recientes del cliente vSphere"]
+
+
+
+====
+
+
+== Información adicional
+
+Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
+
+Para obtener información sobre la configuración de VCF, consultelink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html["Documentación de VMware Cloud Foundation"] .
+
+
+
+== Demostración en vídeo de esta solución
+
+.Almacenes de datos iSCSI como almacenamiento complementario para dominios de administración de VCF
+video::1d0e1af1-40ae-483a-be6f-b156015507cc[panopto,width=360]
