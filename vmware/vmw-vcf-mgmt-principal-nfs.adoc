@@ -65,7 +65,7 @@ Para obtener más información sobre el uso de un entorno vSphere existente, con
 
 El clúster vSphere adicional en el dominio de administración se puede implementar con las siguientes opciones:
 
-* Tenga un clúster adicional en el entorno de vSphere y utilice la herramienta de importación brownfield de VCF para convertir el entorno de vSphere en un dominio de administración. https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/create-vvols-datastore.html["ONTAP tools for VMware vSphere"] https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Administrador del sistema o API de ONTAP"] Se puede utilizar para implementar el almacén de datos NFS en el clúster vSphere.
+* Tenga un clúster adicional en el entorno de vSphere y utilice la herramienta de importación brownfield de VCF para convertir el entorno de vSphere en un dominio de administración. https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/create-datastore.html["ONTAP tools for VMware vSphere"] https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Administrador del sistema o API de ONTAP"] Se puede utilizar para implementar el almacén de datos NFS en el clúster vSphere.
 * Utilice la API de SDDC para implementar un clúster adicional.  Los hosts de vSphere deben tener el almacén de datos NFS configurado.  Usar https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Administrador del sistema o API de ONTAP"] para implementar LUN en hosts vSphere.
 * Utilice la interfaz de usuario de SDDC Manager para implementar un clúster adicional.  Pero esta opción solo crea un almacén de datos vSAN con versiones anteriores a 5.2.x.
 

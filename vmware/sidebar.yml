@@ -30,6 +30,8 @@ entries:
       url: "/vmware/vmw-getting-started-vmsc.html"
     - title: Seguridad y protección contra ransomware con ONTAP
       url: "/vmware/vmw-getting-started-security.html"
+    - title: Protección contra ransomware para NFS y VMFS
+      url: "/vmware/vmw-arp-nfs-vmfs.html"
   - title: Soluciones de respaldo y recuperación ante desastres
     entries:
     - title: Plugin de SnapCenter para VMware vSphere
@@ -45,6 +47,8 @@ entries:
     url: "/vmware/vmw-vcf-design.html"
   - title: Implementación de VCF 9 con ONTAP
     url: "/vmware/vmw-vcf-deployment.html"
+  - title: VCF 9 DR con BlueXP
+    url: "/vmware/vmw-vcf-dr-bxp-nfs.html"
   - title: Convertir clústeres de vSphere existentes a VCF
     entries:
     - title: Acerca de la conversión de clústeres de vSphere existentes a VCF

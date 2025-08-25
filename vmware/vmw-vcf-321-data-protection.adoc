@@ -543,7 +543,7 @@ image:bxp-scv-hybrid-023.png["Ver los recursos disponibles"]
 ====
 En la BlueXP backup and recovery para máquinas virtuales, cree políticas para especificar el período de retención, la fuente de la copia de seguridad y la política de archivo.
 
-Para obtener más información sobre la creación de políticas, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/task-create-policies-vms.html["Crear una política para realizar copias de seguridad de almacenes de datos"] .
+Para obtener más información sobre la creación de políticas, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/prev-vmware-policy-create.html["Crear una política para realizar copias de seguridad de almacenes de datos"] .
 
 . Desde la página principal de BlueXP backup and recovery para máquinas virtuales, acceda al menú desplegable *Configuración* y seleccione *Políticas*.
 +
@@ -573,7 +573,7 @@ NOTE: La etiqueta SnapMirror ingresada aquí se utiliza para identificar a qué 
 ====
 El paso final es activar la protección de datos para los almacenes de datos individuales y las máquinas virtuales. Los siguientes pasos describen cómo activar las copias de seguridad en AWS.
 
-Para obtener más información, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/task-backup-vm-data-to-aws.html["Realizar copias de seguridad de almacenes de datos en Amazon Web Services"] .
+Para obtener más información, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/prev-vmware-backup-aws.html["Realizar copias de seguridad de almacenes de datos en Amazon Web Services"] .
 
 . Desde la página principal de BlueXP backup and recovery para máquinas virtuales, acceda al menú desplegable de configuración del almacén de datos del cual se realizará la copia de seguridad y seleccione *Activar copia de seguridad*.
 +
@@ -654,7 +654,7 @@ image:bxp-scv-hybrid-035.png["Elija primaria o secundaria"]
 
 La BlueXP backup and recovery para máquinas virtuales permite restaurar máquinas virtuales a su ubicación original. Se accede a las funciones de restauración a través de la consola web de BlueXP .
 
-Para obtener más información, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/task-restore-vm-data.html["Restaurar datos de máquinas virtuales desde la nube"] .
+Para obtener más información, consulte https://docs.netapp.com/us-en/bluexp-backup-recovery/prev-vmware-restore.html["Restaurar datos de máquinas virtuales desde la nube"] .
 
 .Restaurar máquinas virtuales desde la BlueXP backup and recovery
 [%collapsible%open]

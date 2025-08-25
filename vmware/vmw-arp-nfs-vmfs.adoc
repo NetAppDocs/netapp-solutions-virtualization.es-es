@@ -1,0 +1,126 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-arp-nfs-vmfs.html 
+keywords: netapp, vmware, cloud, foundation, vcf, flexpod 
+summary: Protección autónoma contra ransomware para almacenes de datos NFS y VMFS 
+---
+= Protección autónoma contra ransomware para NFS y VMFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Descubra cómo Autonomous Ransomware Protection (ARP) de NetApp ONTAP utiliza el aprendizaje automático para proteger los almacenes de datos NFS y VMFS en entornos VMware, proporcionando detección temprana de amenazas, instantáneas a prueba de manipulaciones y recuperación rápida para fortalecer la resiliencia de los datos en cargas de trabajo virtualizadas y en la nube.
+
+
+
+== Descripción general
+
+Las amenazas de ransomware están evolucionando rápidamente y se vuelven más sofisticadas y disruptivas.  Las medidas de seguridad tradicionales a menudo no logran proteger los activos de datos críticos.  El almacenamiento NetApp ONTAP proporciona funciones de seguridad integradas que protegen los datos de forma proactiva.  Si ocurre una violación de seguridad, ONTAP ofrece alertas en tiempo real y opciones de recuperación rápida para reducir el tiempo de inactividad y limitar la pérdida de datos.  ONTAP permite a los clientes proteger, recuperar y mover sus datos y aplicaciones, fortaleciendo la resiliencia ante el ransomware.
+
+
+
+== Caso de uso: Proteger las máquinas virtuales de VMware y sus archivos
+
+La detección temprana de ransomware en entornos VMware es fundamental para detener su propagación y minimizar el tiempo de inactividad.  Una estrategia eficaz utiliza múltiples capas de protección en hosts ESXi y máquinas virtuales invitadas.  Si bien muchos controles de seguridad ayudan a construir una defensa sólida, NetApp ONTAP agrega protecciones esenciales a nivel de almacenamiento que fortalecen aún más la protección.
+
+Las características clave de ONTAP incluyen tecnología Snapshot para recuperación en un punto en el tiempo, protección autónoma contra ransomware (ARP) impulsada por aprendizaje automático integrado, verificación de múltiples administradores e instantáneas a prueba de manipulaciones que preservan la integridad de los datos.  Estas capacidades trabajan juntas para mejorar la resiliencia al ransomware y permitir una recuperación rápida cuando sea necesario.
+
+La protección de los entornos vSphere y de las máquinas virtuales invitadas requiere un enfoque integral.  Las medidas clave incluyen la segmentación de la red, la implementación de soluciones EDR/XDR/SIEM para el monitoreo de puntos finales, la aplicación de actualizaciones de seguridad oportunas y el seguimiento de las pautas de fortalecimiento establecidas.  Cada máquina virtual normalmente ejecuta un sistema operativo estándar, por lo que es fundamental instalar y actualizar periódicamente soluciones antimalware de nivel empresarial como parte de una estrategia de defensa contra ransomware de varias capas.
+
+
+
+== Cómo ayuda ONTAP
+
+ONTAP fortalece la protección de datos con múltiples capas de defensa.  Las características clave incluyen instantáneas, protección autónoma contra ransomware (ARP), instantáneas a prueba de manipulaciones, verificación de múltiples administradores y más.  Este documento se centra en las mejoras de ARP introducidas en la versión 9.17.1.
+
+Puede habilitar ARP en volúmenes NAS o SAN que admitan almacenes de datos de VMware.  ARP utiliza el aprendizaje automático integrado de ONTAP para monitorear los patrones de carga de trabajo y la entropía de datos, detectar automáticamente señales de actividad de ransomware y proporcionar una capa de seguridad inteligente y proactiva.  Configure ARP por volumen utilizando la interfaz CLI de ONTAP o la interfaz del Administrador del sistema.
+
+
+
+== Evolución de las características de ARP
+
+A partir de la versión 9.10.1 de ONTAP , ARP está disponible para un volumen existente o un volumen nuevo.  En la versión 9.16.1 de ONTAP , puede habilitar ARP mediante el Administrador del sistema o la CLI.  La protección ARP/AI se activa de inmediato, sin necesidad de un período de aprendizaje.  En la versión 9.17.1, ARP admite volúmenes SAN.  Cuando habilita ARP en un volumen SAN, ARP/AI monitorea continuamente los datos durante un período de evaluación para determinar la idoneidad de la carga de trabajo y establecer el umbral de cifrado óptimo para la detección.
+
+ARP está integrado en ONTAP y proporciona control y coordinación integrados con otras funciones de ONTAP .  ARP funciona en tiempo real, procesando datos a medida que se escriben o leen, y detecta y responde rápidamente a posibles ataques de ransomware.  Crea instantáneas bloqueadas a intervalos regulares junto con las programadas y administra de forma inteligente la retención de instantáneas reciclándolas cuando no se detectan anomalías.  Si ARP detecta actividad sospechosa, conserva una instantánea tomada antes del ataque durante un período prolongado para garantizar un punto de recuperación confiable.
+
+Para más detalles, véaselink:https://docs.netapp.com/us-en/ontap/anti-ransomware/#what-arp-detects["Qué detecta ARP"] .
+
+
+NOTE: La compatibilidad con ARP está incluida con la licencia de ONTAP ONE.
+
+
+
+== Configurar ARP en volúmenes NAS y simular un ataque a una VM
+
+Aprenda cómo habilitar NetApp ONTAP Autonomous Ransomware Protection (ARP) en volúmenes NAS y SAN utilizados para almacenes de datos de VMware, y simule ataques de ransomware para ver cómo ARP detecta amenazas y facilita una recuperación rápida.
+
+Cuando ARP está habilitado en un volumen NAS mediante el Administrador del sistema o la CLI, la protección ARP/AI se habilita y se activa de inmediato. No se requiere un periodo de aprendizaje.
+
+image::vmw-arp-nfs-vmfs-001.png[Anti-ransomware habilitado en modo activo]
+
+En este ejemplo, la simulación se activa mediante un script para modificar los archivos o modificando la extensión del archivo para simular un ataque dentro de una máquina virtual que reside en el volumen NFS que está conectado como almacén de datos a vCenter.
+
+image::vmw-arp-nfs-vmfs-002.png[archivos cifrados]
+
+Como se muestra a continuación, ARP detectó la actividad anormal.
+
+image::vmw-arp-nfs-vmfs-003.png[actividad anormal]
+
+ARP detecta el ataque de forma temprana y permite la recuperación de datos a partir de instantáneas tomadas cerca del momento del ataque.  Para revertir, utilice la instantánea periódica de ARP que se generó antes de que se activara el incidente.  Y la captura de pantalla a continuación muestra las instantáneas creadas:
+
+image::vmw-arp-nfs-vmfs-004.png[instantáneas creadas]
+
+Para obtener instrucciones detalladas sobre cómo habilitar ARP en volúmenes NFS que funcionan como almacenes de datos y se recuperan en caso de un ataque, consultelink:https://docs.netapp.com/us-en/netapp-solutions-virtualization/vmware/vmw-nfs-arp.html["ARP para almacenamiento NFS"] .
+
+
+
+== Configurar ARP en volúmenes SAN y simular un ataque a una VM
+
+Cuando se habilita ARP en un volumen SAN, comienza con una fase de evaluación, similar al modo de aprendizaje utilizado en entornos NAS, antes de pasar automáticamente a la detección activa.
+
+image::vmw-arp-nfs-vmfs-005.png[Modo activo SAN]
+
+ARP inicia un período de evaluación de dos a cuatro semanas con un umbral del 75% para establecer una línea de base para el comportamiento del cifrado.  El progreso durante esta fase se puede monitorear utilizando el `security anti-ransomware volume show` comando comprobando el *Estado de detección del dispositivo de bloque*.  Una vez completada la evaluación, un estado de *Active_suitable_workload* confirma que los niveles de entropía observados son adecuados para el monitoreo continuo.  Basándose en los datos recopilados, ARP ajusta automáticamente su umbral adaptativo para garantizar una detección de amenazas precisa y receptiva.  Según el requisito, el intervalo de creación de instantáneas se puede cambiar del valor predeterminado de 4 h a 1 h.  Ejercite esta modificación con precaución.
+
+A partir de ONTAP 9.17.1, se generan instantáneas ARP a intervalos regulares para volúmenes NAS y SAN.
+
+image::vmw-arp-nfs-vmfs-006.png[Flujo de trabajo de IA de SAN]
+
+Para obtener información detallada, consultelink:https://docs.netapp.com/us-en/ontap/anti-ransomware/#san-environments-and-mode-types["Entornos SAN y tipos de modos"]
+
+Es hora de simular un ataque.  Para fines de demostración, los archivos se cifran dentro de una máquina virtual que se ejecuta en un almacén de datos basado en ISCSI.  Se generan casi 7000 archivos que lamentablemente se ven afectados por un ataque de ransomware.
+
+image::vmw-arp-nfs-vmfs-007.png[Archivos de la máquina virtual invitada cifrados]
+
+En 10 minutos, se detectó actividad anormal en el volumen según los datos de alta entropía y ARP genera una alerta de amenaza ya que detectó una anomalía de entropía dentro de la máquina virtual.
+
+image::vmw-arp-nfs-vmfs-008.png[Administrador del sistema - Seguridad del volumen]
+
+
+
+== Recuperar la máquina virtual y sus datos después de un ataque de ransomware
+
+Una vez que se confirma el ataque según los pasos descritos anteriormente, utilice una de las instantáneas de ARP u otra instantánea del volumen para restaurar los datos.
+
+image::vmw-arp-nfs-vmfs-009.png[Administrador del sistema: instantáneas de volumen]
+
+Una vez restaurado, todos los archivos estarán recuperados.
+
+image::vmw-arp-nfs-vmfs-010.png[Archivos de la máquina virtual invitada]
+
+Para obtener orientación detallada, consultelink:https://docs.netapp.com/us-en/ontap/anti-ransomware/recover-data-task.html["Restaurar datos de una instantánea ARP después de un ataque de ransomware"]
+
+
+
+== ONTAP como capa de defensa para VMware y más allá
+
+Con solo unos pocos clics, las empresas pueden mejorar sin problemas su estrategia de protección de datos.  Impulsado por mecanismos de detección avanzados basados ​​en aprendizaje automático, ONTAP introduce una poderosa capa de defensa en entornos VMware.  Esta protección inteligente no solo identifica amenazas de manera temprana, sino que también ayuda a mitigar daños potenciales antes de que se agraven.
+
+Este caso de uso se aplica a más que solo VMware.  Puede extender los mismos principios a cualquier aplicación basada en NAS o SAN para crear una arquitectura de seguridad de múltiples capas.  Los atacantes se ven obligados a navegar a través de varias capas fortificadas, lo que reduce significativamente el riesgo de infracciones exitosas.
+
+ONTAP no solo protege datos: también permite a las organizaciones mantenerse resilientes frente a las amenazas cambiantes.
