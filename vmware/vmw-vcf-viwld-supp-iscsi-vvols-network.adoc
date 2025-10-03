@@ -1,0 +1,118 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-iscsi-vvols-network.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
+summary: Configurar la red para el almacenamiento iSCSI en hosts ESXi en un dominio de carga de trabajo VI.  Creará grupos de puertos distribuidos para el tráfico iSCSI y configurará adaptadores VMkernel utilizando el cliente vSphere para habilitar conectividad confiable y rutas múltiples. 
+---
+= Configurar la red para iSCSI en hosts ESXi en un dominio de carga de trabajo VCF VI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configurar la red para el almacenamiento iSCSI en hosts ESXi en un dominio de carga de trabajo VI.  Creará grupos de puertos distribuidos para el tráfico iSCSI y configurará adaptadores VMkernel utilizando el cliente vSphere para habilitar conectividad confiable y rutas múltiples.
+
+Utilice el cliente vSphere con vCenter Single Sign-On para realizar estos pasos en el clúster de VI Workload Domain.  El mismo cliente vSphere administra los dominios de administración y de carga de trabajo.
+
+
+
+== Paso 1: Crear grupos de puertos distribuidos para el tráfico iSCSI
+
+Complete los siguientes pasos para crear un nuevo grupo de puertos distribuidos para cada red iSCSI.
+
+.Pasos
+. Desde el cliente vSphere, navegue a *Inventario > Redes* para el dominio de carga de trabajo.  Navegue hasta el conmutador distribuido existente y elija la acción para crear *Nuevo grupo de puertos distribuidos...*.
++
+image:vmware-vcf-asa-022.png["Elija crear un nuevo grupo de puertos"]
+
++
+{nbsp}
+
+. En el asistente *Nuevo grupo de puertos distribuidos*, complete un nombre para el nuevo grupo de puertos y haga clic en *Siguiente* para continuar.
+. En la página *Configurar ajustes*, complete todas las configuraciones. Si se utilizan VLAN, asegúrese de proporcionar la ID de VLAN correcta. Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-023.png["Complete el ID de VLAN"]
+
++
+{nbsp}
+
+. En la página *Listo para completar*, revise los cambios y haga clic en *Finalizar* para crear el nuevo grupo de puertos distribuidos.
+. Repita este proceso para crear un grupo de puertos distribuidos para la segunda red iSCSI que se esté utilizando y asegúrese de haber ingresado el *VLAN ID* correcto.
+. Una vez que se hayan creado ambos grupos de puertos, navegue hasta el primer grupo de puertos y seleccione la acción *Editar configuración...*.
++
+image:vmware-vcf-asa-024.png["DPG - editar configuración"]
+
++
+{nbsp}
+
+. En la página *Grupo de puertos distribuidos - Editar configuración*, navegue hasta *Equipo y conmutación por error* en el menú de la izquierda y haga clic en *uplink2* para moverlo hacia abajo hasta *Enlaces ascendentes no utilizados*.
++
+image:vmware-vcf-asa-025.png["mover uplink2 a no utilizado"]
+
+. Repita este paso para el segundo grupo de puertos iSCSI.  Sin embargo, esta vez mueva *uplink1* a *Unused uplinks*.
++
+image:vmware-vcf-asa-026.png["mover uplink1 a no utilizado"]
+
+
+
+
+
+== Paso 2: Crear adaptadores VMkernel en cada host ESXi
+
+Realice los siguientes pasos en cada host ESXi en el dominio de carga de trabajo utilizando el cliente vSphere.
+
+.Pasos
+. Desde el cliente vSphere, navegue a uno de los hosts ESXi en el inventario del dominio de carga de trabajo. Desde la pestaña *Configurar*, seleccione *Adaptadores VMkernel* y haga clic en *Agregar red...* para comenzar.
++
+image:vmware-vcf-asa-030.png["Iniciar el asistente para agregar redes"]
+
++
+{nbsp}
+
+. En la ventana *Seleccionar tipo de conexión*, elija *Adaptador de red VMkernel* y haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-008.png["Elija el adaptador de red VMkernel"]
+
++
+{nbsp}
+
+. En la página *Seleccionar dispositivo de destino*, elija uno de los grupos de puertos distribuidos para iSCSI que se crearon anteriormente.
++
+image:vmware-vcf-asa-031.png["Seleccione el grupo de puertos de destino"]
+
++
+{nbsp}
+
+. En la página *Propiedades del puerto*, mantenga los valores predeterminados y haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-032.png["Propiedades del puerto VMkernel"]
+
++
+{nbsp}
+
+. En la página *Configuración de IPv4*, complete la *dirección IP*, la *Máscara de subred* y proporcione una nueva dirección IP de puerta de enlace (solo si es necesario). Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-033.png["Configuración de IPv4 de VMkernel"]
+
++
+{nbsp}
+
+. Revise sus selecciones en la página *Listo para completar* y haga clic en *Finalizar* para crear el adaptador VMkernel.
++
+image:vmware-vcf-asa-034.png["Revisar las selecciones de VMkernel"]
+
++
+{nbsp}
+
+. Repita este proceso para crear un adaptador VMkernel para la segunda red iSCSI.
+
+
+
+
+== ¿Que sigue?
+
+Después de configurar la red para iSCSI en todos los hosts ESXi en el dominio de carga de trabajo,link:vmw-vcf-viwld-supp-iscsi-vvols-storage.html["Configurar el almacenamiento para vVols iSCSI"] .

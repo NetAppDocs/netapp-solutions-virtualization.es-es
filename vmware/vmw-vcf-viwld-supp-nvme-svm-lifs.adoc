@@ -1,0 +1,95 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-nvme-svm-lifs.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
+summary: 'Cree una máquina virtual de almacenamiento (SVM) con múltiples interfaces lógicas (LIF) para proporcionar conectividad iSCSI para los dominios de administración de VMware Cloud Foundation.  Configurará la SVM con soporte de protocolo NVMe y configurará múltiples LIF en redes Ethernet separadas para habilitar rutas múltiples y conmutación por error para lograr un rendimiento y una disponibilidad óptimos.' 
+---
+= Cree SVM y LIF y el espacio de nombres NVMe para almacenes de datos NVMe/TCP vVols en un dominio de carga de trabajo VCF VI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cree una máquina virtual de almacenamiento (SVM) con múltiples interfaces lógicas (LIF) para proporcionar conectividad NVMe para los dominios de carga de trabajo de VMware Cloud Foundation.  Este procedimiento resume la configuración de una SVM y LIF habilitadas para NVMe/TCP y la creación de espacios de nombres NVMe.
+
+
+
+== Paso 1: Crear los SVM y los LIF
+
+Complete los siguientes pasos para crear una SVM con múltiples LIF para el tráfico NVMe/TCP.
+
+Para agregar nuevos LIF a un SVM existente, consulte la documentación de ONTAP :link:https://docs.netapp.com/us-en/ontap/networking/create_a_lif.html["Crear LIF de ONTAP"^] .
+
+.Pasos
+. Desde el Administrador del sistema ONTAP , navegue hasta *Máquinas virtuales de almacenamiento* en el menú de la izquierda y haga clic en *+ Agregar*.
++
+image:vmware-vcf-asa-001.png["Haga clic en +Agregar para comenzar a crear SVM"]
+
++
+{nbsp}
+
+. En el asistente *Agregar VM de almacenamiento*, ingrese un *Nombre* para la SVM, seleccione el *Espacio IP* y luego, en *Protocolo de acceso*, haga clic en la pestaña *NVMe* y marque la casilla para *Habilitar NVMe/TCP*.
++
+image:vmware-vcf-asa-075.png["Asistente para agregar máquinas virtuales de almacenamiento: habilitar NVMe/TCP"]
+
++
+{nbsp}
+
+. En la sección *Interfaz de red*, ingrese la *dirección IP*, la *Máscara de subred* y el *Dominio de transmisión y puerto* para el primer LIF.  Para los LIF posteriores, puede utilizar configuraciones individuales o activar la casilla de verificación para utilizar configuraciones comunes en todos los LIF restantes.
++
+
+NOTE: Para realizar múltiples rutas y conmutación por error en múltiples rutas, cree un mínimo de dos LIF por nodo de almacenamiento en redes Ethernet separadas para todas las SVM en configuraciones NVMe/TCP.
+
+. Elija si desea habilitar la cuenta de administración de VM de almacenamiento (para entornos de múltiples inquilinos) y haga clic en *Guardar* para crear la SVM.
++
+image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
+
+
+
+
+
+== Paso 2: Crear el espacio de nombres NVMe
+
+Los espacios de nombres NVMe son análogos a los LUN para iSCSi o FC. Debe crear el espacio de nombres NVMe antes de poder implementar un almacén de datos VMFS desde vSphere Client.  Para crear el espacio de nombres NVMe, obtenga el nombre calificado NVMe (NQN) de cada host ESXi en el clúster.  ONTAP utiliza NQN para proporcionar control de acceso al espacio de nombres.
+
+.Pasos
+. Abra una sesión SSH con un host ESXi en el clúster para obtener su NQN.  Utilice el siguiente comando desde la CLI:
++
+[source, cli]
+----
+esxcli nvme info get
+----
++
+Debería mostrarse una salida similar al siguiente ejemplo:
+
++
+[source, cli]
+----
+Host NQN: nqn.2014-08.com.netapp.sddc:nvme:vcf-wkld-esx01
+----
+. Registre el NQN para cada host ESXi en el clúster.
+. Desde el Administrador del sistema ONTAP , navegue hasta *Espacios de nombres NVMe* en el menú de la izquierda y haga clic en *+ Agregar* para comenzar.
++
+image:vmware-vcf-asa-093.png["Haga clic en +Agregar para crear un espacio de nombres NVMe"]
+
++
+{nbsp}
+
+. En la página *Agregar espacio de nombres NVMe*, complete un prefijo de nombre, la cantidad de espacios de nombres a crear, el tamaño del espacio de nombres y el sistema operativo host que accederá al espacio de nombres.
+. En la sección *Host NQN*, cree una lista separada por comas de los NQN recopilados previamente de los hosts ESXi que accederán a los espacios de nombres.
+. Haga clic en *Más opciones* para configurar elementos adicionales, como la política de protección de instantáneas.
+. Finalmente, haga clic en *Guardar* para crear el espacio de nombres NVMe.
++
+image:vmware-vcf-asa-093.png["Haga clic en +Agregar para crear un espacio de nombres NVMe"]
+
+
+
+
+
+== ¿Que sigue?
+
+Después de crear el SVM y los LIF,link:vmw-vcf-viwld-supp-nvme-network.html["Configurar la red para vVols NVMe/TCP (NVMe/TCP)"] .

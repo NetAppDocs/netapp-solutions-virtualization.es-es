@@ -1,0 +1,162 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-nfs-vvols-storage.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc 
+summary: Configurar el almacenamiento NFS vVols en un dominio de carga de trabajo VI.  Después de implementar las ONTAP tools for VMware vSphere, utilizará la interfaz del cliente vSphere para agregar el sistema de almacenamiento, crear un perfil de capacidad de almacenamiento y aprovisionar un almacén de datos vVols . 
+---
+= Configurar el almacenamiento de vVols NFS en un dominio de carga de trabajo VCF VI mediante herramientas ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configurar el almacenamiento NFS vVols en un dominio de carga de trabajo VI.  Después de implementar las ONTAP tools for VMware vSphere, utilizará la interfaz del cliente vSphere para agregar el sistema de almacenamiento, crear un perfil de capacidad de almacenamiento y aprovisionar un almacén de datos vVols .
+
+
+
+== Paso 1: Implementar ONTAP tools for VMware vSphere
+
+Para los dominios de carga de trabajo VI, las herramientas ONTAP se instalan en el clúster de administración de VCF, pero se registran en el vCenter asociado con el dominio de carga de trabajo VI.
+
+Las ONTAP tools for VMware vSphere se implementan como un dispositivo de VM y proporcionan una interfaz de usuario vCenter integrada para administrar el almacenamiento de ONTAP .
+
+.Pasos
+. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargar a una carpeta local.
+. Inicie sesión en el dispositivo vCenter para el dominio de administración de VCF.
+. Desde la interfaz del dispositivo vCenter, haga clic con el botón derecho en el clúster de administración y seleccione *Implementar plantilla OVF…*
++
+image:vmware-vcf-aff-021.png["Implementar plantilla OVF..."]
+
++
+{nbsp}
+
+. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP descargado en el paso anterior.
++
+image:vmware-vcf-aff-022.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. Para los pasos 2 a 5 del asistente, seleccione un nombre y una carpeta para la máquina virtual, seleccione el recurso informático, revise los detalles y acepte el acuerdo de licencia.
+. Para la ubicación de almacenamiento de los archivos de configuración y de disco, seleccione el almacén de datos vSAN del clúster de dominio de administración de VCF.
++
+image:vmware-vcf-aff-023.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. En la página *Seleccionar red*, seleccione la red utilizada para el tráfico de administración.
++
+image:vmware-vcf-aff-024.png["Seleccionar red"]
+
++
+{nbsp}
+
+. En la página *Personalizar plantilla*, ingrese toda la información requerida:
++
+** Contraseña que se utilizará para el acceso administrativo a las herramientas de ONTAP .
+** Dirección IP del servidor NTP.
+** Contraseña de la cuenta de mantenimiento de herramientas ONTAP .
+** Contraseña de Derby DB de herramientas ONTAP .
+** No marque la casilla para *Habilitar VMware Cloud Foundation (VCF)*.  El modo VCF no es necesario para implementar almacenamiento complementario.
+** FQDN o dirección IP del dispositivo vCenter para el *VI Workload Domain*
+** Credenciales para el dispositivo vCenter del *VI Workload Domain*
+** Propiedades de red requeridas.
+
+
+. Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-aff-025.png["Personalizar plantilla OTV 1"]
+
++
+image:vmware-vcf-asa-035.png["Personalizar plantilla OTV 2"]
+
+. Revise toda la información en la página *Listo para completar* y haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
+
+
+
+
+== Paso 2: Agregar un sistema de almacenamiento
+
+Realice los siguientes pasos para agregar un sistema de almacenamiento utilizando herramientas ONTAP .
+
+
+NOTE: vVol requiere credenciales de clúster ONTAP en lugar de credenciales SVM. Para obtener más información, consulte la documentación de las ONTAP tools for VMware vSphere : https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere/configure/task_add_storage_systems.html["Añadir sistemas de almacenamiento"^] .
+
+.Pasos
+. En el cliente vSphere, navegue hasta el menú principal y seleccione *Herramientas de NetApp ONTAP *.
++
+image:vmware-vcf-asa-014.png["Navegar a las herramientas de ONTAP"]
+
+. Una vez en *Herramientas ONTAP *, desde la página Primeros pasos (o desde *Sistemas de almacenamiento*), haga clic en *Agregar* para agregar un nuevo sistema de almacenamiento.
++
+image:vmware-vcf-asa-015.png["Agregar sistema de almacenamiento"]
+
++
+{nbsp}
+
+. Proporcione la dirección IP y las credenciales del sistema de almacenamiento ONTAP y haga clic en *Agregar*.
++
+image:vmware-vcf-asa-016.png["Proporcionar IP y credenciales del sistema ONTAP"]
+
++
+{nbsp}
+
+. Haga clic en *Sí* para autorizar el certificado del clúster y agregar el sistema de almacenamiento.
++
+image:vmware-vcf-asa-017.png["Autorizar certificado de clúster"]
+
+
+
+
+
+== Paso 3: Crear un almacén de datos NFS en las herramientas de ONTAP
+
+Complete los siguientes pasos para implementar un almacén de datos ONTAP que se ejecute en NFS.  Utilice herramientas ONTAP .
+
+.Pasos
+. En las herramientas de ONTAP , seleccione *Descripción general* y, en la pestaña *Introducción*, haga clic en *Aprovisionamiento* para iniciar el asistente.
+. En la página *General* del asistente Nuevo almacén de datos, seleccione el centro de datos o el destino del clúster de vSphere.
+. Seleccione *NFS* como tipo de almacén de datos, ingrese un nombre para el almacén de datos y seleccione el protocolo.
+. Elija si desea utilizar volúmenes FlexGroup y si desea utilizar un archivo de capacidad de almacenamiento para el aprovisionamiento.
+. Haga clic en *Siguiente* para continuar.
++
+
+NOTE: Si selecciona *Distribuir datos del almacén de datos en todo el clúster*, el volumen subyacente se creará como un volumen FlexGroup , lo que impide el uso de perfiles de capacidad de almacenamiento. Referirse a https://docs.netapp.com/us-en/ontap/flexgroup/supported-unsupported-config-concept.html["Configuraciones compatibles y no compatibles con volúmenes FlexGroup"^] para obtener más información sobre el uso de volúmenes FlexGroup .
+
+. En la página *Sistema de almacenamiento*, seleccione un perfil de capacidad de almacenamiento, el sistema de almacenamiento y la SVM. Haga clic en *Siguiente* para continuar.
+. En la página *Atributos de almacenamiento*, seleccione el agregado que desea utilizar y luego haga clic en *Siguiente* para continuar.
+. Revise el *Resumen* y haga clic en *Finalizar* para comenzar a crear el almacén de datos NFS.
+
+
+
+
+== Paso 4: Crear un almacén de datos vVols en las herramientas de ONTAP
+
+Para crear un almacén de datos vVols en las herramientas ONTAP , complete los siguientes pasos.
+
+.Pasos
+. En las herramientas de ONTAP , seleccione *Descripción general* y, en la pestaña *Introducción*, haga clic en *Aprovisionamiento* para iniciar el asistente.
+. En la página *General* del asistente Nuevo almacén de datos, seleccione el centro de datos o el destino del clúster de vSphere.
+. Seleccione * vVols* como el tipo de almacén de datos, ingrese un nombre para el almacén de datos y seleccione *NFS* como protocolo.
+. Haga clic en *Siguiente* para continuar.
+. En la página *Sistema de almacenamiento*, seleccione un perfil de capacidad de almacenamiento, el sistema de almacenamiento y la SVM.
+. Haga clic en *Siguiente* para continuar.
+. En la página *Atributos de almacenamiento*, seleccione *Crear un nuevo volumen* e ingrese los atributos de almacenamiento del volumen que se creará.
+. Haga clic en *Agregar* para crear el volumen y luego en *Siguiente* para continuar.
+. Revise la página *Resumen* y haga clic en *Finalizar* para iniciar el proceso de creación del almacén de datos vVol.
+
+
+
+
+== Información adicional
+
+* Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consulte lalink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"^] .
+* Para obtener información sobre la configuración de VCF, consulte lalink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html["Documentación de VMware Cloud Foundation"^] .
+* Para obtener información sobre la implementación y el uso de herramientas ONTAP en varios entornos de vCenter, consultelink:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere/configure/concept_requirements_for_registering_vsc_in_multiple_vcenter_servers_environment.html["Requisitos para registrar herramientas ONTAP en múltiples entornos de servidor vCenter"^] .
+* Para ver demostraciones en video de esta solución, consultelink:../videos/vmware-videos.html#vmware-datastore-provisioning-with-ontap["Aprovisionamiento de almacén de datos de VMware"] .
+

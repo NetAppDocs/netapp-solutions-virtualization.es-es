@@ -24,6 +24,8 @@ Vea videos y demostraciones que muestran la integración de VMware con las soluc
 video::e8071955-f6f1-45a0-a868-b12a010bba44[panopto]
 .Aprovisionamiento de almacén de datos iSCSI de VMware con ONTAP
 video::5c047271-aecc-437c-a444-b01200f9671a[panopto]
+.Almacén de datos VMFS(FC) como almacenamiento complementario para el dominio de administración de VCF
+video::3135c36f-3a13-4c95-aac9-b2a0001816dc[panopto,width=360]
 .Aprovisionamiento de almacenes de datos NFS de VMware con ONTAP
 video::a34bcd1c-3aaa-4917-9a5d-b01200f97f08[panopto]
 

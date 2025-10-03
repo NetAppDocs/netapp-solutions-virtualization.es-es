@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-nfs-vvols-network.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc 
+summary: Configure la red NFS en hosts ESXi en dominios de administración de VMware Cloud Foundation para habilitar la conectividad a los sistemas de almacenamiento ONTAP .  Creará grupos de puertos distribuidos con separación de VLAN, configurará equipos de enlace ascendente para redundancia y configurará adaptadores VMkernel en cada host ESXi para establecer rutas NFS dedicadas para capacidades de conmutación por error. 
+---
+= Configurar la red para NFS en hosts ESXi en un dominio de carga de trabajo VCF VI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure la red NFS en hosts ESXi en dominios de administración de VMware Cloud Foundation para habilitar la conectividad a los sistemas de almacenamiento ONTAP .  Creará grupos de puertos distribuidos con separación de VLAN, configurará equipos de enlace ascendente para redundancia y configurará adaptadores VMkernel en cada host ESXi para establecer rutas NFS dedicadas para capacidades de conmutación por error.
+
+Realice los siguientes pasos en el clúster del dominio de carga de trabajo VI mediante el cliente vSphere. En este caso, se utiliza vCenter Single Sign-On para que el cliente vSphere sea común en los dominios de administración y carga de trabajo.
+
+
+
+== Paso 1: Crear un grupo de puertos distribuidos para el tráfico NFS
+
+Complete los siguientes pasos para crear un nuevo grupo de puertos distribuidos para que la red transporte tráfico NFS.
+
+.Pasos
+. Desde el cliente vSphere, navegue a *Inventario > Redes* para el dominio de carga de trabajo.  Navegue hasta el conmutador distribuido existente y elija la acción para crear *Nuevo grupo de puertos distribuidos...*.
+. En el asistente *Nuevo grupo de puertos distribuidos*, complete un nombre para el nuevo grupo de puertos y haga clic en *Siguiente* para continuar.
+. En la página *Configurar ajustes*, complete todas las configuraciones. Si se utilizan VLAN, asegúrese de proporcionar la ID de VLAN correcta. Haga clic en *Siguiente* para continuar.
+. En la página *Listo para completar*, revise los cambios y haga clic en *Finalizar* para crear el nuevo grupo de puertos distribuidos.
+. Una vez creado el grupo de puertos, navegue hasta el grupo de puertos y seleccione la acción *Editar configuración...*.
+. En la página *Grupo de puertos distribuidos - Editar configuración*, navegue hasta *Equipo y conmutación por error* en el menú de la izquierda. Habilite la formación de equipos para los enlaces ascendentes que se utilizarán para el tráfico NFS asegurándose de que estén juntos en el área *Enlaces ascendentes activos*. Mueva los enlaces ascendentes no utilizados a *Enlaces ascendentes no utilizados*.
+. Repita este proceso para cada host ESXi del clúster.
+
+
+
+
+== Paso 2: Cree un adaptador VMkernel en cada host ESXi
+
+Cree un adaptador VMkernel en cada host ESXi en el dominio de carga de trabajo.
+
+.Pasos
+. Desde el cliente vSphere, navegue a uno de los hosts ESXi en el inventario del dominio de carga de trabajo. Desde la pestaña *Configurar*, seleccione *Adaptadores VMkernel* y haga clic en *Agregar red...* para comenzar.
+. En la ventana *Seleccionar tipo de conexión*, elija *Adaptador de red VMkernel* y haga clic en *Siguiente* para continuar.
+. En la página *Seleccionar dispositivo de destino*, elija uno de los grupos de puertos distribuidos para NFS que se crearon anteriormente.
+. En la página *Propiedades del puerto*, mantenga los valores predeterminados (sin servicios habilitados) y haga clic en *Siguiente* para continuar.
+. En la página *Configuración de IPv4*, complete la *dirección IP*, la *Máscara de subred* y proporcione una nueva dirección IP de puerta de enlace (solo si es necesario). Haga clic en *Siguiente* para continuar.
+. Revise sus selecciones en la página *Listo para completar* y haga clic en *Finalizar* para crear el adaptador VMkernel.
+
+
+
+
+== ¿Que sigue?
+
+Después de configurar la red para NFS en todos los hosts ESXi en el dominio de carga de trabajo,link:vmw-vcf-viwld-supp-nfs-vvols-storage.html["Configurar almacenamiento para vVols NFS"] .

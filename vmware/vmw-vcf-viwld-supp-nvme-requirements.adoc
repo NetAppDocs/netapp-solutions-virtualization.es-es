@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-nvme-requirements.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
+summary: Para implementar NVMe vVols en un dominio de carga de trabajo VI de VMware Cloud Foundation, necesita un sistema de almacenamiento ONTAP AFF o ASA completamente configurado, un dominio de administración de VCF completo y un dominio de carga de trabajo VI existente.  Revise el diseño de red recomendado y los requisitos de infraestructura para garantizar una integración de almacenamiento confiable y de alto rendimiento. 
+---
+= Requisitos de implementación para vVols NVMe en un dominio de carga de trabajo VI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Revise los requisitos de infraestructura y diseño de red recomendados para implementar NVMe vVols en un dominio de carga de trabajo de VMware Cloud Foundation VI.  Necesita un sistema de almacenamiento ONTAP AFF o ASA completamente configurado, un dominio de administración VCF implementado y un dominio de carga de trabajo VI existente.
+
+
+
+== Requisitos de infraestructura
+
+* Un sistema de almacenamiento ONTAP AFF o ASA con puertos de datos físicos en conmutadores Ethernet dedicados al tráfico de almacenamiento.
+* La implementación del dominio de administración de VCF está completa y el cliente vSphere es accesible.
+* Previamente se ha implementado un dominio de carga de trabajo VI.
+
+
+
+
+== Diseño de red NVMe/TCP recomendado
+
+NetApp recomienda diseños de red totalmente redundantes para NVMe/TCP. El siguiente diagrama ilustra un ejemplo de una configuración redundante, que proporciona tolerancia a fallas para sistemas de almacenamiento, conmutadores, adaptadores de red y sistemas host.
+
+image:vmware-vcf-asa-074.png["Diseño de red NVMe-tcp"]
+
+Para rutas múltiples y conmutación por error en múltiples rutas, configure un mínimo de dos LIF por nodo de almacenamiento en redes Ethernet separadas para todas las SVM en configuraciones NVMe/TCP.
+
+
+
+== ¿Que sigue?
+
+Después de revisar los requisitos de implementación,link:vmw-vcf-viwld-supp-nvme-svm-lifs.html["crear el SVM y los LIF"] .

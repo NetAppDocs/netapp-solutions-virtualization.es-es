@@ -2,7 +2,7 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-expand.html 
 keywords: vmware, vcf, expand, supplemental, storage 
-summary:  
+summary: 'VMware Cloud Foundation (VCF) admite una amplia gama de opciones de almacenamiento complementario para expandir el almacenamiento en dominios de administración de VCF y dominios de carga de trabajo de infraestructura virtual (VI).' 
 ---
 = Obtenga información sobre cómo ampliar el almacenamiento para un entorno VCF mediante almacenamiento complementario
 :hardbreaks:
@@ -16,9 +16,68 @@ summary:
 [role="lead"]
 VMware Cloud Foundation (VCF) admite una amplia gama de opciones de almacenamiento complementario para expandir el almacenamiento en dominios de administración de VCF y dominios de carga de trabajo de infraestructura virtual (VI).
 
-Las herramientas ONTAP de NetApp para VMware vSphere proporcionan una solución eficiente para esta expansión al integrar perfectamente el almacenamiento de NetApp en el entorno VCF.  Las herramientas de ONTAP simplifican la configuración y la administración de almacenes de datos, lo que permite a los administradores aprovisionar y administrar el almacenamiento directamente desde vSphere Client.  Las funciones avanzadas de ONTAP, como instantáneas, clonación y protección de datos, mejoran el rendimiento, la eficiencia y la escalabilidad del almacenamiento dentro del entorno VCF.
+Las ONTAP tools for VMware vSphere proporcionan una solución eficiente para esta expansión al integrar perfectamente el almacenamiento de NetApp en el entorno VCF.
 
-Consulte las siguientes soluciones para obtener detalles técnicos para ampliar el entorno VCF.
+Las herramientas de ONTAP simplifican la configuración y la administración de almacenes de datos, lo que permite a los administradores aprovisionar y administrar el almacenamiento directamente desde vSphere Client.  Las funciones avanzadas de ONTAP, como instantáneas, clonación y protección de datos, mejoran el rendimiento, la eficiencia y la escalabilidad del almacenamiento dentro del entorno VCF.
+
+
+
+== Protocolos admitidos para ampliar el almacenamiento
+
+Los entornos VCF se pueden ampliar utilizando varios protocolos de almacenamiento, cada uno de los cuales ofrece beneficios y casos de uso únicos.
+
+Puede utilizar los siguientes protocolos para ampliar el almacenamiento en los dominios de administración de VCF y en los dominios de carga de trabajo de VI.  Elija la mejor opción para su entorno para integrar sin problemas el almacenamiento complementario en su implementación de VCF.
+
+.iSCSI
+Protocolo basado en bloques que utiliza redes Ethernet estándar.  Ideal para entornos que requieren alto rendimiento, flexibilidad y escalamiento rentable.
+
+iSCSI se utiliza ampliamente para almacenes de datos VMFS y admite funciones avanzadas de ONTAP , como instantáneas y clonación.
+
+* *Alto rendimiento:* Ofrece un alto rendimiento para brindar velocidades de transferencia de datos rápidas y eficientes y baja latencia.  Ideal para aplicaciones empresariales exigentes y entornos virtualizados.
+* *Facilidad de administración:* Simplifica la gestión del almacenamiento mediante el uso de herramientas y protocolos familiares basados en IP.
+* *Rentable:* Utiliza la infraestructura Ethernet existente, lo que reduce la necesidad de hardware especializado y permite a las organizaciones lograr soluciones de almacenamiento confiables y escalables.
+
+
+Para obtener más información sobre el uso de iSCSI con sistemas de almacenamiento NetApp , consulte https://docs.netapp.com/us-en/ontap/san-admin/san-host-provisioning-concept.html["Aprovisionamiento de SAN con iSCSI"] .
+
+.Canal de fibra (FC)
+Protocolo de alta velocidad y baja latencia que utiliza redes FC dedicadas.  FC se prefiere para cargas de trabajo de misión crítica que exigen confiabilidad, ancho de banda dedicado y corrección de errores sólida.  Se utiliza comúnmente para almacenes de datos VMFS en entornos empresariales.
+
+* *Alto rendimiento:* FC proporciona velocidades de transferencia de datos de alta velocidad, lo que lo hace ideal para aplicaciones que requieren acceso rápido y confiable a grandes cantidades de datos.
+* *Baja latencia:* Latencia muy baja, lo cual es crucial para aplicaciones sensibles al rendimiento, como bases de datos y entornos virtualizados.
+* *Confiabilidad:* Las redes FC son conocidas por su robustez y confiabilidad, con características como redundancia incorporada y corrección de errores.
+* *Ancho de banda dedicado:* FC proporciona ancho de banda dedicado para el tráfico de almacenamiento, lo que reduce el riesgo de congestión de la red.
+
+
+Para obtener más información sobre el uso de Fibre Channel con sistemas de almacenamiento NetApp , consulte https://docs.netapp.com/us-en/ontap/san-admin/san-provisioning-fc-concept.html["Aprovisionamiento de SAN con FC"] .
+
+.NFS (Sistema de archivos de red)
+Protocolo basado en archivos que permite compartir y administrar fácilmente archivos entre hosts.  NFS es fácil de configurar y se escala de manera eficiente, lo que lo hace adecuado para cargas de trabajo virtualizadas y entornos que requieren acceso flexible a archivos.
+
+Los almacenes de datos NFS son compatibles con ONTAP y vSphere tanto para dominios de administración como de carga de trabajo.
+
+* *Simplicidad y facilidad de uso:* NFS es fácil de configurar y administrar, lo que lo convierte en una excelente opción para entornos que requieren compartir archivos de manera rápida y sencilla.
+* *Escalabilidad:* La arquitectura de ONTAP permite que NFS escale de manera eficiente, soportando las crecientes necesidades de datos sin cambios significativos en la infraestructura.
+* *Flexibilidad:* NFS admite una amplia gama de aplicaciones y cargas de trabajo, lo que lo hace versátil para diversos casos de uso, incluidos entornos virtualizados.
+
+
+Para obtener más información, consulte la link:vmw-vvf-overview.html["Guía de referencia de NFS v3 para vSphere 8"] .
+
+.NVMe/TCP
+Protocolo moderno que ofrece alto rendimiento y baja latencia en redes Ethernet estándar utilizando TCP/IP.  NVMe/TCP es ideal para aplicaciones exigentes y operaciones de datos a gran escala, proporcionando escalabilidad y rentabilidad sin necesidad de hardware especializado.
+
+* *Alto rendimiento:* Ofrece un rendimiento excepcional con baja latencia y altas tasas de transferencia de datos.  Esto es crucial para aplicaciones exigentes y operaciones de datos a gran escala.
+* *Escalabilidad:* Admite configuraciones escalables, lo que permite a los administradores de TI expandir su infraestructura sin problemas a medida que crecen los requisitos de datos.
+* *Rentable:* Se ejecuta a través de conmutadores Ethernet estándar y está encapsulado dentro de datagramas TCP. No se requiere equipo especial para implementarlo.
+
+
+Para obtener más información sobre los beneficios de NVMe, consulte https://www.netapp.com/data-storage/nvme/what-is-nvme/["¿Qué es NVME?"] .
+
+
+
+== Casos de uso para agregar almacenamiento complementario
+
+Los siguientes casos de uso demuestran cómo agregar almacenamiento complementario a los dominios de administración de VCF y a los dominios de carga de trabajo de infraestructura virtual (VI) mediante diferentes protocolos y configuraciones.
 
 * link:vmw-vcf-mgmt-supplemental-iscsi.html["Dominio de gestión con iSCSI"]
 * link:vmw-vcf-mgmt-supplemental-fc.html["Dominio de gestión con FC"]

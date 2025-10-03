@@ -1,0 +1,56 @@
+= 
+:allow-uri-read: 
+
+
+. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargar a una carpeta local.
+. Inicie sesión en el dispositivo vCenter para el dominio de administración de VCF.
+. Desde la interfaz del dispositivo vCenter, haga clic con el botón derecho en el clúster de administración y seleccione *Implementar plantilla OVF…*
++
+image:vmware-vcf-aff-021.png["Implementar plantilla OVF..."]
+
++
+{nbsp}
+
+. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP descargado en el paso anterior.
++
+image:vmware-vcf-aff-022.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. Para los pasos 2 a 5 del asistente, seleccione un nombre y una carpeta para la máquina virtual, seleccione el recurso informático, revise los detalles y acepte el acuerdo de licencia.
+. Para la ubicación de almacenamiento de los archivos de configuración y de disco, seleccione el almacén de datos vSAN del clúster de dominio de administración de VCF.
++
+image:vmware-vcf-aff-023.png["Seleccionar archivo OVA"]
+
++
+{nbsp}
+
+. En la página *Seleccionar red*, seleccione la red utilizada para el tráfico de administración.
++
+image:vmware-vcf-aff-024.png["Seleccionar red"]
+
++
+{nbsp}
+
+. En la página *Personalizar plantilla*, ingrese toda la información requerida:
++
+** Contraseña que se utilizará para el acceso administrativo a las herramientas de ONTAP .
+** Dirección IP del servidor NTP.
+** Contraseña de la cuenta de mantenimiento de herramientas ONTAP .
+** Contraseña de Derby DB de herramientas ONTAP .
+** No marque la casilla para *Habilitar VMware Cloud Foundation (VCF)*.  El modo VCF no es necesario para implementar almacenamiento complementario.
+** FQDN o dirección IP del dispositivo vCenter para el *VI Workload Domain*
+** Credenciales para el dispositivo vCenter del *VI Workload Domain*
+** Propiedades de red requeridas.
+
+
+. Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-aff-025.png["Personalizar plantilla OTV 1"]
+
++
+image:vmware-vcf-asa-035.png["Personalizar plantilla OTV 2"]
+
+. Revise toda la información en la página *Listo para completar* y haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
+

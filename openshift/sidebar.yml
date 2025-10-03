@@ -43,13 +43,15 @@ entries:
     url: "/openshift/osv-rosa-overview.html"
   - title: Reiniciar o migrar en vivo las máquinas virtuales
     url: "/openshift/osv-rosa-vm-workflows.html"
-- title: Proteja sus datos con Trident Protect
+- title: Proteja las máquinas virtuales con Trident y Trident Protect
   entries:
+  - title: Proteger las máquinas virtuales mediante instantáneas de grupos de volúmenes
+    url: "/openshift/osv-vm-dp-using-vgs.html"
   - title: Proteja las máquinas virtuales con instantáneas y copias de seguridad
     url: "/openshift/osv-vm-dp-using-tp.html"
   - title: Configurar conmutación por error y recuperación
     url: "/openshift/osv-vm-dr-using-tp.html"
-- title: Proteger los datos utilizando herramientas de terceros
+- title: Proteja las máquinas virtuales mediante herramientas de terceros
   pdf-filename: Protección de datos de virtualización de Red Hat OpenShift
   entries:
   - title: Proteja las máquinas virtuales mediante OADP y Velero

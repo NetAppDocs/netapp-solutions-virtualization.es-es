@@ -1,0 +1,337 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-vm-dp-using-vgs.html 
+keywords: OpenShift, OCP, Trident, Trident protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization,Data Protection, Data Management for VMs, VM protection, Volume Group Snapshots 
+summary: Proteja las máquinas virtuales en Red Hat OpenShift Virtualization mediante instantáneas de grupos de volúmenes Trident para garantizar copias de seguridad consistentes ante fallos y una recuperación rápida.  Este procedimiento demuestra cómo configurar, crear instantáneas y restaurar varios discos de VM mediante Kubernetes y NetApp ONTAP. 
+---
+= Proteja las máquinas virtuales en Red Hat OpenShift Virtualization con instantáneas de grupos de volúmenes Trident
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure instantáneas de grupos de volúmenes para proteger máquinas virtuales en Red Hat OpenShift Virtualization mediante Trident 25.06 y almacenamiento NetApp ONTAP .  Este procedimiento incluye la instalación de Trident con soporte iSCSI, la configuración de backends y clases de almacenamiento de ONTAP , la creación de una VM con múltiples discos persistentes y la implementación de instantáneas de grupos de volúmenes que garantizan que se capturen instantáneas de todos los discos de la VM simultáneamente para operaciones de recuperación confiables.
+
+Volume Group Snapshots es una función de Kubernetes que soluciona problemas de coherencia al tomar instantáneas de múltiples PersistentVolumeClaims (PVC) de contenedores o máquinas virtuales.
+
+Esta función le permite crear instantáneas consistentes ante fallos de múltiples PVC simultáneamente.  Esta función es Beta en la versión v1.32 de Kubernetes.  Trident admite esta función Beta desde la versión 25.06 de Trident en adelante (solo para el protocolo iSCSI en este momento).
+
+Para admitir la función Instantáneas de grupos de volúmenes, Kubernetes presenta tres nuevos objetos API:
+
+* *VolumeGroupSnapshotClass:* Creado por los administradores del clúster para describir cómo se deben crear las instantáneas del grupo de volúmenes.
+* *VolumeGroupSnapshot:* Solicitado por los usuarios de Kubernetes para crear una instantánea de grupo de volúmenes para múltiples PVC.
+* *VolumeGroupSnapshotContent:* Creado por el controlador de instantáneas para VolumeGroupSnapshots creados dinámicamente.
+
+
+Trident 25.06 detecta automáticamente nuevos CRD (especificados para la función Instantánea de grupo de volúmenes) para habilitar las puertas de funciones relevantes en los sidecars CSI de Trident .
+
+
+NOTE: Trident admite instantáneas de grupos de volúmenes solo para el protocolo iSCSI en la versión 25.06.
+
+
+
+== Paso 1: Instale OpenShift 4.19 y habilite FeatureGate para instantáneas de grupos de volúmenes
+
+Instalar el clúster OpenShift 4.19 con Kubernetes versión 1.32.  Esta versión eleva la función Instantánea de grupo de volúmenes al estado Beta.  Las versiones posteriores de OpenShift pueden incluir versiones de Kubernetes posteriores a la v1.32, que también admiten esta función.
+
+.Pasos
+. Instale OpenShift Cluster versión 4.19 siguiendo las instrucciones de la documentación de Red Hat: https://docs.openshift.com/container-platform/4.19/installing/index.html["Instalación de OpenShift Container Platform"] .
+. Verifique la versión de Kubernetes en el clúster OpenShift.
++
+La siguiente imagen muestra OpenShift Cluster v4.19 instalado con Kubernetes v1.32.
+
++
+image:redhat-openshift-ocpv-vgs-001.png["Clúster OpenShift con K8s V1.32"]
+
+. Active FeatureGate para VolumeGroupSnapshot mediante la consola web de OpenShift: navegue a *Administración -> Definiciones de recursos personalizados*.
+. Busque y haga clic en *FeatureGate*.
+. Haga clic en la pestaña *Instancias* y seleccione la instancia *Clúster*.
+. Seleccione la pestaña *YAML* y edite el objeto FeatureGate/cluster para incluir VolumeGroupSnapshot en la lista habilitada bajo *customNoUpgrade*.
++
+image:redhat-openshift-ocpv-vgs-002.png["Habilitar VolumeGroupSnapshot FeatureGate"]
+
+
+
+
+
+== Paso 2: Instalar y configurar Trident 25.06 para instantáneas de grupos de volúmenes
+
+La función Instantánea de grupo de volúmenes solo es compatible con Trident para el protocolo iSCSI en Trident 25.06.  NOTA: Debe instalar Trident versión 25.06.1 para habilitar el protocolo iSCSI en OpenShift Cluster 4.19.
+
+Instale Trident y configure la infraestructura de almacenamiento necesaria para habilitar instantáneas de grupos de volúmenes para sus máquinas virtuales.  Esto incluye configurar una conexión de backend iSCSI a ONTAP, definir clases de almacenamiento para volúmenes persistentes de VM y configurar clases de instantáneas individuales y grupales.
+
+
+NOTE: Se recomienda tener la clase de almacenamiento Trident y la clase de instantánea configuradas como predeterminadas para poder aprovechar el mecanismo rápido FlexCloning de las instantáneas de la imagen dorada al crear nuevas máquinas virtuales.
+
+.Antes de empezar
+* Asegúrese de que Feature Gate esté activado para VolumeGroupSnapshots.
+* Utilice node-prep para instalar herramientas iSCSI.
+
+
+.Pasos
+. Instale Trident usando el siguiente comando:
++
+image:redhat-openshift-ocpv-vgs-003.png["Instalar Trident con iscsi nodeprep"]
+
+. Verifique que los CRD necesarios para VolumeGroupSnapshots estén instalados.
++
+image:redhat-openshift-ocpv-vgs-004.png["CRD requeridos disponibles"]
+
+. Cree el backend iSCSI de Trident utilizando la siguiente definición YAML.
++
+[source, yaml]
+----
+#tbc-iscsi.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tbc-iscsi-secret
+type: Opaque
+stringData:
+  username: admin
+  password: <passwd to log into ONTAP ClI>
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: tbc-iscsi
+spec:
+  version: 1
+  storageDriverName: ontap-san
+  managementLIF: <mgmt-lif>
+  backendName: tbc-iscsi
+  svm: openshift
+  storagePrefix: openshift-iscsi
+  defaults:
+    formatOptions: "-E nodiscard"
+    nameTemplate: "{{ .config.StoragePrefix }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  credentials:
+    name: tbc-iscsi-secret
+----
+. Cree la clase de almacenamiento iSCSI utilizando la siguiente definición YAML.
++
+[source, yaml]
+----
+# sc-iscsi.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-iscsi
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-san"
+  provisioningType: "thin"
+  fsType: ext4
+  snapshots: "true"
+reclaimPolicy: "Delete"
+allowVolumeExpansion: true
+----
+. Cree el objeto VolumeSnapshotClass utilizando la siguiente definición YAML.
++
+[source, yaml]
+----
+# snapshotclass.yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: trident-snapshotclass
+driver: csi.trident.netapp.io
+deletionPolicy: Retain
+----
++
+image:redhat-openshift-ocpv-vgs-005.png["Clase de almacenamiento y clase de instantánea de volumen"]
+
+. Establezca los valores predeterminados para la clase de almacenamiento y VolumeSnapshotClass en el clúster.
++
+[source, cli]
+----
+kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+----
++
+[source, cli]
+----
+kubectl patch volumesnapshotclass <volumesnapshotclass-name> --type=merge -p '{"metadata":{"annotations":{"snapshot.storage.kubernetes.io/is-default-class":"true"}}}'
+----
+. Cree un objeto VolumeGroupSnapshotClass utilizando la siguiente definición YAML.
++
+[source, cli]
+----
+apiVersion: groupsnapshot.storage.k8s.io/v1beta1
+kind: VolumeGroupSnapshotClass
+metadata:
+  name: trident-groupsnapshotclass
+  annotations:
+    kubernetes.io/description: "Trident group snapshot class"
+driver: csi.trident.netapp.io
+deletionPolicy: Delete
+----
++
+image:redhat-openshift-ocpv-vgs-006.png["Clase de instantánea de grupo de volúmenes"]
+
+
+
+
+
+== Paso 3: Instale OpenShift Virtualization y cree una máquina virtual de prueba con varios discos
+
+Instale el operador de virtualización OpenShift para habilitar las capacidades de administración de máquinas virtuales en su clúster.  Después de la instalación, cree una máquina virtual de prueba con varios discos persistentes para demostrar la funcionalidad de instantánea del grupo de volúmenes.
+
+.Pasos
+. Instalar el operador de virtualización OpenShift.
++
+
+NOTE: Esto debe hacerse después de configurar la clase de almacenamiento predeterminada y la clase Snapshot usando Trident para que las imágenes doradas estén disponibles como VolumeSnapshots en el clúster usando Trident CSI.
+
+. Verifique que las imágenes doradas estén en las instantáneas de volumen.
++
+image:redhat-openshift-ocpv-vgs-007.png["Imágenes doradas en instantáneas de volumen"]
+
+. Crear una VM a partir de la plantilla predeterminada.  Agregue 2 discos adicionales para la VM.  (Un disco raíz y 2 discos adicionales).
++
+image:redhat-openshift-ocpv-vgs-008.png["VM con 3 PVC"]
+
+. Verifique los volúmenes correspondientes en el backend de ONTAP .
++
+El volumen del disco raíz es un volumen de clonación flexible de la instantánea con la imagen dorada.  Los otros 2 volúmenes para los 2 discos adicionales de las máquinas virtuales son volúmenes FlexVol .
+
+. Inicie sesión en la máquina virtual mediante la herramienta virtctl.
+. Formatee y monte los 2 discos como se muestra a continuación:
++
+image:redhat-openshift-ocpv-vgs-009.png["Discos de máquina virtual"]
+
+
+
+
+
+== Paso 4: Etiquetar los discos de VM para la protección mediante instantáneas de grupo
+
+Las instantáneas de grupos de volúmenes utilizan selectores de etiquetas para identificar qué PVC pertenecen juntos, lo que garantiza que todos los discos de VM relacionados se capturen simultáneamente en el mismo momento.
+
+.Pasos
+. Etiquete los PVC utilizando la misma clave/valor y verifique.
++
+[source, cli]
+----
+#oc label pvc fedora-vm1 consistencygroup=group1
+persistentvolumeclaim/fedora-vm1 labeled
+# oc label pvc dv-fedora-vm1-disk1-ulsgg2 consistencygroup=group1
+persistentvolumeclaim/dv-fedora-vm1-disk1-ulsgg2 labeled
+# oc label pvc dv-fedora-vm1-disk2-86oq76 consistencygroup=group1
+persistentvolumeclaim/dv-fedora-vm1-disk2-86oq76 labeled
+----
+. Revise las etiquetas de los PVC.
++
+[source, cli]
+----
+# oc get pvc fedora-vm1 -o jsonpath='{.metadata.labels.consistencygroup'}
+group1
+# oc get pvc dv-fedora-vm1-disk1-ulsgg2 -o jsonpath='{.metadata.labels.consistencygroup'}
+group1
+# oc get pvc dv-fedora-vm1-disk2-86oq76 -o jsonpath='{.metadata.labels.consistencygroup'}
+group1
+----
+. Cree un VolumeGroupSnapshot que descubra automáticamente todos los PVC etiquetados utilizando la siguiente definición YAML.
++
+[source, yaml]
+----
+#vgs.yaml
+apiVersion: groupsnapshot.storage.k8s.io/v1beta1
+kind: VolumeGroupSnapshot
+metadata:
+  name: vgs1
+spec:
+  volumeGroupSnapshotClassName: trident-groupsnapshotclass
+  source:
+    selector:
+      matchLabels:
+        consistencygroup: group1
+----
++
+[source, cli]
+----
+# oc create -f vgs1.yaml
+volumegroupsnapshot.groupsnapshot.storage.k8s.io/vgs1 created
+----
++
+image:redhat-openshift-ocpv-vgs-010.png["VGS creado"]
+
++
+.Resultado
+Se creará una instantánea de todas las PVC con el par clave/valor de etiqueta **consistencygroup: group1**.  Trident VolumeGroupSnapshots utiliza el grupo de consistencia ONTAP en el backend de ONTAP .
+
+
+
+
+NOTE: Trident VolumeGroupSnapshots utiliza el grupo de consistencia ONTAP (CG) en el backend de ONTAP .  Si usa la API REST, se crea un CG con todos los volúmenes que pertenecen a la VM (agrupados por las etiquetas), se toma una instantánea de cada volumen de manera consistente y luego se elimina el CG.  Es posible que pueda o no ver el grupo de consistencia que se crea y se elimina en ONTAP, según el momento.
+
+La siguiente imagen muestra el grupo de consistencia creado y luego eliminado en ONTAP:
+
+image:redhat-openshift-ocpv-vgs-011.png["Grupo de consistencia de ONTAP"]
+
+
+
+== Paso 5: Restaurar discos de VM a partir de instantáneas
+
+Este paso valida que las instantáneas puedan recuperar con éxito los datos de la máquina virtual cuando sea necesario.  Supongamos que hemos perdido el `sample.txt` archivo de cada uno de los dos discos de datos.
+
+image:redhat-openshift-ocpv-vgs-012.png["archivos perdidos"]
+
+
+NOTE: Aunque creamos una instantánea de un grupo de volúmenes como una sola unidad, solo podemos restaurar desde una instantánea individual.
+
+Trident proporciona una restauración rápida de volumen en el lugar a partir de una instantánea utilizando *TridentActionSnapshotRestore (TASR) CR*.  Esta CR funciona como una acción imperativa de Kubernetes y no persiste una vez que se completa la operación.
+
+.Pasos
+. Detener la máquina virtual.
+. Restaure el contenido del primer disco/PVC con su instantánea correspondiente usando YAML como se muestra a continuación.
++
+[source, yaml]
+----
+# cat tasr1.yaml
+apiVersion: trident.netapp.io/v1
+kind: TridentActionSnapshotRestore
+metadata:
+  name: trident-snap-disk1
+  namespace: default
+spec:
+  pvcName: dv-fedora-vm1-disk1-ulsgg2
+  volumeSnapshotName: snapshot-4d47c9f45423bfca625a0f1b6c5a5ec456ac59d3e583157be919bb7237317c65
+----
++
+[source, cli]
+----
+# oc create -f tasr1.yaml
+tridentactionsnapshotrestore.trident.netapp.io/trident-snap created
+----
+. De manera similar, cree otro objeto TASR para el segundo disco utilizando el PVC y su instantánea correspondiente.
++
+[source, yaml]
+----
+# cat tasr2.yaml
+apiVersion: trident.netapp.io/v1
+kind: TridentActionSnapshotRestore
+metadata:
+  name: trident-snap-disk2
+  namespace: default
+spec:
+  pvcName: dv-fedora-vm1-disk2-86oq76
+  volumeSnapshotName: snapshot-afb4c4833460e233c4e86f1108c921b86a6f4d0eb182e99e579081ff6f743f56
+----
++
+[source, cli]
+----
+# oc create -f tasr2.yaml
+----
+. Verifique que la operación de restauración muestre el estado exitoso.
++
+image:redhat-openshift-ocpv-vgs-013.png["TASR tuvo éxito"]
+
+. Ahora inicie la máquina virtual, inicie sesión en ella y verifique que el archivo sample.txt esté nuevamente en los discos.
++
+image:redhat-openshift-ocpv-vgs-014.png["instantáneas restauradas"]
+
+

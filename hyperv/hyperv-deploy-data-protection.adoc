@@ -109,7 +109,7 @@ image:hyperv-deploy-014.png["Imagen que muestra la selección de máquinas virtu
 . Haga clic en Guardar.
 
 
-Para conocer los pasos detallados sobre la configuración de la matriz, consultelink:https://documentation.commvault.com/2023e/essential/guided_setup_for_hyper_v.html["Agregar un hipervisor"] .
+Para conocer los pasos detallados sobre la configuración de la matriz, consultelink:https://documentation.commvault.com/2023e/software/guided_setup_for_hyper_v.html["Configuración guiada para HyperV"] .
 
 *Realizar una copia de seguridad:*
 
@@ -145,7 +145,7 @@ image:hyperv-deploy-018.png["Imagen que muestra las opciones para la restauraci�
 
 
 
-Para conocer los pasos detallados para todas las opciones de restauración compatibles, consultelink:https://documentation.commvault.com/2023e/essential/restores_for_hyper_v.html["Restauraciones para Hyper-V"] .
+Para conocer los pasos detallados para todas las opciones de restauración compatibles, consultelink:https://documentation.commvault.com/2023e/software/restores_for_hyper_v.html["Restauraciones para Hyper-V"] .
 
 
 

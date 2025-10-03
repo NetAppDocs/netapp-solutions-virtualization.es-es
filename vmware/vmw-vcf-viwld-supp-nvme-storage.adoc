@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-nvme-storage.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
+summary: 'Configurar el almacenamiento vVols NVMe sobre TCP (NVMe/TCP) en un dominio de carga de trabajo VI.  Implementará herramientas ONTAP , registrará un sistema de almacenamiento, creará un perfil de capacidad de almacenamiento y aprovisionará un almacén de datos vVols en el cliente vSphere.' 
+---
+= Configurar el almacenamiento de vVols NVMe/TCP en un dominio de carga de trabajo VI VCF
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure el almacenamiento vVols NVMe/TCP en un dominio de carga de trabajo de VMware Cloud Foundation VI.  Implementará herramientas ONTAP , registrará un sistema de almacenamiento, creará un perfil de capacidad de almacenamiento y aprovisionará un almacén de datos vVols en el cliente vSphere.
+
+.Pasos
+. En el cliente vSphere, navegue a uno de los hosts ESXi en el clúster del dominio de carga de trabajo. Desde el menú *Acciones*, seleccione *Almacenamiento > Nuevo almacén de datos...*.
++
+image:vmware-vcf-asa-104.png["Agregar adaptador NVMe/TCP"]
+
++
+{nbsp}
+
+. En el asistente *Nuevo almacén de datos*, seleccione *VMFS* como tipo. Haga clic en *Siguiente* para continuar.
+. En la página *Selección de nombre y dispositivo*, proporcione un nombre para el almacén de datos y seleccione el espacio de nombres NVMe de la lista de dispositivos disponibles.
++
+image:vmware-vcf-asa-105.png["Selección de nombre y dispositivo"]
+
++
+{nbsp}
+
+. En la página *Versión VMFS*, seleccione la versión de VMFS para el almacén de datos.
+. En la página *Configuración de partición*, realice los cambios que desee en el esquema de partición predeterminado. Haga clic en *Siguiente* para continuar.
++
+image:vmware-vcf-asa-106.png["Configuración de la partición NVMe"]
+
++
+{nbsp}
+
+. En la página *Listo para completar*, revise el resumen y haga clic en *Finalizar* para crear el almacén de datos.
+. Navegue hasta el nuevo almacén de datos en el inventario y haga clic en la pestaña *Hosts*. Si se configura correctamente, todos los hosts ESXi del clúster deberían aparecer en la lista y tener acceso al nuevo almacén de datos.
++
+image:vmware-vcf-asa-107.png["Hosts conectados al almacén de datos"]
+
++
+{nbsp}
+
+
+
+
+
+== Información adicional
+
+* Para obtener más información sobre cómo configurar SAN para redundancia, consulte lalink:https://docs.netapp.com/us-en/ontap/san-config/index.html["Referencia de configuración de SAN de NetApp"^] .
+* Para obtener información adicional sobre las consideraciones de diseño de NVMe para los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap/nvme/support-limitations.html["Configuración, soporte y limitaciones de NVMe"^] .
+* Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consulte lalink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"^] .
+* Para obtener información sobre la configuración de VCF, consulte lalink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html["Documentación de VMware Cloud Foundation"^] .
+

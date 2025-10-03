@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-viwld-supp-iscsi-vvols-svm-lifs.html 
+keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
+summary: 'Cree una máquina virtual de almacenamiento (SVM) y varias interfaces lógicas (LIF) en un sistema ONTAP para admitir el tráfico iSCSI para almacenes de datos vVols en un dominio de carga de trabajo de VMware Cloud Foundation VI.  Agregará una nueva SVM, habilitará iSCSI, configurará LIF y, opcionalmente, habilitará la cuenta de administración de Storage VM.' 
+---
+= Crear SVM y LIF para almacenes de datos iSCSI vVols en un dominio de carga de trabajo VCF VI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cree una máquina virtual de almacenamiento (SVM) y varias interfaces lógicas (LIF) en un sistema ONTAP para admitir el tráfico iSCSI para almacenes de datos vVols en un dominio de carga de trabajo de VMware Cloud Foundation VI.  Agregará una nueva SVM, habilitará iSCSI, configurará LIF y, opcionalmente, habilitará la cuenta de administración de Storage VM.
+
+Para agregar nuevos LIF a un SVM existente, consulte la documentación de ONTAP :link:https://docs.netapp.com/us-en/ontap/networking/create_a_lif.html["Crear LIF de ONTAP"^] .
+
+.Pasos
+. Desde el Administrador del sistema ONTAP , navegue hasta *Máquinas virtuales de almacenamiento* en el menú de la izquierda y haga clic en *+ Agregar* para comenzar.
++
+image:vmware-vcf-asa-001.png["Haga clic en +Agregar para comenzar a crear SVM"]
+
++
+{nbsp}
+
+. En el asistente *Agregar VM de almacenamiento*, proporcione un *Nombre* para la SVM, seleccione el *Espacio IP* y luego, en *Protocolo de acceso*, haga clic en la pestaña *iSCSI* y marque la casilla para *Habilitar iSCSI*.
++
+image:vmware-vcf-asa-002.png["Asistente para agregar máquinas virtuales de almacenamiento: habilitar iSCSI"]
+
++
+{nbsp}
+
+. En la sección *Interfaz de red*, complete la *Dirección IP*, la *Máscara de subred* y el *Dominio de transmisión y puerto* para el primer LIF. Para los LIF posteriores, puede utilizar configuraciones individuales o activar la casilla de verificación para utilizar configuraciones comunes en todos los LIF restantes.
++
+
+NOTE: Para realizar múltiples rutas y conmutación por error en múltiples rutas, cree un mínimo de dos LIF por nodo de almacenamiento en redes Ethernet separadas para todas las SVM en configuraciones iSCSI.
+
++
+image:vmware-vcf-asa-003.png["Complete la información de la red para LIF"]
+
++
+{nbsp}
+
+. Elija si desea habilitar la cuenta de administración de VM de almacenamiento (para entornos de múltiples inquilinos) y luego haga clic en *Guardar* para crear la SVM.
++
+image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
+
+
+
+
+
+== ¿Que sigue?
+
+Después de crear el SVM y los LIF,link:vmw-vcf-viwld-supp-iscsi-vvols-network.html["Configurar la red para iSCSI en hosts ESXi"] .

@@ -60,7 +60,7 @@ NOTE: Utilice la interfaz lógica SVM FC en la configuración de zona en lugar d
 
 NetApp recomienda múltiples rutas para LUN FC.
 
-Para obtener información completa sobre la configuración del canal de fibra en los sistemas de almacenamiento ONTAP , consulte https://docs.netapp.com/us-en/ontap/san-management/index.html["Gestión de almacenamiento SAN"] en la documentación de ONTAP 9.
+Para obtener información completa sobre la configuración de Fibre Channel en sistemas de almacenamiento ONTAP , consulte https://docs.netapp.com/us-en/ontap/san-management/index.html["Gestión de almacenamiento SAN"] en la documentación de ONTAP 9.
 
 Para obtener más información sobre el uso de VMFS con sistemas de almacenamiento ONTAP , consulte lalink:vmw-vmfs-deploy.html["Guía de implementación para VMFS"] .
 
