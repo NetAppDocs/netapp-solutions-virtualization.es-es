@@ -1,0 +1,146 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-mgmt-fc-conversion.html 
+keywords: netapp, vmware, cloud, foundation, vcf, asa, aff, all-flash, fc, array, ontap tools, otv, sddc, sddc manager, ontap tools, ontap tools 10 
+summary: Convierta un clúster vSphere 8 existente en un dominio de administración VCF 5.2 mediante la herramienta de importación VCF.  Validará el dispositivo vCenter, implementará el administrador SDDC, creará especificaciones de implementación de NSX y realizará la conversión. 
+---
+= Convierta el clúster de vSphere en un dominio de administración de VCF mediante la herramienta de importación de VCF
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Convierta un clúster vSphere 8 existente en un dominio de administración VCF 5.2 mediante la herramienta de importación VCF.  Validará el dispositivo vCenter, implementará el administrador SDDC, creará especificaciones de implementación de NSX y realizará la conversión.
+
+La herramienta de importación VCF de VMware de Broadcom es una utilidad que se utiliza tanto en el dispositivo vCenter como en el administrador SDDC para validar configuraciones y proporcionar servicios de conversión e importación para entornos vSphere y VCF. Para obtener más información, consulte link:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/vcf-import-tool-options-and-parameters-admin.html["Opciones y parámetros de la herramienta de importación VCF"] .
+
+Cuando corresponda, se consultará la documentación de VMware para obtener instrucciones paso a paso.
+
+
+
+== Paso 1: Copie la herramienta de importación VCF y ejecute una comprobación previa
+
+La herramienta de importación de VCF se utiliza en el dispositivo vCenter para validar que el clúster de vSphere se encuentra en un estado correcto para el proceso de importación o conversión de VCF.
+
+.Pasos
+. Copie la herramienta de importación de VCF al dispositivo vCenter de destino siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/copy-the-vcf-import-tool-to-the-target-vcenter-appliance.html["Copiar la herramienta de importación de VCF al dispositivo vCenter de destino"] .
+. Extraiga el paquete utilizando el siguiente comando:
++
+....
+tar -xvf vcf-brownfield-import-<buildnumber>.tar.gz
+....
+. Ejecute la comprobación previa de validación siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/run-a-precheck-on-the-target-vcenter-before-conversion.html["Ejecutar una comprobación previa en el vCenter de destino antes de la conversión"] .
++
+El siguiente ejemplo de salida muestra que el dispositivo vCenter ha pasado la comprobación previa.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::vmware-vcf-import-nfs-011.png[Comprobación previa de la herramienta de importación de VCF]
+
+====
+
+
+
+
+== Paso 2: Implementar SDDC Manager y crear la especificación de implementación de NSX
+
+Implemente el dispositivo SDDC Manager en el mismo clúster vSphere que planea convertir a un dominio de administración de VCF.
+
+.Pasos
+. Implemente el dispositivo SDDC Manager siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/deploy-the-sddc-manager-appliance-on-the-target-vcenter.html["Implementar el dispositivo SDDC Manager en el vCenter de destino"] .
+. Agregue hosts al inventario de SDDC Manager siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-1/commission-hosts.html["Anfitriones de la Comisión"] .
++
+El siguiente es un ejemplo de un archivo JSON para la implementación de NSX.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+....
+{
+  "license_key": "xxxxx-xxxxx-xxxxx-xxxxx-xxxxx",
+  "form_factor": "medium",
+  "admin_password": "************************",
+  "install_bundle_path": "/tmp/vcfimport/bundle-133764.zip",
+  "cluster_ip": "172.21.166.72",
+  "cluster_fqdn": "vcf-m02-nsx01.sddc.netapp.com",
+  "manager_specs": [{
+    "fqdn": "vcf-m02-nsx01a.sddc.netapp.com",
+    "name": "vcf-m02-nsx01a",
+    "ip_address": "172.21.166.73",
+    "gateway": "172.21.166.1",
+    "subnet_mask": "255.255.255.0"
+  },
+  {
+    "fqdn": "vcf-m02-nsx01b.sddc.netapp.com",
+    "name": "vcf-m02-nsx01b",
+    "ip_address": "172.21.166.74",
+    "gateway": "172.21.166.1",
+    "subnet_mask": "255.255.255.0"
+  },
+  {
+    "fqdn": "vcf-m02-nsx01c.sddc.netapp.com",
+    "name": "vcf-m02-nsx01c",
+    "ip_address": "172.21.166.75",
+    "gateway": "172.21.166.1",
+    "subnet_mask": "255.255.255.0"
+  }]
+}
+....
+====
+. Copie el archivo JSON a un directorio en el Administrador SDDC.
++
+
+NOTE: Al implementar un clúster de NSX Manager en una operación de conversión o importación, se utilizan redes NSX-VLAN. Para obtener información sobre las limitaciones de la red NSX-VLAN, consulte https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/considerations-before-converting-or-importing-existing-vsphere-environments-into-vcf-admin.html["Consideraciones antes de convertir o importar entornos vSphere existentes a VMware Cloud Foundation"] .
+
+
+
+
+
+== Paso 3: Cargar software en SDDC Manager
+
+Cargue el paquete de la herramienta de importación VCF y el paquete de implementación de NSX al Administrador de SDDC siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/seed-software-on-sddc-manager.html["Cargue el software necesario en el dispositivo SDDC Manager"] .
+
+Asegúrese de copiar la herramienta de importación VCF y el paquete de implementación de NSX al siguiente directorio en el Administrador de SDDC: `/home/vcf/vcfimport` .
+
+
+
+== Paso 4: Convertir el clúster de vSphere al dominio de administración de VCF
+
+Convierta el clúster de vSphere al dominio de administración de VCF siguiendo las instrucciones de la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/import-workload-domain-into-sddc-manager-inventory.html["Convertir o importar el entorno de vSphere al inventario de SDDC Manager"] .
+
+Utilice el siguiente comando para convertir el clúster de vSphere en un dominio de administración de VCF e implementar el clúster de NSX:
+
+....
+python3 vcf_brownfield.py convert --vcenter '<vcenter-fqdn>' --sso-user '<sso-user>' --domain-name '<wld-domain-name>' --nsx-deployment-spec-path '<nsx-deployment-json-spec-path>'
+....
+Dónde:
+
+* `<vcenter-fqdn>`es el nombre de dominio completo de su servidor vCenter
+* `<sso-user>`es la cuenta de usuario de inicio de sesión único
+* `<wld-domain-name>`es el nombre deseado para su dominio de carga de trabajo
+* `<nsx-deployment-json-spec-path>`es la ruta al archivo JSON de implementación de NSX creado en el paso 2
+
+
+
+TIP: Puede revisar todas las funciones disponibles de la herramienta de importación VCF ejecutando `python3 vcf_brownfield.py --help` desde `/home/vcf/vcf-import-package/vcf-brownfield-import-<version>/vcf-brownfield-toolset` directorio.
+
+
+
+== Paso 5: Agregar licencias a VCF
+
+Después de completar la conversión, se debe agregar la licencia al entorno.
+
+.Pasos
+. Inicie sesión en la interfaz de usuario del Administrador de SDDC.
+. Vaya a *Administración > Licencias* en el panel de navegación.
+. Haga clic en *+ Clave de licencia*.
+. Elija un producto del menú desplegable.
+. Introduzca la clave de licencia.
+. Proporcione una descripción de la licencia.
+. Haga clic en *Agregar*.
+. Repita estos pasos para cada licencia.
+

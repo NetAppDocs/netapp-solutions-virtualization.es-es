@@ -1,0 +1,50 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-mgmt-fc-requirements.html 
+keywords: netapp, vmware, cloud, foundation, vcf, asa, aff, all-flash, fc, array, ontap tools, otv, sddc, sddc manager, ontap tools, ontap tools 10 
+summary: 'Revise los requisitos para convertir un clúster de vSphere 8 con almacenes de datos de Fibre Channel (FC) de NetApp ONTAP a un dominio de administración de VMware Cloud Foundation.' 
+---
+= Requisitos de implementación para convertir instancias de servidor vCenter en dominios de administración VCF con almacenes de datos de canal de fibra
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Revise los requisitos para convertir un clúster de vSphere 8 con almacenes de datos NetApp ONTAP FC a un dominio de administración de VMware Cloud Foundation.
+
+
+
+== Requisitos de infraestructura
+
+Asegúrese de que los siguientes componentes y configuraciones estén en su lugar.
+
+* Sistema de almacenamiento NetApp ASA R2/ ASA/ AFF con una máquina virtual de almacenamiento (SVM) configurada para permitir tráfico FC.
+* Interfaz lógica (LIF) creada para transportar tráfico FC y asociada con la SVM.
+* Zonificación FC configurada en los conmutadores designados para transportar tráfico FC.
+* Un clúster vSphere 8 con 4 hosts ESXi y un dispositivo vCenter ubicado en el clúster.
+* Grupo de puertos distribuidos configurado para vMotion en las VLAN o segmentos de red establecidos para este propósito.
+* Software descargado necesario para la conversión VCF.  Para el software necesario, vaya a https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/download-software-for-converting-or-importing-existing-vsphere-environments-admin.html["Descargar software para convertir o importar entornos vSphere existentes"] .
+* Se cumplen los requisitos previos para las herramientas ONTAP .
++
+Para obtener información completa sobre los requisitos previos para las herramientas ONTAP , consulte https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/deploy/prerequisites.html#system-requirements["Requisitos previos para las ONTAP tools for VMware vSphere"] .
+
++
+Las ONTAP tools for VMware vSphere 10 se pueden instalar en configuraciones HA o no HA.
+
+
+
+
+
+== Recursos adicionales
+
+* Para conocer el almacenamiento compatible y otras consideraciones para convertir o importar vSphere a VCF 5.2, consulte https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/considerations-before-converting-or-importing-existing-vsphere-environments-into-vcf-admin.html["Consideraciones antes de convertir o importar entornos vSphere existentes a VMware Cloud Foundation"] .
+* Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consulte lalink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] .
+* Para obtener información sobre la configuración de VCF, consulte lalink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2.html["Documentación de VMware Cloud Foundation 5.2"] .
+
+
+
+
+== ¿Que sigue?
+
+Después de haber revisado los requisitos de implementación,link:vmw-vcf-mgmt-fc-deploy.html["Implementar herramientas ONTAP y aprovisionar el almacén de datos FC"] .

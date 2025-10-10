@@ -51,12 +51,28 @@ entries:
     url: "/vmware/vmw-vcf-dr-bxp-nfs.html"
   - title: Convertir clústeres de vSphere existentes a VCF
     entries:
-    - title: Acerca de la conversión de clústeres de vSphere existentes a VCF
+    - title: Obtenga información sobre la conversión de clústeres de vSphere
       url: "/vmware/vmw-vcf-migrate.html"
-    - title: Convertir un clúster de vSphere existente con almacenes de datos NFS
-      url: "/vmware/vmw-vcf-mgmt-nfs.html"
-    - title: Convertir un clúster de vSphere existente con almacenes de datos FC
-      url: "/vmware/vmw-vcf-mgmt-fc.html"
+    - title: Convertir un clúster de vSphere con almacenes de datos NFS
+      entries:
+      - title: Flujo de trabajo de implementación
+        url: "/vmware/vmw-vcf-mgmt-nfs.html"
+      - title: Requisitos de revisión
+        url: "/vmware/vmw-vcf-mgmt-nfs-requirements.html"
+      - title: Implementar herramientas ONTAP y aprovisionar un almacén de datos NFS
+        url: "/vmware/vmw-vcf-mgmt-nfs-deploy.html"
+      - title: Convertir clúster de vSphere a VCF
+        url: "/vmware/vmw-vcf-mgmt-nfs-conversion.html"
+    - title: Convertir un clúster de vSphere con almacenes de datos FC
+      entries:
+      - title: Flujo de trabajo de implementación
+        url: "/vmware/vmw-vcf-mgmt-fc.html"
+      - title: Requisitos de revisión
+        url: "/vmware/vmw-vcf-mgmt-fc-requirements.html"
+      - title: Implementar herramientas ONTAP y aprovisionar un almacén de datos FC
+        url: "/vmware/vmw-vcf-mgmt-fc-deploy.html"
+      - title: Convertir clúster de vSphere a VCF
+        url: "/vmware/vmw-vcf-mgmt-fc-conversion.html"
   - title: Aprovisionar VCF con almacenamiento principal
     entries:
     - title: Acerca del aprovisionamiento de almacenamiento principal

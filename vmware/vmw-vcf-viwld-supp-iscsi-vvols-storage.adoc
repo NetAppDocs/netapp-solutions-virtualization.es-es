@@ -25,37 +25,41 @@ Para los dominios de carga de trabajo VI, las herramientas ONTAP se instalan en 
 Las ONTAP tools for VMware vSphere se implementan como un dispositivo de VM y proporcionan una interfaz de usuario vCenter integrada para administrar el almacenamiento de ONTAP .
 
 .Pasos
-. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargar a una carpeta local.
+. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargarlo a una carpeta local.
 . Inicie sesión en el dispositivo vCenter para el dominio de administración de VCF.
 . Desde la interfaz del dispositivo vCenter, haga clic con el botón derecho en el clúster de administración y seleccione *Implementar plantilla OVF…*
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-021.png["Implementar plantilla OVF..."]
 
+====
+. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP que descargó en el paso anterior.
 +
-{nbsp}
-
-. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP descargado en el paso anterior.
-+
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-022.png["Seleccionar archivo OVA"]
 
-+
-{nbsp}
-
+====
 . Para los pasos 2 a 5 del asistente, seleccione un nombre y una carpeta para la máquina virtual, seleccione el recurso informático, revise los detalles y acepte el acuerdo de licencia.
 . Para la ubicación de almacenamiento de los archivos de configuración y de disco, seleccione el almacén de datos vSAN del clúster de dominio de administración de VCF.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-023.png["Seleccionar archivo OVA"]
 
-+
-{nbsp}
-
+====
 . En la página *Seleccionar red*, seleccione la red utilizada para el tráfico de administración.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-024.png["Seleccionar red"]
 
-+
-{nbsp}
-
+====
 . En la página *Personalizar plantilla*, ingrese toda la información requerida:
 +
 ** Contraseña que se utilizará para el acceso administrativo a las herramientas de ONTAP .
@@ -70,12 +74,15 @@ image:vmware-vcf-aff-024.png["Seleccionar red"]
 
 . Haga clic en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-025.png["Personalizar plantilla OTV 1"]
 
-+
 image:vmware-vcf-asa-035.png["Personalizar plantilla OTV 2"]
 
-. Revise toda la información en la página *Listo para completar* y haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
+====
+. Revise toda la información en la página *Listo para completar* y luego haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
 
 
 
@@ -90,26 +97,36 @@ NOTE: vVol requiere credenciales de clúster ONTAP en lugar de credenciales SVM.
 .Pasos
 . En el cliente vSphere, navegue hasta el menú principal y seleccione *Herramientas de NetApp ONTAP *.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-014.png["Navegar a las herramientas de ONTAP"]
 
+====
 . Una vez en *Herramientas ONTAP *, desde la página Primeros pasos (o desde *Sistemas de almacenamiento*), haga clic en *Agregar* para agregar un nuevo sistema de almacenamiento.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-015.png["Agregar sistema de almacenamiento"]
 
-+
-{nbsp}
-
+====
 . Proporcione la dirección IP y las credenciales del sistema de almacenamiento ONTAP y haga clic en *Agregar*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-016.png["Proporcionar IP y credenciales del sistema ONTAP"]
 
-+
-{nbsp}
-
+====
 . Haga clic en *Sí* para autorizar el certificado del clúster y agregar el sistema de almacenamiento.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-017.png["Autorizar certificado de clúster"]
 
+====
 
 
 
@@ -121,33 +138,61 @@ Los perfiles de capacidad de almacenamiento describen las características que o
 .Pasos
 . En las herramientas de ONTAP , seleccione *Perfil de capacidad de almacenamiento* en el menú de la izquierda y luego presione *Crear*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-039.png["Perfil de capacidad de almacenamiento"]
 
+====
 . En el asistente *Crear perfil de capacidad de almacenamiento*, proporcione un nombre y una descripción del perfil y haga clic en *Siguiente*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-asa-010.png["Añadir nombre para SCP"]
 
+====
 . Seleccione el tipo de plataforma y especifique que el sistema de almacenamiento será una matriz SAN All-Flash y configure *Asimétrico* como falso.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-asa-011.png["Plataforma para SCP"]
 
+====
 . Seleccione el protocolo que prefiera o seleccione *Cualquiera* para permitir todos los protocolos posibles.
 . Haga clic en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-asa-012.png["Protocolo para SCP"]
 
+====
 . La página de *rendimiento* permite configurar la calidad del servicio en forma de IOP mínimas y máximas permitidas.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-asa-013.png["Calidad de servicio para SCP"]
 
+====
 . Complete la página de *atributos de almacenamiento* seleccionando la eficiencia del almacenamiento, la reserva de espacio, el cifrado y cualquier política de niveles según sea necesario.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-asa-014.png["Atributos para SCP"]
 
+====
 . Revise el resumen y haga clic en *Finalizar* para crear el perfil.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-040.png["Resumen para SCP"]
 
+====
 
 
 
@@ -159,28 +204,48 @@ Para crear un almacén de datos vVols en las herramientas ONTAP , complete los s
 .Pasos
 . En las herramientas de ONTAP , seleccione *Descripción general* y en la pestaña *Introducción* haga clic en *Aprovisionamiento* para iniciar el asistente.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-041.png["Aprovisionamiento de almacén de datos"]
 
+====
 . En la página *General* del asistente Nuevo almacén de datos, seleccione el centro de datos o el destino del clúster de vSphere.
 . Seleccione * vVols* como el tipo de almacén de datos, ingrese un nombre para el almacén de datos y seleccione *iSCSI* como protocolo.
 . Haga clic en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-042.png["Página general"]
 
+====
 . En la página *Sistema de almacenamiento*, seleccione un perfil de capacidad de almacenamiento, el sistema de almacenamiento y la VM.
 . Haga clic en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-043.png["Sistema de almacenamiento"]
 
+====
 . En la página *Atributos de almacenamiento*, seleccione crear un nuevo volumen para el almacén de datos e ingrese los atributos de almacenamiento del volumen que desea crear.
 . Haga clic en *Agregar* para crear el volumen y luego en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-044.png["Atributos de almacenamiento"]
 
+====
 . Revise el resumen y haga clic en *Finalizar* para iniciar el proceso de creación del almacén de datos vVol.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-045.png["Página de resumen"]
 
+====
 
 
 

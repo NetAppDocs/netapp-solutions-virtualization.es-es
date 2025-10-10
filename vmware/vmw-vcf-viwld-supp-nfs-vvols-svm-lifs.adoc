@@ -20,13 +20,41 @@ Para agregar nuevos LIF a un SVM existente, consulte la documentación de ONTAP 
 
 .Pasos
 . En el Administrador del sistema ONTAP , navegue hasta *Máquinas virtuales de almacenamiento* en el menú de la izquierda y haga clic en *+ Agregar* para comenzar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:vmware-vcf-asa-001.png["Haga clic en Agregar para comenzar a crear SVM"]
+
+====
 . En el asistente *Agregar VM de almacenamiento*, proporcione un *Nombre* para la SVM, seleccione el *Espacio IP* y luego, en *Protocolo de acceso*, haga clic en la pestaña *SMB/CIFS, NFS, S3* y marque la casilla para *Habilitar NFS*.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:vmware-vcf-aff-035.png["Asistente para agregar máquinas virtuales de almacenamiento: habilitar NFS"]
+
+====
 +
 
 TIP: No es necesario marcar la casilla de verificación *Permitir acceso de cliente NFS*.  Se utilizarán ONTAP tools for VMware vSphere para automatizar el proceso de implementación del almacén de datos, que incluye proporcionar acceso de cliente a los hosts ESXi.
 
 . En la sección *Interfaz de red*, complete la *Dirección IP*, la *Máscara de subred* y el *Dominio de transmisión y puerto* para el primer LIF.  Para los LIF posteriores, puede utilizar configuraciones individuales o activar la casilla de verificación para utilizar configuraciones comunes en todos los LIF restantes.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:vmware-vcf-aff-036.png["Complete la información de la red para LIF"]
+
+====
 . Elija si desea habilitar la cuenta de administración de VM de almacenamiento (para entornos de múltiples inquilinos) y haga clic en *Guardar* para crear la SVM.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
+
+====
 
 
 

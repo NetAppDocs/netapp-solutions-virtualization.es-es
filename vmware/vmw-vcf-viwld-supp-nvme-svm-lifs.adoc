@@ -27,18 +27,20 @@ Para agregar nuevos LIF a un SVM existente, consulte la documentación de ONTAP 
 .Pasos
 . Desde el Administrador del sistema ONTAP , navegue hasta *Máquinas virtuales de almacenamiento* en el menú de la izquierda y haga clic en *+ Agregar*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-001.png["Haga clic en +Agregar para comenzar a crear SVM"]
 
-+
-{nbsp}
-
+====
 . En el asistente *Agregar VM de almacenamiento*, ingrese un *Nombre* para la SVM, seleccione el *Espacio IP* y luego, en *Protocolo de acceso*, haga clic en la pestaña *NVMe* y marque la casilla para *Habilitar NVMe/TCP*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-075.png["Asistente para agregar máquinas virtuales de almacenamiento: habilitar NVMe/TCP"]
 
-+
-{nbsp}
-
+====
 . En la sección *Interfaz de red*, ingrese la *dirección IP*, la *Máscara de subred* y el *Dominio de transmisión y puerto* para el primer LIF.  Para los LIF posteriores, puede utilizar configuraciones individuales o activar la casilla de verificación para utilizar configuraciones comunes en todos los LIF restantes.
 +
 
@@ -46,15 +48,21 @@ NOTE: Para realizar múltiples rutas y conmutación por error en múltiples ruta
 
 . Elija si desea habilitar la cuenta de administración de VM de almacenamiento (para entornos de múltiples inquilinos) y haga clic en *Guardar* para crear la SVM.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
 
+====
 
 
 
 
 == Paso 2: Crear el espacio de nombres NVMe
 
-Los espacios de nombres NVMe son análogos a los LUN para iSCSi o FC. Debe crear el espacio de nombres NVMe antes de poder implementar un almacén de datos VMFS desde vSphere Client.  Para crear el espacio de nombres NVMe, obtenga el nombre calificado NVMe (NQN) de cada host ESXi en el clúster.  ONTAP utiliza NQN para proporcionar control de acceso al espacio de nombres.
+Los espacios de nombres NVMe son análogos a los LUN para iSCSi o FC. Debe crear el espacio de nombres NVMe antes de poder implementar un almacén de datos VMFS desde vSphere Client.
+
+Para crear el espacio de nombres NVMe, obtenga el nombre calificado NVMe (NQN) de cada host ESXi en el clúster.  ONTAP utiliza NQN para proporcionar control de acceso al espacio de nombres.
 
 .Pasos
 . Abra una sesión SSH con un host ESXi en el clúster para obtener su NQN.  Utilice el siguiente comando desde la CLI:
@@ -74,18 +82,23 @@ Host NQN: nqn.2014-08.com.netapp.sddc:nvme:vcf-wkld-esx01
 . Registre el NQN para cada host ESXi en el clúster.
 . Desde el Administrador del sistema ONTAP , navegue hasta *Espacios de nombres NVMe* en el menú de la izquierda y haga clic en *+ Agregar* para comenzar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-093.png["Haga clic en +Agregar para crear un espacio de nombres NVMe"]
 
-+
-{nbsp}
-
+====
 . En la página *Agregar espacio de nombres NVMe*, complete un prefijo de nombre, la cantidad de espacios de nombres a crear, el tamaño del espacio de nombres y el sistema operativo host que accederá al espacio de nombres.
 . En la sección *Host NQN*, cree una lista separada por comas de los NQN recopilados previamente de los hosts ESXi que accederán a los espacios de nombres.
 . Haga clic en *Más opciones* para configurar elementos adicionales, como la política de protección de instantáneas.
 . Finalmente, haga clic en *Guardar* para crear el espacio de nombres NVMe.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-093.png["Haga clic en +Agregar para crear un espacio de nombres NVMe"]
 
+====
 
 
 

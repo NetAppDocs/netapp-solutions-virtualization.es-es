@@ -5,24 +5,34 @@
 .Pasos
 . En el cliente vSphere, navegue hasta el menú principal y seleccione *Herramientas de NetApp ONTAP *.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-014.png["Navegar a las herramientas de ONTAP"]
 
+====
 . Una vez en *Herramientas ONTAP *, desde la página Primeros pasos (o desde *Sistemas de almacenamiento*), haga clic en *Agregar* para agregar un nuevo sistema de almacenamiento.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-015.png["Agregar sistema de almacenamiento"]
 
-+
-{nbsp}
-
+====
 . Proporcione la dirección IP y las credenciales del sistema de almacenamiento ONTAP y haga clic en *Agregar*.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-016.png["Proporcionar IP y credenciales del sistema ONTAP"]
 
-+
-{nbsp}
-
+====
 . Haga clic en *Sí* para autorizar el certificado del clúster y agregar el sistema de almacenamiento.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-asa-017.png["Autorizar certificado de clúster"]
 
+====
 

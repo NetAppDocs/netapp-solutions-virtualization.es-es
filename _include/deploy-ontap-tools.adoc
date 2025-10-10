@@ -2,37 +2,41 @@
 :allow-uri-read: 
 
 
-. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargar a una carpeta local.
+. Obtenga la imagen OVA de las herramientas ONTAP desdelink:https://mysupport.netapp.com/site/products/all/details/otv/downloads-tab["Sitio de soporte de NetApp"] y descargarlo a una carpeta local.
 . Inicie sesión en el dispositivo vCenter para el dominio de administración de VCF.
 . Desde la interfaz del dispositivo vCenter, haga clic con el botón derecho en el clúster de administración y seleccione *Implementar plantilla OVF…*
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-021.png["Implementar plantilla OVF..."]
 
+====
+. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP que descargó en el paso anterior.
 +
-{nbsp}
-
-. En el asistente *Implementar plantilla OVF*, haga clic en el botón de opción *Archivo local* y seleccione el archivo OVA de herramientas ONTAP descargado en el paso anterior.
-+
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-022.png["Seleccionar archivo OVA"]
 
-+
-{nbsp}
-
+====
 . Para los pasos 2 a 5 del asistente, seleccione un nombre y una carpeta para la máquina virtual, seleccione el recurso informático, revise los detalles y acepte el acuerdo de licencia.
 . Para la ubicación de almacenamiento de los archivos de configuración y de disco, seleccione el almacén de datos vSAN del clúster de dominio de administración de VCF.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-023.png["Seleccionar archivo OVA"]
 
-+
-{nbsp}
-
+====
 . En la página *Seleccionar red*, seleccione la red utilizada para el tráfico de administración.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-024.png["Seleccionar red"]
 
-+
-{nbsp}
-
+====
 . En la página *Personalizar plantilla*, ingrese toda la información requerida:
 +
 ** Contraseña que se utilizará para el acceso administrativo a las herramientas de ONTAP .
@@ -47,10 +51,13 @@ image:vmware-vcf-aff-024.png["Seleccionar red"]
 
 . Haga clic en *Siguiente* para continuar.
 +
+.Mostrar ejemplo
+[%collapsible]
+====
 image:vmware-vcf-aff-025.png["Personalizar plantilla OTV 1"]
 
-+
 image:vmware-vcf-asa-035.png["Personalizar plantilla OTV 2"]
 
-. Revise toda la información en la página *Listo para completar* y haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
+====
+. Revise toda la información en la página *Listo para completar* y luego haga clic en *Finalizar* para comenzar a implementar el dispositivo de herramientas ONTAP .
 

@@ -14,7 +14,7 @@ summary: Revise los requisitos para agregar un almacén de datos iSCSI como alma
 
 
 [role="lead"]
-Revise los requisitos para agregar almacenes de datos iSCSI como almacenamiento complementario a un dominio de administración de VMware Cloud Foundation (VCF).  Para implementar vVols iSCSI en un dominio de administración de VMware Cloud Foundation, necesita un sistema de almacenamiento ONTAP AFF o ASA completamente configurado y un dominio de administración VCF implementado.
+Revise los requisitos para agregar almacenes de datos iSCSI como almacenamiento complementario a un dominio de administración de VMware Cloud Foundation (VCF).
 
 
 
