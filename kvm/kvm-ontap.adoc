@@ -122,29 +122,32 @@ En esencia, el uso de Libvirt con ONTAP le permite combinar la flexibilidad y es
 
 Los grupos de almacenamiento de tipo dir y netfs son aplicables para el almacenamiento basado en archivos.
 
-[cols="20% 10% 10% 10% 10% 10% 10% 10%"]
+[cols="30%, 10%, 10% ,10%, 10%, 10,% 10%, 10%"]
 |===
-| Protocolo de almacenamiento | director | fs | netfs | lógico | disco | iscsi | iscsi-direct | mpath 
+| Protocolo de almacenamiento | director | fs | netfs | lógico | disco | iscsi 
 
 
-| SMB/CIFS | Sí | No | Sí | No | No | No | No | No 
+| iscsi-direct | mpath | SMB/CIFS | Sí | No | Sí | No 
 
 
-| Sistema Nacional de Archivos | Sí | No | Sí | No | No | No | No | No 
+| No | No | No | No | Sistema Nacional de Archivos | Sí | No 
 |===
 Con netfs, libvirt montará el sistema de archivos y las opciones de montaje admitidas son limitadas.  Con el grupo de almacenamiento de directorios, el montaje del sistema de archivos debe gestionarse externamente en el host. Se puede utilizar fstab o automounter para ese propósito.  Para utilizar el montador automático, es necesario instalar el paquete autofs.  Autofs es particularmente útil para montar recursos compartidos de red a pedido, lo que puede mejorar el rendimiento del sistema y la utilización de recursos en comparación con los montajes estáticos en fstab.  Desmonta automáticamente las acciones después de un período de inactividad.
 
 Según el protocolo de almacenamiento utilizado, valide que los paquetes necesarios estén instalados en el host.
 
-[cols="40% 20% 20% 20%"]
+[cols="40%, 20,% 20%, 20%"]
 |===
-| Protocolo de almacenamiento | Fedora | Debian | Pac-Man 
+| Protocolo de almacenamiento | Fedora | Debian 
 
 
-| SMB/CIFS | cliente samba/utilidades cifs | smbclient/utilidades cifs | smbclient/utilidades cifs 
+| Pac-Man | SMB/CIFS | cliente samba/utilidades cifs 
 
 
-| Sistema Nacional de Archivos | utilidades nfs | nfs-común | utilidades nfs 
+| smbclient/utilidades cifs | smbclient/utilidades cifs | Sistema Nacional de Archivos 
+
+
+| utilidades nfs | nfs-común | utilidades nfs 
 |===
 NFS es una opción popular debido a su soporte nativo y rendimiento en Linux, mientras que SMB es una opción viable para la integración con entornos Microsoft.  Siempre verifique la matriz de soporte antes de usarla en producción.
 
@@ -241,7 +244,7 @@ Un tipo de grupo de directorios a menudo se utiliza sobre un sistema de archivos
 
 Valide que el host tenga instalados los paquetes necesarios según el protocolo de almacenamiento utilizado.
 
-[cols="40% 20% 20% 20%"]
+[cols="40%, 20%, 20%, 20%"]
 |===
 | Protocolo de almacenamiento | Fedora | Debian | Pac-Man 
 

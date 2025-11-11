@@ -132,30 +132,30 @@ En resumen, libvirt proporciona una capa de gestión integral para los aspectos 
 
 Los discos de VM se pueden aprovisionar de forma dinámica en el grupo de almacenamiento o el administrador de almacenamiento puede aprovisionarlos previamente para la VM.  Hay varios tipos de grupos admitidos por libvirt.  Aquí está la lista de tipos de pool aplicables junto con el protocolo de almacenamiento compatible.  La opción más común es dir. Luego, netfs y logical. iscsi e iscsi-direct utilizan un solo destino y no ofrecen tolerancia a fallos. mpath ofrece multitrayecto, pero no asignación dinámica.  Se utiliza más como mapeo de dispositivos sin procesar en vSphere.  Para los protocolos de archivos (NFS/SMB/CIFS), las opciones de montaje se pueden especificar en https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_file_systems/mounting-file-systems-on-demand#the-autofs-service["montador automático"] o se utiliza el tipo fstab y dir pool.  En el caso de protocolos de bloque (iSCSI, FC, NVMe-oF), se utiliza un sistema de archivos compartido como ocfs2 o gfs2.
 
-[cols="20% 10% 10% 10% 10% 10% 10% 10%"]
+[cols="20%, 10%, 10%, 10%, 10%, 10%, 10%, 10%"]
 |===
-| Protocolo de almacenamiento | director | fs | netfs | lógico | disco | iscsi | iscsi-direct | mpath 
+| Protocolo de almacenamiento | director | fs | netfs | lógico | disco | iscsi | iscsi-direct 
 
 
-| SMB/CIFS | Sí | No | Sí | No | No | No | No | No 
+| mpath | SMB/CIFS | Sí | No | Sí | No | No | No 
 
 
-| Sistema Nacional de Archivos | Sí | No | Sí | No | No | No | No | No 
+| No | No | Sistema Nacional de Archivos | Sí | No | Sí | No | No 
 
 
-| iSCSI | Sí | Sí | No | Sí | Sí | Sí | Sí | Sí 
+| No | No | No | iSCSI | Sí | Sí | No | Sí 
 
 
-| FC | Sí | Sí | No | Sí | Sí | No | No | Sí 
+| Sí | Sí | Sí | Sí | FC | Sí | Sí | No 
 
 
-| NVMe-oF | Sí | Sí | No | Sí | Sí | No | No | No^1^ 
+| Sí | Sí | No | No | Sí | NVMe-oF | Sí | Sí 
 |===
 *Notas:* 1 - Es posible que se requiera configuración adicional.
 
 Según el protocolo de almacenamiento utilizado, es necesario que haya paquetes adicionales disponibles en el host.  Aquí está la lista de muestra.
 
-[cols="40% 20% 20% 20%"]
+[cols="40%, 20%, 20%, 20%"]
 |===
 | Protocolo de almacenamiento | Fedora | Debian | Pac-Man 
 

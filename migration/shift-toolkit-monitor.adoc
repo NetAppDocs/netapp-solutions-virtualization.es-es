@@ -1,0 +1,52 @@
+---
+sidebar: sidebar 
+permalink: migration/shift-toolkit-monitor.html 
+keywords: netapp, vmware, esxi, vm, migration, openshift, virtualization, hyper-v, proxmox 
+summary: Utilice el panel de control de supervisión de trabajos de Shift Toolkit para realizar un seguimiento de las operaciones de migración, conversión y diseño en tiempo real, lo que permite a los administradores identificar rápidamente el estado de los trabajos y resolver problemas. 
+---
+= Supervise los trabajos de migración con el panel de control de Shift Toolkit.
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Utilice el panel de control de supervisión de trabajos de Shift Toolkit para realizar un seguimiento de las operaciones de migración, conversión y diseño en tiempo real, lo que le permitirá identificar rápidamente el estado de los trabajos y resolver problemas.
+
+
+
+== Panel de control de seguimiento de trabajos
+
+El panel de control de supervisión de trabajos proporciona una vista centralizada de todas las operaciones activas y completadas dentro del Kit de Herramientas de Turno.  Utilice este panel de control para supervisar el progreso de sus trabajos de migración, conversión y creación de planos.
+
+image::shift-toolkit-190.png[Panel de control de seguimiento de trabajos que muestra los trabajos activos en el Kit de herramientas de turnos.]
+
+El panel de control muestra información clave para cada trabajo:
+
+* Tipo de trabajo (migración, conversión o diseño)
+* Estado actual (en ejecución, correcto, fallido o parcialmente fallido)
+* Indicadores de progreso y porcentaje de finalización
+* Número de máquinas virtuales procesadas
+* Horas de inicio y finalización
+
+
+
+
+== Comprender el estado del trabajo
+
+La interfaz intuitiva permite evaluar rápidamente el estado de todas las operaciones e identificar los trabajos que requieren atención.
+
+image::shift-toolkit-191.png[Detalles del estado del trabajo en el panel de control de Shift Toolkit]
+
+Los indicadores de estado del trabajo te ayudan a comprender el resultado de cada operación:
+
+* *Éxito*: Todas las máquinas virtuales del trabajo se completaron sin errores.
+* *Error*: El trabajo encontró errores y no pudo completarse.
+* *Fallo parcial*: Algunas máquinas virtuales se completaron correctamente, mientras que otras presentaron errores.
+* *En ejecución*: El trabajo está actualmente en curso.
+
+
+Utilice la información de estado para priorizar los esfuerzos de resolución de problemas y garantizar flujos de trabajo de migración sin problemas.

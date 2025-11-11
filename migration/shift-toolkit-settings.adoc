@@ -1,0 +1,349 @@
+---
+sidebar: sidebar 
+permalink: migration/shift-toolkit-settings.html 
+keywords: netapp, vmware, esxi, vm, migration, openshift, virtualization, hyper-v, proxmox 
+summary: Configure los ajustes avanzados en Shift Toolkit para gestionar la autenticación CredSSP, habilitar el registro y la depuración, acceder a las API REST y configurar las notificaciones por correo electrónico para los trabajos de migración. 
+---
+= Configure los ajustes avanzados en el Kit de herramientas de Shift
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure los ajustes avanzados en Shift Toolkit para gestionar la autenticación CredSSP, habilitar el registro y la depuración, acceder a las API REST y configurar las notificaciones por correo electrónico para los trabajos de migración.
+
+Acceda a la configuración avanzada haciendo clic en el icono *Configuración* de la barra de herramientas superior.
+
+image::shift-toolkit-250.png[Icono de configuración en la barra de herramientas de Shift Toolkit]
+
+
+
+== Proveedor de servicios de seguridad de credenciales (CredSSP)
+
+Shift Toolkit utiliza Credential Security Service Provider (CredSSP) para gestionar las transferencias de credenciales durante el proceso de conversión.  El servidor Shift ejecuta scripts en el sistema operativo invitado de la máquina virtual que se está convirtiendo, pasando las credenciales a través de un "doble salto" desde el servidor Shift al sistema operativo invitado a través del servidor Hyper-V.
+
+image::shift-toolkit-251.png[Configuración de CredSSP]
+
+
+
+=== Configure el servidor Shift como un cliente CredSSP.
+
+El asistente de Configuración avanzada configura automáticamente el servidor Shift como cliente CredSSP, lo que le permite delegar credenciales a los servidores Hyper-V.
+
+
+
+==== Entre bastidores
+
+Shift Toolkit ejecuta los siguientes comandos y configuraciones de políticas para configurarse como cliente:
+
+*Comandos ejecutados:*
+
+* `Set-Item WSMan:\localhost\Client\TrustedHosts -Value "fqdn-of-hyper-v-host"`
+* `Enable-WSManCredSSP -Role client -DelegateComputer "fqdn-of-hyper-v-host"`
+
+
+*Directiva de grupo configurada:*
+
+* Configuración del equipo > Plantillas administrativas > Sistema > Delegación de credenciales > Permitir la delegación de credenciales nuevas con autenticación de servidor solo NTLM
++
+Habilita esta política y agrega `wsman/fqdn-of-hyper-v-host` .
+
+
+
+
+
+=== Configure el servidor Hyper-V como un servidor CredSSP.
+
+Utilice el `Enable-WSManCredSSP` Utilice el cmdlet del servidor Hyper-V para configurarlo como servidor CredSSP, lo que le permitirá recibir credenciales del servidor Shift.
+
+.Pasos
+. En el host Hyper-V donde el servidor Shift Toolkit aprovisionará las máquinas virtuales, abra una sesión de Windows PowerShell como administrador.
+. Ejecute los siguientes comandos:
++
+[listing]
+----
+Enable-PSRemoting
+Enable-WSManCredSSP -Role server
+----
+
+
+
+
+== Registro y depuración
+
+El Shift Toolkit incluye un registro predeterminado con un período de retención de 30 días.  El registro se puede cambiar a modo de depuración a petición del soporte técnico para fines de resolución de problemas.
+
+image::shift-toolkit-252.png[Configuración de registro]
+
+
+
+== Pavonearse
+
+La página Swagger en la configuración avanzada le permite interactuar con las API REST de Shift Toolkit.
+
+image::shift-toolkit-253.png[Interfaz de documentación de la API de Swagger]
+
+La API REST de Shift Toolkit proporciona acceso programático a capacidades de migración, conversión y automatización.  Las API están organizadas por flujo de trabajo funcional para ayudarle a encontrar rápidamente los recursos que necesita para tareas específicas.
+
+image::shift-toolkit-254.png[categorías de recursos de la API]
+
+
+
+=== API de autenticación y configuración
+
+Utilice estas API para establecer conexiones, administrar usuarios y configurar la autenticación para el servidor de Shift Toolkit.
+
+*Sesión*
+
+Gestionar la autenticación de usuarios y obtener tokens de autorización para las solicitudes de API:
+
+* Iniciar una sesión
+* Validar una sesión
+* Obtener todos los ID de sesión
+* Finalizar una sesión
+
+
+*Usuario*
+
+Gestionar cuentas de usuario y permisos:
+
+* Agregar un usuario
+* Obtener todos los usuarios
+* Cambiar contraseña de usuario
+* Aceptar EULA
+
+
+*CredSSP*
+
+Configurar el proveedor de servicios de seguridad de credenciales para la delegación de credenciales:
+
+* Habilitar CredSSP
+* Obtener estado de CredSSP
+
+
+*Conector*
+
+Gestionar las conexiones a los componentes de la infraestructura:
+
+* Agregar un conector
+* Obtenga detalles de todos los conectores
+* Actualizar detalles del conector por ID
+* Obtener detalles del conector por ID
+
+
+*Arrendatario*
+
+Gestionar configuraciones multiinquilino:
+
+* Agregar un inquilino
+* Obtén todos los inquilinos
+
+
+
+
+=== API de gestión de infraestructura
+
+Utilice estas API para configurar y descubrir sus entornos de origen y destino.
+
+*Sitio*
+
+Gestionar los sitios de migración y sus entornos virtuales y de almacenamiento asociados:
+
+* Obtén el recuento de sitios
+* Obtenga todos los detalles del sitio
+* Agregar un sitio
+* Obtén detalles del sitio por ID
+* Eliminar un sitio por ID
+* Agregar entorno virtual a un sitio
+* Agregar entorno de almacenamiento a un sitio
+* Obtén detalles del entorno virtual de un sitio
+* Actualizar los detalles del entorno virtual de un sitio
+* Eliminar detalles del entorno virtual para un sitio
+* Obtén detalles del entorno de almacenamiento para un sitio
+* Actualizar los detalles del entorno de almacenamiento para un sitio
+* Eliminar detalles del entorno de almacenamiento para un sitio
+
+
+*Descubrimiento*
+
+Descubra e inventaríe las máquinas virtuales y los recursos en los sitios de origen y destino:
+
+* Descubra el sitio fuente
+* Obtener todas las solicitudes de descubrimiento para el sitio de origen
+* Descubra el sitio de destino
+* Obtener todas las solicitudes de descubrimiento para el sitio de destino
+* Obtenga los pasos de descubrimiento para el sitio de origen por ID
+* Obtenga los pasos de descubrimiento para el sitio objetivo por ID
+
+
+
+
+=== API de administración de máquinas virtuales y recursos
+
+Utilice estas API para inventariar, organizar y administrar las máquinas virtuales y los recursos para la migración.
+
+*VM*
+
+Consultar y administrar máquinas virtuales:
+
+* Obtener máquinas virtuales para un sitio y un entorno virtual en el origen
+* Obtener máquinas virtuales no protegidas para un sitio y un entorno virtual
+* Obtener el recuento de máquinas virtuales
+* Obtener el recuento de máquinas virtuales protegidas
+
+
+*Recurso*
+
+Ver utilización y disponibilidad de recursos:
+
+* Obtenga detalles de recursos para un sitio y un entorno virtual
+* Obtener recuento de recursos del sitio de origen
+
+
+*Grupo de recursos*
+
+Organice las máquinas virtuales en grupos de protección para la migración:
+
+* Obtener el recuento del grupo de protección
+* Obtenga todos los detalles del grupo de protección
+* Agregar un grupo de protección
+* Obtén detalles del grupo de protección por ID
+* Eliminar un grupo de protección por ID
+* Actualizar detalles del grupo de protección por ID
+* Obtener máquinas virtuales de un grupo de protección por ID
+* Obtenga planos que contengan el grupo de protección
+
+
+
+
+=== API de migración y recuperación
+
+Utilice estas API para ejecutar migraciones, supervisar el cumplimiento y gestionar las operaciones de recuperación.
+
+*Cianotipo*
+
+Definir y gestionar los planes de migración:
+
+* Obtén el recuento de planos
+* Obtenga todos los detalles del plano
+* Añadir un plano
+* Obtenga detalles del plano por ID
+* Eliminar plano por ID
+* Actualizar detalles del plano para ID
+* Obtener máquinas virtuales de un plano
+* Obtener el estado de energía de las máquinas virtuales presentes en el plano
+
+
+*Cumplimiento*
+
+Verifique la preparación y la compatibilidad antes de la migración:
+
+* Obtener el resultado de la verificación de cumplimiento de un plano
+* Obtener el estado final de la verificación de cumplimiento de un plano
+* Agregar verificación de cumplimiento bajo demanda para un plano
+
+
+*Ejecución*
+
+Supervisar la ejecución de las tareas de migración y conversión:
+
+* Obtenga todos los detalles de la ejecución
+* Obtener detalles de la ejecución en curso
+* Obtener recuento de ejecuciones
+* Obtener recuento de ejecuciones en curso
+* Obtenga los pasos para la ejecución del ID
+
+
+*Recuperación*
+
+Ejecutar y gestionar las operaciones de migración y recuperación:
+
+* Agregar nueva solicitud de ejecución para un plano
+* Agregar solicitud de reintento de ejecución para un plano
+* Obtener el estado de ejecución de todos los planos
+* Obtener el estado de ejecución para el ID del plano
+
+
+
+
+=== API de automatización
+
+Utilice estas API para extender y automatizar la funcionalidad de Shift Toolkit.
+
+*Bloque de guión*
+
+Acceder y ejecutar scripts de automatización:
+
+* Obtener todos los metadatos de los scripts
+* Obtener metadatos del script por ID
+* Obtener todos los metadatos de actualización
+* Ejecutar script
+
+
+
+
+== Bloques de script y automatización
+
+El bloque de scripts del Shift Toolkit proporciona código de ejemplo para ayudarle a automatizar, integrar y desarrollar funciones utilizando API internas y externas.  Explore y descargue ejemplos en la sección Ejemplos de código, escritos por el equipo de automatización de Shift Toolkit y miembros de la comunidad.  Utilice estos ejemplos para comenzar con tareas de automatización, gestión o integración.
+
+image::shift-toolkit-255.png[Interfaz de bloque de script]
+
+image::shift-toolkit-256.png[Ejemplos de código disponibles]
+
+El siguiente ejemplo muestra un script de PowerShell que elimina un trabajo específico dentro de la interfaz de usuario de Shift Toolkit.  Si bien esta funcionalidad no está disponible a través del flujo de trabajo estándar, se puede lograr utilizando el bloque de script.  El script también está disponible como un script por lotes que se puede descargar y ejecutar fácilmente.
+
+image::shift-toolkit-257.png[Ejemplo de script de PowerShell para la eliminación de un trabajo]
+
+El objetivo de este bloque de scripts es proporcionar scripts de ejemplo para el día 0 y las operaciones en curso en hipervisores específicos utilizando las API de Shift Toolkit y las API publicadas del hipervisor correspondiente.
+
+El objetivo de este bloque de scripts es proporcionar scripts de ejemplo para el día 0 y las operaciones en curso en hipervisores específicos utilizando las API de Shift Toolkit y las API publicadas del hipervisor correspondiente.
+
+
+
+== Notificaciones y alertas por correo electrónico
+
+Configure las notificaciones por correo electrónico para enviar alertas sobre trabajos de detección, conversión o migración a los destinatarios especificados.  Las notificaciones de la interfaz de usuario (alertas dentro de la interfaz) también están disponibles y se almacenan durante 7 días.
+
+Acceda a la configuración de notificaciones por correo electrónico desde Configuración > Configuración de la plataforma > Configuración de correo electrónico.
+
+.Pasos
+. Inicie sesión en la interfaz de usuario de Shift Toolkit.
+. Navegue a Configuración > Configuración de la plataforma.
+. Seleccione Notificaciones por correo electrónico y actualice los detalles SMTP:
++
+** dirección del servidor SMTP
+** Puerto
+** Nombre de usuario
+** Password
+
+
+. Actualice el campo del destinatario y seleccione los eventos de las categorías disponibles.
+. Haga clic en *Aplicar*.
+
+
+image::shift-toolkit-258.png[Configuración de notificaciones por correo electrónico]
+
+La captura de pantalla muestra el desglose de cada categoría de notificación y evento.
+
+
+NOTE: En esta versión, la notificación por correo electrónico utiliza la autenticación SMTP básica y SendGrid.  Una futura versión admitirá la autenticación moderna.
+
+
+NOTE: En esta versión, la notificación por correo electrónico utiliza la autenticación SMTP básica y SendGrid.  Una futura versión admitirá la autenticación moderna.
+
+
+
+== Capacidades de aborto y reversión
+
+Shift Toolkit ofrece la opción de cancelar un trabajo en ejecución en cualquier paso del flujo de trabajo.  Cuando se cancela un trabajo, todos los componentes huérfanos se eliminan automáticamente, incluyendo:
+
+* Apagar las máquinas virtuales en el hipervisor si estaban encendidas.
+* Eliminando entradas de disco del qtree correspondiente
+* Eliminación de reclamaciones de volumen persistentes (PVC)
+
+
+Dado que Shift Toolkit no modifica la máquina virtual de origen de ninguna manera, la reversión es sencilla: basta con encender la máquina virtual de origen.  No se requieren otras acciones de reversión.
