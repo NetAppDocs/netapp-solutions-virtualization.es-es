@@ -26,7 +26,6 @@ El Shift Toolkit proporciona flexibilidad en entornos multihipervisor al admitir
 * link:shift-toolkit-migrate-hyperv2esxi.html["Microsoft Hyper-V a VMware ESXi"]
 * link:shift-toolkit-migrate-esxi2olvm.html["VMware ESXi a Oracle Linux Virtualization Manager (OLVM)"]
 * link:shift-toolkit-migrate-esxi2osv.html["Virtualización de VMware ESXi a Red Hat OpenShift"]
-* link:shift-toolkit-migrate-esxi2osv.html["Virtualización de VMware ESXi a Red Hat OpenShift"]
 
 
 
@@ -45,22 +44,6 @@ El Shift Toolkit realiza los siguientes pasos durante la migración:
 . Registrar las redes en cada máquina virtual
 . Elimine VMware Tools y asigne direcciones IP mediante scripts de activación o tareas cron, según el tipo de sistema operativo.
 
-
-
-
-== Prerrequisitos
-
-Las máquinas virtuales deben apagarse correctamente durante la ventana de mantenimiento planificada.  Antes de iniciar la migración, verifique que se cumplen todos los requisitos previos:
-
-* Asegúrese de que la máquina virtual de Shift Toolkit forme parte del dominio
-* Asegúrese de que el recurso compartido CIFS esté configurado con los permisos adecuados
-* Verifique que el qtree utilizado para la migración o conversión tenga el estilo de seguridad correcto.
-* Pruebe la creación de máquinas virtuales mediante el Administrador de Hyper-V desde cualquier host Hyper-V del clúster y coloque el VHDx en el recurso compartido CIFS.
-* Pruebe la creación de máquinas virtuales a partir de la máquina virtual de Shift Toolkit agregando herramientas de administración de Hyper-V mediante Programas y características o PowerShell: `add-windowsfeature rsat-hyper-v-tools`
-
-
-
-NOTE: Si hay fallos,link:https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/manage/remotely-manage-hyper-v-hosts["Habilitar la delegación utilizando cualquier protocolo de autenticación"] .
 
 
 
