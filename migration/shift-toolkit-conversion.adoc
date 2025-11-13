@@ -40,7 +40,8 @@ Para convertir los discos virtuales al formato QCOW2 con el kit de herramientas 
 
 * Cree un tipo de sitio de destino especificando KVM (solo conversión) como hipervisor.
 +
-Nota: Los detalles del hipervisor no son necesarios para KVM.
+
+NOTE: Los detalles del hipervisor no son necesarios para KVM.
 
 +
 image::shift-toolkit-150.png[Diálogo para el paso de creación del sitio de destino]
@@ -92,7 +93,8 @@ image::shift-toolkit-162.png[Diálogo para el paso de conversión manual del dis
 
 
 
-Nota: El kit de herramientas Shift admite conversiones de disco únicamente para el formato qcow2. No admite la creación ni el registro de máquinas virtuales. Para utilizar el disco convertido, cree manualmente la VM y adjunte el disco.
+
+NOTE: El kit de herramientas Shift admite conversiones de disco solo para el formato qcow2. No admite la creación ni el registro de máquinas virtuales. Para utilizar el disco convertido, cree manualmente la VM y adjunte el disco.
 
 
 
@@ -126,7 +128,8 @@ image::shift-toolkit-168.png[Diálogo para el paso de conversión]
 
 
 
-Nota: Para usar el disco VHDX convertido en una máquina virtual, la máquina virtual debe crearse manualmente a través del administrador de Hyper-V o comandos de PowerShell, y el disco debe conectarse a ella. Además de esto, la red también debe mapearse manualmente.
+
+NOTE: Para utilizar el disco VHDX convertido en una máquina virtual, la máquina virtual debe crearse manualmente a través del administrador de Hyper-V o comandos de PowerShell, y el disco debe estar conectado a ella. Además de esto, la red también debe mapearse manualmente.
 
 
 
@@ -162,16 +165,19 @@ image::shift-toolkit-174.png[Diálogo para el paso de conversión]
 ** Para OpenShift, importe el volumen como PVC utilizando tridentctl y luego cree la máquina virtual utilizando los discos importados.
 ** Para OLVM, diríjase a la URL del motor ovirt y cree una nueva máquina virtual adjuntando el archivo RAW convertido por Shift toolkit como disco del sistema operativo.  Asegúrese de seleccionar la interfaz adecuada.
 +
-Nota: Para OLVM, también se puede utilizar el formato de archivo qcow2.  Esta selección puede realizarse durante la creación del plano.
+
+NOTE: Para OLVM, también se puede utilizar el formato de archivo qcow2. Esta selección puede realizarse durante la creación del plano.
 
 +
 image::shift-toolkit-175.png[Diálogo para el paso del plan de conversión de edición]
 
 +
-Nota: Para usar la imagen de disco RAW convertida en una máquina virtual, la máquina virtual debe crearse manualmente a través de la consola de OpenShift o comandos OC a través de YAML para OpenShift o utilizando las API/interfaz de usuario REST de OLVM para OLVM, y el disco debe estar conectado a ella. Además de esto, la red también debe mapearse manualmente.
+
+NOTE: Para utilizar la imagen de disco RAW convertida en una máquina virtual, la máquina virtual debe crearse manualmente a través de la consola de OpenShift o mediante comandos OC a través de YAML para OpenShift o utilizando las API/interfaz de usuario REST de OLVM para OLVM, y el disco debe conectarse a ella. Además de esto, la red también debe mapearse manualmente.
 
 +
-Nota: Asegúrese de especificar el tipo de arranque adecuado (EFI o BIOS) al crear manualmente la máquina virtual.
+
+NOTE: Asegúrese de especificar el tipo de arranque adecuado (EFI o BIOS) al crear manualmente la máquina virtual.
 
 
 
