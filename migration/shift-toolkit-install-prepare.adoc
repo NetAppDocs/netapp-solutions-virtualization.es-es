@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: migration/shift-toolkit-install-prepare.html 
+keywords: netapp, vmware, esxi, vm, migration, openshift, virtualization, hyper-v, proxmox, install, shift, toolkit 
+summary: Prepárese para instalar NetApp Shift Toolkit asegurándose de que su entorno cumpla con los requisitos previos y seleccionando el paquete de instalación adecuado para su escenario de implementación. 
+---
+= Prepárese para instalar el NetApp Shift Toolkit para almacenamiento ONTAP
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Prepárese para instalar NetApp Shift Toolkit asegurándose de que su entorno cumpla con los requisitos previos y seleccionando el paquete de instalación adecuado para su escenario de implementación.
+
+
+
+== Antes de empezar
+
+Verifique que su entorno cumple con los siguientes requisitos:
+
+* Windows Server 2019, 2022 o 2025
+* Máquina virtual dedicada para la instalación de Shift Toolkit
+* Conectividad de red entre entornos de origen y destino
+* Máquina virtual que se ejecuta en VMware vSphere o Microsoft Hyper-V
+
+
+
+NOTE: Instale Shift Toolkit en una máquina virtual dedicada para habilitar la administración de múltiples hipervisores de origen y destino desde un único servidor.
+
+
+
+== Seleccione un paquete de instalación
+
+El Shift Toolkit está disponible en dos paquetes de instalación de link:https://mysupport.netapp.com/site/tools/tool-eula/netapp-shift-toolkit["Caja de herramientas de NetApp"]:
+
+*Instalador en línea (~130 MB)*
+
+* Descarga e instala los requisitos previos de Internet durante la instalación.
+* Requiere conexión a internet durante la instalación.
+* Tamaño de paquete más pequeño para una descarga más rápida
+
+
+*Instalador sin conexión (~1,2 GB)*
+
+* Incluye todos los requisitos previos incluidos en el paquete.
+* Admite la instalación en máquinas virtuales sin acceso a internet.
+* No se requiere configuración de proxy
+* Proporciona mayor control sobre el proceso de instalación.
+
+
+image::shift-toolkit-010.png[Opciones del paquete de instalación de Shift Toolkit]
+
+
+TIP: Utilice el instalador sin conexión para entornos aislados físicamente o cuando necesite un control completo sobre el proceso de instalación sin dependencias externas.
