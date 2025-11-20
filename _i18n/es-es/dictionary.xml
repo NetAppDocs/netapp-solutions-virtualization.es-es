@@ -831,7 +831,6 @@
   <block id="a7e944e3b289a0cc40fa523d2f309b3d" category="list-text">Protección autónoma contra ransomware.</block>
   <block id="e349d95af5f86ccf74a9346800e3f55d" category="list-text">Análisis del sistema de archivos.</block>
   <block id="54d1b3917151f3d89ddbd7aef9f811dd" category="paragraph">*SAN*</block>
-  <block id="3f1ebac34c257ad0e2052f6fe693b898" category="list-text">Extienda el clúster a través de dominios de falla con la sincronización activa de SnapMirror .</block>
   <block id="b307eeff4972f33ddee68641c599e7fd" category="list-text">Los modelos ASA proporcionan multirruta activa/activa y conmutación por error de ruta rápida.</block>
   <block id="717b83d4b077b1876a8833779607ac19" category="list-text">Soporte para protocolos FC, iSCSI, NVMe-oF.</block>
   <block id="f7c9512e8b2751806d55c35032ad9c1b" category="list-text">Soporte para autenticación mutua iSCSI CHAP.</block>
@@ -2572,12 +2571,6 @@
   <block id="806aaadb95e3a8393823ebee62a2be27" category="list-text">Complete los detalles. Después de proporcionar la información del servidor, las exportaciones NFS deben completarse y seleccionarse de la lista.  Recuerde seleccionar las opciones de contenido.</block>
   <block id="b6713e4a099d16458859b6f724dd584f" category="inline-image-macro">Adición de almacenamiento NFS</block>
   <block id="9f359905197ffa4ab648a9185a236838" category="paragraph"><block ref="9f359905197ffa4ab648a9185a236838" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="089679585327c9a752c54982a68a19e1" category="list-text">Para la troncalización de sesiones, en todos los hosts de Proxmox VE, actualice el archivo /etc/fstab para montar la misma exportación NFS usando una dirección lif diferente junto con la opción max_connect y la versión NFS.</block>
-  <block id="e0368c95980a497a397d1ba864ef07c6" category="inline-image-macro">Entradas fstab para el tronco de la sesión</block>
-  <block id="310cfc3952419b0bce4cefdb2dd56f4b" category="paragraph"><block ref="310cfc3952419b0bce4cefdb2dd56f4b" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="56210fc6ca5cd165a3679bdc3f9aed5b" category="list-text">Aquí está el contenido en /etc/pve/storage.cfg para NFS.</block>
-  <block id="b53457dfc571fe98017812a0f84ef394" category="inline-image-macro">archivo de configuración de almacenamiento para NFS</block>
-  <block id="82de9417812917d25da3862eb8206ebb" category="paragraph"><block ref="82de9417812917d25da3862eb8206ebb" category="inline-image-macro-rx" type="image"></block></block>
   <block id="21b3bf9403041f9d09b0e69368b9b151" category="section-title">LVM con iSCSI</block>
   <block id="37eed020511d831c82db16bf1a62cce6" category="video-title">Pool compartido de LVM con iSCSI mediante ONTAP</block>
   <block id="ab39921a24a29c2606bf32bd0ebece00" category="paragraph">Para configurar el Administrador de volúmenes lógicos para el almacenamiento compartido entre hosts Proxmox, complete las siguientes tareas:</block>
@@ -8322,4 +8315,6 @@
   <block id="f76aaf3aaa7b30238e7a3e2b1a04493b" category="sidebar">Prepárese para instalar</block>
   <block id="beec6318942ca08bdda507299633ce3d" category="sidebar">Revisar los requisitos de instalación</block>
   <block id="b6eec573aa3c42f73db5c0d756b8af5a" category="sidebar">Instalar o actualizar Shift Toolkit</block>
+  <block id="752e67a6b4916807acf40a3d0f4d607d" category="list-text">Extienda el clúster a través de dominios de falla con la sincronización activa de SnapMirror . Siempre verifique<block ref="8d006c87830f7172fd7400f1c17c0928" category="inline-link-rx"></block> para configuraciones compatibles.</block>
+  <block id="0fa5490665357157f44ef8e560981bff" category="list-text">Para habilitar la opción nConnect, vaya a la shell en cualquiera de los nodos del clúster y escriba pvesm set pvenfs01 --options nconnect=4 donde pvenfs01 es el ID de almacenamiento creado en el paso anterior. Tenga en cuenta que si planea usar la función de trunking, asegúrese de usar al menos NFS v4.1 y configure la opción trunkdiscovery. pvesm set pvenfs01 --options vers=4.1,trunkdiscovery</block>
 </blocks>

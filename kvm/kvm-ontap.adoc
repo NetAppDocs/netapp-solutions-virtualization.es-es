@@ -63,7 +63,7 @@ Los hosts KVM deben tener FC, Ethernet u otras interfaces compatibles conectadas
 
 *SAN*
 
-* Extienda el clúster a través de dominios de falla con la sincronización activa de SnapMirror .
+* Extienda el clúster a través de dominios de falla con la sincronización activa de SnapMirror . Siempre verifique https://mysupport.netapp.com/matrix/#welcome["Herramienta de matriz de interoperabilidad"] para configuraciones compatibles.
 * Los modelos ASA proporcionan multirruta activa/activa y conmutación por error de ruta rápida.
 * Soporte para protocolos FC, iSCSI, NVMe-oF.
 * Soporte para autenticación mutua iSCSI CHAP.
