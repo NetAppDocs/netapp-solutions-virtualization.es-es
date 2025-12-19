@@ -30,8 +30,8 @@ indexpage:
       url: vmw-vcf-deployment.html
     - title: Proteja las cargas de trabajo de VCF con SnapCenter
       url: vmw-vcf-protect-sc.html
-    - title: Proteja los almacenes de datos de VMware con BlueXP
-      url: vmw-vcf-disaster-recovery.html
+    - title: Proteja los almacenes de datos de VMware con NetApp Disaster Recovery
+      url: vmw-vcf-disaster-recovery-nfs.html
     - title: Integrar la alta disponibilidad de ONTAP con vMSC
       url: vmw-vcf-protect-vmsc.html
     - title: Proteger y recuperar datos contra ransomware

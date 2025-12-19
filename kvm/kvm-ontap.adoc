@@ -39,7 +39,7 @@ Los hosts KVM deben tener FC, Ethernet u otras interfaces compatibles conectadas
 * Bloqueo de copia de instantáneas a prueba de manipulaciones
 * Soporte de cifrado
 * FabricPool para organizar datos fríos en un almacén de objetos.
-* Integración de BlueXP y Data Infrastructure Insights .
+* Integración de NetApp Console y Data Infrastructure Insights .
 * Transferencia de datos descargada por Microsoft (ODX)
 
 

@@ -425,7 +425,7 @@ Al integrarse con servicios 1P impulsados por NetApp en cada hiperescalar, las o
 
 === Recuperación ante desastres entre sitios locales
 
-Para más detalles, visitelink:https://docs.netapp.com/us-en/netapp-solutions-cloud/vmware/vmw-hybrid-dr-vmfs.html["Recuperación ante desastres con BlueXP DRaaS para almacenes de datos VMFS"^]
+Para más detalles, visite link:https://docs.netapp.com/us-en/netapp-solutions-cloud/vmware/vmw-hybrid-dr-vmfs.html["NetApp Disaster Recovery para almacenes de datos VMFS"^]
 
 
 

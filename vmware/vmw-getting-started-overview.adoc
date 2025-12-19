@@ -73,7 +73,7 @@ Las características clave de continuidad empresarial de ONTAP incluyen:
 ** Replicación de datos con SnapMirror: aprovechando las copias instantáneas, SnapMirror permite la replicación asincrónica y sincrónica de datos en sitios remotos o entornos de nube para la recuperación ante desastres.
 ** MetroCluster: la tecnología MetroCluster de ONTAP proporciona replicación sincrónica entre sitios separados geográficamente, lo que garantiza cero pérdida de datos y una recuperación rápida en caso de una falla del sitio.
 ** Niveles en la nube: los niveles en la nube identifican automáticamente los datos fríos (datos a los que se accede con poca frecuencia) en el almacenamiento principal y los mueven a un almacenamiento de objetos de menor costo, ya sea en la nube o en las instalaciones.
-** BlueXP DRaaS: BlueXP Disaster Recovery as a Service (DRaaS) de NetApp es una solución integral diseñada para brindar sólidas capacidades de recuperación ante desastres para las empresas, garantizando la protección de datos, una recuperación rápida y la continuidad del negocio en caso de desastre.
+** NetApp Disaster Recovery: NetApp Disaster Recovery es una solución integral diseñada para brindar sólidas capacidades de recuperación ante desastres para las empresas, garantizando la protección de datos, una recuperación rápida y la continuidad del negocio en caso de desastre.
 
 
 

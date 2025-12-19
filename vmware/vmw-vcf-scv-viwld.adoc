@@ -49,7 +49,7 @@ Este escenario requiere los siguientes componentes y configuraciones:
 Para obtener información sobre cómo configurar almacenes de datos VMFS iSCSI como almacenamiento complementario, consultelink:vmw-vcf-mgmt-supplemental-iscsi.html["*iSCSI como almacenamiento complementario para dominios de administración que utilizan herramientas ONTAP para VMware*"] en esta documentación.  El proceso para usar OTV para implementar almacenes de datos es idéntico para los dominios de administración y carga de trabajo.
 
 
-TIP: Además de replicar copias de seguridad realizadas con SCV en un almacenamiento secundario, se pueden realizar copias de seguridad externas de datos en un almacenamiento de objetos en uno de los tres (3) proveedores de nube líderes que utilizan la BlueXP backup and recovery NetApp BlueXP para máquinas virtuales.  Para obtener más información consulte la solución.link:vmw-vcf-321-data-protection.html["Protección de datos 3-2-1 para VMware con complemento SnapCenter y BlueXP backup and recovery para máquinas virtuales"] .
+TIP: Además de replicar copias de seguridad realizadas con SCV en un almacenamiento secundario, se pueden realizar copias de datos externas en un almacenamiento de objetos en uno de los tres (3) proveedores de nube líderes que utilizan NetApp Backup and Recovery para máquinas virtuales. Para obtener más información consulte esta oferta.link:https://docs.netapp.com/us-en/data-services-backup-recovery/index.html["Documentación de NetApp Backup and Recovery"] .
 
 image:vmware-vcf-asa-108.png["Estrategia de respaldo 3-2-1"]
 

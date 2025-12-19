@@ -51,7 +51,7 @@ Esta solución utiliza los siguientes componentes:
 
 . Matriz SAN All-Flash A400 de NetApp con ONTAP 9.13.
 . Clúster VMware vSphere 8.0.
-. Cuenta NetApp BlueXP .
+. Cuenta de NetApp Console .
 . Software de unidad de adquisición de Data Infrastructure Insights de NetApp instalado en una máquina virtual local con conectividad de red a activos para la recopilación de datos.
 
 
@@ -253,6 +253,7 @@ Esta solución fue diseñada como una introducción para aprender cómo comenzar
 
 Para conocer más sobre las tecnologías presentadas en esta solución consulte la siguiente información adicional.
 
-* https://bluexp.netapp.com/cloud-insights["Página de inicio de NetApp BlueXP y Data Infrastructure Insights"]
+* https://www.netapp.com/console/["Página de inicio de la NetApp Console"]
+* https://www.netapp.com/data-infrastructure-insights/["Página de inicio de NetApp Data Infrastructure Insights"]
 * https://docs.netapp.com/us-en/data-infrastructure-insights/index.html/["Documentación de NetApp Data Infrastructure Insights"]
 

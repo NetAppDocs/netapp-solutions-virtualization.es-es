@@ -88,7 +88,7 @@ Con una ruta activa-activa, tanto las adquisiciones planificadas como las no pla
 
 Para más información véase https://www.netapp.com/pdf.html?item=/media/85671-tr-4968.pdf["TR-4968, matriz All-SAS de NetApp : disponibilidad e integridad de los datos con NetApp ASA"] . {nbsp}
 
-Para obtener información detallada, consulte la https://www.netapp.com/data-storage/all-flash-san-storage-array["Página de inicio de NetApp ASA"] . {nbsp}
+Para obtener información detallada, consulte la https://www.netapp.com/asa/["Página de inicio de NetApp ASA"]. {nbsp}
 
 
 

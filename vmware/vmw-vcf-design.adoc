@@ -100,7 +100,7 @@ Este diseño está destinado a clientes que ofrecen servicios similares a la nub
 
 Para los almacenes de datos VMFS, la sincronización activa de SnapMirror proporciona una unidad de almacenamiento activa-activa para usar con vSphere Metro Storage Cluster.  El modo de acceso uniforme ofrece conmutación por error de almacenamiento transparente, mientras que el modo de acceso no uniforme requiere que la máquina virtual se reinicie en caso de falla del dominio de falla.
 
-Para los almacenes de datos NFS, ONTAP MetroCluster con vSphere Metro Storage Cluster garantiza una alta disponibilidad.  Un mediador evita escenarios de cerebro dividido y ahora puede alojarse en BlueXP.
+Para los almacenes de datos NFS, ONTAP MetroCluster con vSphere Metro Storage Cluster garantiza una alta disponibilidad. Un mediador evita escenarios de división de cerebro y ahora puede alojarse en NetApp Console.
 
 Las reglas de ubicación de máquinas virtuales controlan las máquinas virtuales dentro del mismo dominio de falla para los componentes del dominio de administración.
 
@@ -108,9 +108,9 @@ image::vmw-vcf-design-003.png[Flota VCF con múltiples sitios en una sola regió
 
 Las herramientas ONTAP proporcionan una interfaz de usuario para configurar las relaciones de sincronización activa de SnapMirror .  Los sistemas de almacenamiento de ambos dominios de falla deben estar registrados en las herramientas de ONTAP y en el SnapCenter Plug-in for VMware vSphere.
 
-Puede implementar políticas de respaldo 3-2-1 utilizando BlueXP Backup and Recovery para VM a través de SnapMirror y SnapMirror to Cloud.  Puede realizar restauraciones desde cualquiera de las tres ubicaciones.
+Puede implementar políticas de respaldo 3-2-1 utilizando NetApp Backup and Recovery para máquinas virtuales a través de SnapMirror y SnapMirror to Cloud. Puede realizar restauraciones desde cualquiera de las tres ubicaciones.
 
-Trident Protect o BlueXP Backup and Recovery para Kubernetes protegen las aplicaciones del clúster VKS.
+Trident Protect o NetApp Backup and Recovery para Kubernetes protegen las aplicaciones del clúster VKS.
 
 Para más información, consulte lalink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/design/blueprints/vsphere-only-to-vcf-fleet-upgrade-blueprint.html["Documentación técnica de Broadcom sobre la flota VCF con varios sitios en una sola región"] .
 
@@ -120,7 +120,7 @@ Para más información, consulte lalink:https://techdocs.broadcom.com/us/en/vmwa
 
 Este diseño está dirigido a clientes distribuidos globalmente, que brindan servicios de proximidad y soluciones de recuperación ante desastres.
 
-Puede administrar la recuperación ante desastres de las máquinas virtuales con VMware Live Site Recovery o BlueXP Disaster Recovery como servicio.  Las herramientas ONTAP ofrecen el SRA (Adaptador de replicación de almacenamiento) para orquestar las operaciones de almacenamiento con ONTAP.
+Puede administrar la recuperación ante desastres de las máquinas virtuales con VMware Live Site Recovery o NetApp Disaster Recovery. Las herramientas ONTAP ofrecen el SRA (Adaptador de replicación de almacenamiento) para orquestar las operaciones de almacenamiento con ONTAP.
 
 [cols="4,2,2"]
 |===
@@ -137,7 +137,7 @@ Puede administrar la recuperación ante desastres de las máquinas virtuales con
 |===
 image::vmw-vcf-design-004.png[Flota VCF con múltiples sitios en varias regiones]
 
-Las herramientas ONTAP proporcionan una interfaz de usuario para la configuración de la replicación del almacén de datos.  BlueXP también se puede utilizar para la replicación entre matrices de almacenamiento.  El SnapCenter Plug-in for VMware vSphere utiliza las relaciones SnapMirror existentes para SnapShots.
+Las herramientas ONTAP proporcionan una interfaz de usuario para la configuración de la replicación del almacén de datos. La NetApp Console también se puede utilizar para la replicación entre matrices de almacenamiento. El SnapCenter Plug-in for VMware vSphere utiliza las relaciones SnapMirror existentes para SnapShots.
 
 Para más información, consulte lalink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/design/blueprints/blueprint-4.html["Documentación técnica de Broadcom sobre la flota VCF con varios sitios en varias regiones"] .
 
@@ -151,6 +151,6 @@ ASA, AFF y FAS admiten esta opción de diseño.
 
 image::vmw-vcf-design-005.png[Flota VCF con múltiples sitios en una sola región más regiones adicionales]
 
-Puede utilizar herramientas ONTAP o BlueXP para configurar la relación de replicación.
+Puede utilizar las herramientas ONTAP o la NetApp Console para configurar la relación de replicación.
 
 Para obtener más información, consulte link:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/design/blueprints/blueprint-5.html["Documentación técnica de Broadcom sobre la flota VCF con varios sitios en una sola región y regiones adicionales"] .

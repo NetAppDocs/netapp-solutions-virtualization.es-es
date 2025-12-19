@@ -158,4 +158,29 @@ Una vez hecho esto, utilice el usuario creado anteriormente mientras configura l
 
 Para migrar máquinas virtuales desde VMware vSphere mediante el kit de herramientas Shift, cree un usuario RBAC con los privilegios mencionados a continuación utilizando Administración > Control de acceso > Roles.
 
-image:shift-toolkit-085.png["Figura que muestra el diálogo de entrada/salida o representa contenido escrito"]
+Seleccione la pestaña *PRIVILEGIOS*:
+
+[listing]
+----
+Datastore
+•	Browse datastore
+•	Update virtual machine files
+
+Virtual machine
+•	Edit inventory
+    o	Register
+    o	Unregister
+•	Interaction
+    o	Answer question
+    o	Console interaction
+    o	Power off
+    o	Power on
+•	Snapshot management
+    o	Create snapshot
+    o	Remove snapshot
+    o	Rename snapshot
+•	Guest operations
+    o	Guest operation modifications
+    o	Guest operation program execution
+    o	Guest operation queries
+----

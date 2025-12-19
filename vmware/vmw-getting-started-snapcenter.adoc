@@ -29,11 +29,11 @@ Consulte los siguientes recursos de documentación para obtener información det
 
 == Recursos de solución
 
-Consulte la siguiente solución de respaldo 3-2-1 que incluye el SnapCenter Plug-in for VMware vSphere y la BlueXP backup and recovery para máquinas virtuales.
+Consulte la siguiente solución de respaldo 3-2-1 que incluye el SnapCenter Plug-in for VMware vSphere y el respaldo y recuperación de NetApp para máquinas virtuales.
 
-Informe técnico:link:https://docs.netapp.com/us-en/netapp-solutions-cloud/vmware/vmw-hybrid-321-dp-scv.html["Protección de datos 3-2-1 para VMware con complemento SnapCenter y BlueXP backup and recovery para máquinas virtuales"^]
+Informe técnico:link:https://docs.netapp.com/us-en/netapp-solutions-cloud/vmware/vmw-hybrid-321-dp-scv.html["Protección de datos 3-2-1 para VMware con el complemento SnapCenter y NetApp Backup and Recovery para máquinas virtuales"^]
 
-Blog de Tech ONTAP :link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/3-2-1-Data-Protection-for-VMware-with-SnapCenter-Plug-in-and-BlueXP-backup-and/ba-p/446180["Protección de datos 3-2-1 para VMware con complemento SnapCenter y BlueXP backup and recovery para máquinas virtuales"]
+Blog de Tech ONTAP :link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/3-2-1-Data-Protection-for-VMware-with-SnapCenter-Plug-in-and-BlueXP-backup-and/ba-p/446180["Protección de datos 3-2-1 para VMware con el complemento SnapCenter y NetApp Backup and Recovery para máquinas virtuales"]
 
 
 
