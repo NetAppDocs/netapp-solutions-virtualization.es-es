@@ -94,20 +94,6 @@ video::9b66ac8d-d2b1-4ac4-a33c-b16900f67df6[panopto]
 .Almacenes de datos iSCSI como almacenamiento complementario para dominios de administración de VCF
 video::1d0e1af1-40ae-483a-be6f-b156015507cc[panopto]
 ====
-.NetApp con VMware Tanzu
-[%collapsible%open]
-====
-VMware Tanzu permite a los clientes implementar, administrar y gestionar su entorno Kubernetes a través de vSphere o VMware Cloud Foundation.  Esta cartera de productos de VMware permite a los clientes administrar todos sus clústeres de Kubernetes relevantes desde un único plano de control eligiendo la edición de VMware Tanzu que mejor se adapte a sus necesidades.
-
-Para obtener más información sobre VMware Tanzu, consulte la https://tanzu.vmware.com/tanzu["Descripción general de VMware Tanzu"^] .  Esta revisión cubre casos de uso, complementos disponibles y más sobre VMware Tanzu.
-
-.Cómo usar vVols con NetApp y VMware Tanzu Basic, parte 1
-video::ZtbXeOJKhrc[youtube,width=360]
-.Cómo usar vVols con NetApp y VMware Tanzu Basic, parte 2
-video::FVRKjWH7AoE[youtube,width=360]
-.Cómo usar vVols con NetApp y VMware Tanzu Basic, parte 3
-video::Y-34SUtTTtU[youtube,width=360]
-====
 .Cloud Insights de NetApp
 [%collapsible%open]
 ====
