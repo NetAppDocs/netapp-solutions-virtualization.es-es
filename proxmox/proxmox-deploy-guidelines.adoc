@@ -1,0 +1,67 @@
+---
+sidebar: sidebar 
+permalink: proxmox/proxmox-deploy-guidelines.html 
+keywords: netapp, proxmox, proxmox ve, all-flash, nfs, iscsi, nvme, fc, ontap, storage, aff, asa, virtual machines, vm, containers, proxmox backup server 
+summary: 'Proxmox Virtual Environment (VE) se integra con el almacenamiento NetApp ONTAP para proporcionar almacenamiento compartido para máquinas virtuales y contenedores, lo que permite migraciones en vivo más rápidas, plantillas consistentes y copias de seguridad centralizadas. Obtenga información sobre la arquitectura, la configuración de red y almacenamiento, y las mejores prácticas para implementar y optimizar un clúster Proxmox VE con sistemas de almacenamiento ONTAP .' 
+---
+= Pautas de implementación para el entorno virtual Proxmox con almacenamiento NetApp ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Proxmox Virtual Environment (VE) se integra con el almacenamiento NetApp ONTAP para proporcionar almacenamiento compartido para máquinas virtuales y contenedores, lo que permite migraciones en vivo más rápidas, plantillas consistentes y copias de seguridad centralizadas. Obtenga información sobre las pautas de configuración de red y almacenamiento y las mejores prácticas para implementar y optimizar un clúster Proxmox VE con sistemas de almacenamiento ONTAP .
+
+Para obtener información sobre los tipos de almacenamiento admitidos y la compatibilidad de contenido, consulte link:proxmox-storage-types.html["Obtenga información sobre los tipos de almacenamiento compatibles con Proxmox VE"].
+
+
+
+== Pautas de configuración de red
+
+Siga estas pautas para optimizar el rendimiento y la confiabilidad de la red:
+
+* Asegúrese de que haya rutas de red redundantes duales entre los nodos Proxmox VE y el almacenamiento ONTAP .
+* Utilice la agregación de enlaces (LACP) para aumentar el ancho de banda y la tolerancia a fallas.
+* Diseñe la topología de la red para evitar problemas de árbol de expansión. Utilice funciones como RSTP o MSTP si es necesario.
+* Implementar VLAN para segmentar diferentes tipos de tráfico y mejorar la seguridad.
+* Configure tramas gigantes (MTU 9000) en todos los dispositivos de red para mejorar el rendimiento del tráfico de almacenamiento.
+* Considere usar Open vSwitch (OVS) sobre Linux Bridge cuando se configuran zonas VLAN.
+
+
+
+
+== Prácticas recomendadas para la configuración del almacenamiento
+
+Siga estas prácticas recomendadas para optimizar el rendimiento y la escalabilidad del almacenamiento:
+
+* Utilice las funciones avanzadas de gestión de datos de ONTAP, como instantáneas y clonación, para mejorar la protección y recuperación de datos.
+* Utilice volúmenes FlexGroup para requisitos de gran capacidad para aprovechar todo el potencial de escalabilidad de ONTAP .
+* En entornos distribuidos geográficamente, utilice FlexCache para distribuir imágenes y plantillas más cerca de los nodos Proxmox VE para lograr tiempos de implementación más rápidos y una administración central.
+* Al utilizar FlexGroup con NFS, utilice la combinación de nConnect o troncalización de sesión y pNFS para optimizar el rendimiento y la disponibilidad.
+* Para los protocolos de bloque, asegúrese de que la zonificación y el enmascaramiento de LUN sean adecuados para restringir el acceso únicamente a los nodos Proxmox VE autorizados.
+* Asigne suficiente capacidad de almacenamiento para adaptarse al crecimiento de la máquina virtual y las necesidades de datos.
+* Implemente niveles de almacenamiento para optimizar el rendimiento y la rentabilidad.
+* Supervise periódicamente el rendimiento y el estado del almacenamiento utilizando las herramientas de gestión de NetApp .
+* Utilice NetApp Console para la gestión centralizada de múltiples sistemas ONTAP .
+* Habilite las funciones de protección contra ransomware en ONTAP para protegerse contra ataques de ransomware.
+
+
+
+
+== Pautas de configuración de Proxmox VE
+
+Siga estas pautas para optimizar Proxmox VE con el almacenamiento NetApp ONTAP :
+
+* Actualice Proxmox VE a la última versión estable para beneficiarse de las características recientes y las correcciones de errores.
+* Configure Proxmox VE para utilizar almacenamiento compartido de NetApp ONTAP para el almacenamiento de VM.
+* Configure clústeres Proxmox VE para permitir alta disponibilidad y migración en vivo de máquinas virtuales.
+* Utilice una red redundante para la comunicación del clúster y dedique una para la migración en vivo.
+* Evite reutilizar los mismos ID de VM o contenedor en distintos clústeres para evitar conflictos.
+* Utilice el controlador único SCSI VirtIO para obtener un mejor rendimiento y funciones en las máquinas virtuales.
+* Habilite la opción de subprocesos de E/S para máquinas virtuales con altas demandas de E/S.
+* Habilite la compatibilidad con descartar/TRIM en los discos de VM para optimizar el uso del almacenamiento.
+

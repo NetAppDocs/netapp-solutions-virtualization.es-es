@@ -1,0 +1,94 @@
+---
+sidebar: sidebar 
+permalink: proxmox/proxmox-storage-types.html 
+keywords: netapp, proxmox, proxmox ve, ontap, storage, nfs, smb, cifs, iscsi, fc, nvme, content types, vm disks, backups, templates 
+summary: Proxmox VE admite múltiples tipos de almacenamiento con ONTAP , incluidos NFS y SMB para protocolos NAS y FC, iSCSI y NVMe-oF para protocolos SAN. Cada protocolo admite diferentes tipos de contenido, incluidos discos de VM, copias de seguridad, volúmenes de contenedores, imágenes ISO y plantillas. 
+---
+= Tipos de almacenamiento compatibles con el entorno virtual Proxmox
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Proxmox Virtual Environment (VE) admite múltiples protocolos de almacenamiento con NetApp ONTAP, incluidos NFS y SMB para NAS y FC, iSCSI y NVMe-oF para SAN. Cada protocolo admite diferentes tipos de contenido de Proxmox VE, incluidos discos de VM, copias de seguridad, volúmenes de contenedores, imágenes ISO y plantillas.
+
+
+
+== Compatibilidad con el protocolo NAS
+
+Los protocolos NAS (NFS y SMB) admiten todos los tipos de contenido de Proxmox VE y normalmente se configuran una sola vez en el nivel del centro de datos. Las máquinas virtuales invitadas pueden usar formatos de disco raw, qcow2 o VMDK en el almacenamiento NAS. Las instantáneas de ONTAP se pueden hacer visibles para los clientes para acceder a copias de datos en un momento determinado.
+
+
+
+== Compatibilidad con el protocolo SAN
+
+Los protocolos SAN (FC, iSCSI y NVMe-oF) generalmente se configuran por host y admiten tipos de contenido de imágenes de contenedores y discos de VM en Proxmox VE. Las máquinas virtuales invitadas pueden usar formatos de disco raw, VMDK o qcow2 en el almacenamiento en bloque.
+
+
+
+== Matriz de compatibilidad de tipos de almacenamiento
+
+[cols="25% 15% 15% 15% 15% 15%"]
+|===
+| Tipo de contenido | Sistema Nacional de Archivos | SMB/CIFS | FC | iSCSI | NVMe-oF 
+
+
+| Copias de seguridad | Sí | Sí  a| 
+No^1^
+ a| 
+No^1^
+ a| 
+No^1^
+
+
+
+| Discos de VM | Sí | Sí  a| 
+Sí^2^
+ a| 
+Sí^2^
+ a| 
+Sí^2^
+
+
+
+| Volúmenes de TC | Sí | Sí  a| 
+Sí^2^
+ a| 
+Sí^2^
+ a| 
+Sí^2^
+
+
+
+| Imágenes ISO | Sí | Sí  a| 
+No^1^
+ a| 
+No^1^
+ a| 
+No^1^
+
+
+
+| Plantillas de TC | Sí | Sí  a| 
+No^1^
+ a| 
+No^1^
+ a| 
+No^1^
+
+
+
+| Fragmentos | Sí | Sí  a| 
+No^1^
+ a| 
+No^1^
+ a| 
+No^1^
+
+|===
+*Notas:*
+
+. Requiere que el sistema de archivos del clúster cree la carpeta compartida y utilice el tipo de almacenamiento de directorio.
+. Utilice el tipo de almacenamiento LVM.
+

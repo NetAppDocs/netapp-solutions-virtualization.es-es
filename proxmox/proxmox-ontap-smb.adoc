@@ -1,0 +1,113 @@
+---
+sidebar: sidebar 
+permalink: proxmox/proxmox-ontap-smb.html 
+keywords: netapp, proxmox, proxmox ve, smb, cifs, ontap, storage 
+summary: Configurar el almacenamiento SMB/CIFS para el entorno virtual Proxmox mediante ONTAP. Este procedimiento incluye la habilitación de SVM, la creación de LIF, la configuración de Active Directory, la creación de volúmenes y la configuración de múltiples canales para tolerancia a fallas y un rendimiento mejorado. 
+---
+= Configurar el almacenamiento SMB/CIFS para Proxmox VE
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configure el almacenamiento SMB/CIFS para el entorno virtual (VE) Proxmox mediante NetApp ONTAP. El multicanal SMB proporciona tolerancia a fallas y mejora el rendimiento con múltiples conexiones de red al sistema de almacenamiento.
+
+Los recursos compartidos de archivos SMB/CIFS requieren tareas de configuración por parte de los administradores de almacenamiento y virtualización. Para más detalles, consulte link:https://www.netapp.com/pdf.html?item=/media/17136-tr4740.pdf["TR4740 - SMB 3.0 Multicanal"].
+
+
+NOTE: Las contraseñas se guardan en archivos de texto sin cifrar y sólo el usuario root puede acceder a ellas. Referirse a link:https://pve.proxmox.com/pve-docs/chapter-pvesm.html#storage_cifs["Documentación de Proxmox VE"].
+
+.Grupo de almacenamiento compartido SMB con ONTAP
+video::5b4ae54a-08d2-4f7d-95ec-b22d015f6035[panopto,width=360]
+
+
+== Tareas del administrador de almacenamiento
+
+Si es nuevo en ONTAP, utilice la Interfaz del Administrador del sistema para completar estas tareas.
+
+. Habilitar SVM para SMB. Seguir link:https://docs.netapp.com/us-en/ontap/smb-config/configure-access-svm-task.html["Documentación de ONTAP 9"] Para más información.
+. Cree al menos dos LIF por controlador. Siga los pasos de la documentación. Como referencia, aquí hay una captura de pantalla de los LIF utilizados en esta solución.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-001.png["detalles de la interfaz NAS"]
+
+====
+. Configurar la autenticación basada en Active Directory o grupo de trabajo. Siga los pasos de la documentación.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-002.png["Unirse a la información del dominio"]
+
+====
+. Crear un volumen. Marque la opción para distribuir datos en el clúster para utilizar FlexGroup. Asegúrese de que la protección anti-ransomware esté habilitada en el volumen.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-003.png["Opción FlexGroup"]
+
+====
+. Cree un recurso compartido SMB y ajuste los permisos.  Seguirlink:https://docs.netapp.com/us-en/ontap/smb-config/configure-client-access-shared-storage-concept.html["Documentación de ONTAP 9"] Para más información.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-004.png["Información sobre acciones de SMB"]
+
+====
+. Proporcione el servidor SMB, el nombre compartido y las credenciales al administrador de virtualización.
+
+
+
+
+== Tareas del administrador de virtualización
+
+Complete estas tareas para agregar el recurso compartido SMB como almacenamiento en Proxmox VE y habilitar el multicanal para mejorar el rendimiento y la tolerancia a fallas.
+
+. Recopile el servidor SMB, el nombre del recurso compartido y las credenciales para la autenticación del recurso compartido.
+. Asegúrese de que al menos dos interfaces estén configuradas en diferentes VLAN para tolerancia a fallas. Verifique que la NIC admita RSS.
+. Uso de la interfaz de administración en `https:<proxmox-node>:8006`, haga clic en Centro de datos, seleccione Almacenamiento, haga clic en Agregar y seleccione SMB/CIFS.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-005.png["Navegación de almacenamiento SMB"]
+
+====
+. Introduzca los detalles. El nombre del recurso compartido debería completarse automáticamente. Seleccione todos los tipos de contenido y haga clic en Agregar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-006.png["Adición de almacenamiento para PYMES"]
+
+====
+. Para habilitar la opción multicanal, abra un shell en cualquier nodo del clúster y ejecute el siguiente comando, donde `<storage id>` es el ID de almacenamiento creado en el paso anterior:
++
+[source, shell]
+----
+pvesm set <storage id> --options multichannel,max_channels=16
+----
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-007.png["configuración multicanal"]
+
+====
+. A continuación se muestra el contenido en /etc/pve/storage.cfg para el almacenamiento configurado:
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:proxmox-ontap-smb-008.png["archivo de configuración de almacenamiento para SMB"]
+
+====
+

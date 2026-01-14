@@ -1,0 +1,358 @@
+---
+sidebar: sidebar 
+permalink: proxmox/proxmox-wkld-dp-pbs.html 
+keywords: netapp, proxmox, proxmox ve, all-flash, nfs, iscsi, nvme, fc, ontap, storage, aff, asa, virtual machines, vm, containers, proxmox backup server 
+summary: Proteja las cargas de trabajo de Proxmox VE utilizando Proxmox Backup Server con almacenamiento NetApp ONTAP . Este procedimiento cubre la configuración del almacén de datos, las operaciones de respaldo, los procedimientos de restauración y la configuración de la recuperación ante desastres mediante la replicación de SnapMirror . 
+---
+= Proteja las cargas de trabajo de Proxmox VE con Proxmox Backup Server y NetApp ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Proteja las cargas de trabajo del entorno virtual (VE) de Proxmox utilizando Proxmox Backup Server (PBS) integrado con el almacenamiento de NetApp ONTAP . Este procedimiento cubre la configuración del almacén de datos, las operaciones de respaldo, los procedimientos de restauración y la configuración de la recuperación ante desastres mediante la replicación de ONTAP SnapMirror .
+
+Para obtener información sobre la arquitectura del servidor de respaldo Proxmox y la integración de ONTAP , consulte link:proxmox-pbs-architecture.html["Obtenga más información sobre la arquitectura del servidor de respaldo Proxmox con NetApp ONTAP"].
+
+
+
+== Antes de empezar
+
+* Garantice rutas de red redundantes entre PBS y el almacenamiento ONTAP para lograr alta disponibilidad y rendimiento.
+* Considere la agregación de enlaces (LACP) para aumentar el ancho de banda y la redundancia.
+* Configure tramas gigantes (MTU 9000) en todos los dispositivos de red para mejorar el rendimiento del tráfico de almacenamiento.
+* Para NFS, cree una exportación dedicada para el almacén de datos PBS con los permisos adecuados.
+* Para los protocolos de bloque, asegúrese de que la zonificación y el enmascaramiento de LUN sean adecuados para restringir el acceso a los hosts PBS autorizados.
+
+
+
+
+== Configurar almacenes de datos
+
+Configure los almacenes de datos de Proxmox Backup Server mediante el almacenamiento NetApp ONTAP . Esto incluye montar el almacenamiento ONTAP en el host PBS, crear un almacén de datos local en la interfaz web de PBS y, opcionalmente, configurar el almacenamiento ONTAP S3 para realizar copias de seguridad externas y retención a largo plazo.
+
+Prepare el backend de almacenamiento ONTAP y móntelo en el host PBS. Los pasos de preparación varían según si utiliza protocolos basados ​​en archivos (NFS) o en bloques (SAN/NVMe-oF).
+
+PBS puede utilizar cualquier carpeta montada en el almacenamiento local como almacén de datos. PBS almacena archivos de catálogo, índice y fragmentos en el almacén de datos. Para obtener un rendimiento y una escalabilidad óptimos, utilice NetApp ONTAP SAN (iSCSI/FC/NVMe-oF) o almacenamiento NFS (con nConnect o enlace troncal de sesión y pNFS habilitado) como almacén de datos PBS.
+
+.-> Montar el almacenamiento en el host PBS
+. Para los protocolos SAN o NVMe-oF, cree un LUN o espacio de nombres en ONTAP y conéctelo al host PBS.
+. Formatee el LUN o el espacio de nombres con un sistema de archivos adecuado (ext4 o xfs) y móntelo en el host PBS.
+. Para NFS, monte la exportación NFS en el host PBS.
+. Utilice fstab o automount para garantizar que el almacén de datos se monte automáticamente al reiniciar el sistema.
+
+
+.-> Crear el almacén de datos en PBS
+Después de montar el almacenamiento, cree un nuevo almacén de datos en la interfaz web de PBS.
+
+. Vaya a Almacén de datos > Agregar almacén de datos.
+. Proporcione un nombre, seleccione el tipo de almacén de datos como local y especifique la carpeta montada como ruta de respaldo.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-002.png[Configuración del almacén de datos local en PBS]
+
+====
+
+
+.-> Configurar almacenes de datos con almacenamiento ONTAP S3
+El almacenamiento S3 generalmente se utiliza para realizar copias de seguridad externas y retención a largo plazo. El servidor de respaldo Proxmox admite el almacenamiento S3 como una función de vista previa técnica.
+
+. Asegúrese de que el servicio ONTAP S3 esté habilitado y configurado correctamente.
+. Cree un depósito S3 en ONTAP para el almacén de datos PBS.
+. Obtenga la clave de acceso y la clave secreta para el bucket S3.
+. Recopile la URL del punto final S3 y la información de la huella digital del certificado.
+. En la interfaz web de PBS, navegue a Configuración > Puntos finales S3 y agregue un nuevo punto final S3 con la información recopilada.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-003.png[Configuración del punto final S3 en PBS]
+
+====
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-004.png[Archivo de configuración del punto final S3 en PBS]
+
+====
+. A continuación, navegue hasta Almacén de datos → Agregar almacén de datos. Proporcione un nombre, seleccione el tipo de almacén de datos como S3 y seleccione el punto final S3 configurado. Proporcione el nombre de la carpeta en el almacén de datos local que se utilizará como caché local y seleccione el depósito. .Mostrar ejemplo
+
+
+[]
+====
+image::proxmox-wkld-dp-pbs-005.png[Configuración del almacén de datos S3 en PBS]
+
+image::proxmox-wkld-dp-pbs-006.png[Archivo de configuración del almacén de datos S3 en PBS]
+
+====
+
+
+== Cree trabajos de sincronización local en el almacenamiento ONTAP S3.
+
++ Migre datos del almacén de datos local de PBS al almacenamiento ONTAP S3 mediante la creación de un trabajo de sincronización local en PBS. Este trabajo copia datos de respaldo del almacén de datos local al almacén de datos S3 para almacenamiento externo y retención a largo plazo.
+
+. En la interfaz web de PBS, navegue a S3 Datastore > Trabajos de sincronización y haga clic en Agregar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-007.png[Agregar un trabajo de sincronización local en PBS]
+
+====
+. Seleccione la ubicación como Local, elija el almacén de datos local de origen y especifique el espacio de nombres y la profundidad deseados. Configure la programación para el trabajo de sincronización y cualquier opción adicional.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-008.png[Configuración de trabajos de sincronización local en PBS]
+
+====
+. Guardar la configuración del trabajo de sincronización. El trabajo de sincronización se ejecutará según el cronograma definido y copiará los datos de respaldo del almacén de datos PBS local al almacenamiento ONTAP S3.
+
+
+
+NOTE: Para almacenamiento externo y retención más prolongada con almacenamiento ONTAP , se puede utilizar Netapp Console para administración y servicios de datos.
+
+
+
+== Agregar Proxmox Backup Server al clúster Proxmox VE
+
+Agregue Proxmox Backup Server como destino de almacenamiento para habilitar operaciones de respaldo para máquinas virtuales y contenedores.
+
+. En la interfaz web de Proxmox VE, navegue a Centro de datos > Almacenamiento y haga clic en Agregar > Servidor de respaldo de Proxmox.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-009.png[Agregar almacenamiento PBS en Proxmox VE]
+
+====
+. Proporcione la huella digital del certificado del servidor PBS para una comunicación segura. Puede obtener la huella digital desde la interfaz web de PBS o ejecutando el siguiente comando en PBS: `proxmox-backup-manager cert info`.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-010.png[Configuración de la huella digital del certificado PBS en la interfaz de usuario del servidor de respaldo de Proxmox]
+
+====
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-011.png[Configuración de la huella digital del certificado PBS en la CLI de Proxmox Backup Server]
+
+====
+. Configure opciones adicionales como políticas de retención de copias de seguridad y cifrado.
+. Haga clic en Agregar para guardar la configuración de almacenamiento de PBS.
+
+
+El clúster Proxmox VE ahora puede usar el almacén de datos PBS para operaciones de respaldo y restauración de máquinas virtuales y contenedores.
+
+
+
+== Realizar copias de seguridad
+
+Realice una copia de seguridad de las cargas de trabajo de Proxmox VE en Proxmox Backup Server. Esto incluye realizar copias de seguridad a pedido, configurar trabajos de copia de seguridad programados, realizar copias de seguridad de archivos de configuración del host y utilizar scripts previos y posteriores a la copia de seguridad para acciones personalizadas.
+
+.-> Realizar copias de seguridad bajo demanda
+Cree una copia de seguridad inmediata de una máquina virtual o un contenedor utilizando Proxmox Backup Server.
+
+. En la interfaz web de Proxmox VE, navegue hasta la máquina virtual o el contenedor.
+. Haga clic en la pestaña Copia de seguridad y luego haga clic en Hacer copia de seguridad ahora.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-012.png[Copia de seguridad bajo demanda en Proxmox VE]
+
+====
+. Seleccione Proxmox Backup Server Storage como destino de la copia de seguridad.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-013.png[Copia de seguridad a pedido seleccionando el almacenamiento de destino PBS en Proxmox VE]
+
+====
+. Configure opciones de respaldo adicionales, como compresión, notificaciones y modo instantánea.
+. Haga clic en Copia de seguridad para iniciar el proceso de copia de seguridad.
+
+
+.-> Configurar copias de seguridad programadas
+Configure copias de seguridad programadas para máquinas virtuales y contenedores mediante Proxmox Backup Server.
+
+. En la interfaz web de Proxmox VE, navegue a Centro de datos > Copia de seguridad.
+. Haga clic en Agregar para crear un nuevo trabajo de respaldo.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-014.png[Cómo agregar una tarea de copia de seguridad programada en Proxmox VE]
+
+====
+. Seleccione el almacenamiento PBS como destino y elija la programación de la copia de seguridad (por ejemplo, diaria o semanal). Establezca el modo de selección en Todos, Máquinas virtuales/CT seleccionadas para incluir/excluir, o Basado en grupo.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-015.png[Configuración de trabajos de copia de seguridad programados en Proxmox VE]
+
+====
+. Configure opciones adicionales como políticas de retención, compresión y modo de instantánea.
+. Haga clic en Crear para guardar la configuración del trabajo de copia de seguridad programado.
++
+.Resultado
+El clúster Proxmox VE realiza automáticamente copias de seguridad de las máquinas virtuales y los contenedores especificados según el programa definido utilizando Proxmox Backup Server como destino de almacenamiento.
+
++
+La configuración del trabajo programado se almacena en el archivo /etc/pve/job.cfg en el host Proxmox VE.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-016.png[Archivo de configuración de trabajos de copia de seguridad programados en Proxmox VE]
+
+====
+
+
+.-> Realizar una copia de seguridad de los archivos del host de Proxmox VE en PBS
+Realice una copia de seguridad de los archivos de configuración del host de Proxmox VE, la configuración del sistema y otros datos críticos en Proxmox Backup Server.
+
+. En una shell de Proxmox VE o una sesión SSH, utilice el `proxmox-backup-client` Comando para crear una copia de seguridad del host:
++
+[source]
+----
+proxmox-backup-client backup <backupspec> --repository <pbs-storage>:<datastore> --ns <namespace>
+----
++
+Reemplazar `<backupspec>` con la especificación de respaldo (como `backupname and backuptype/<directory or files to backup>`), `<pbs-storage>` con el FQDN del PBS, `<datastore>` con el nombre del almacén de datos PBS, y `<namespace>` con el espacio de nombres. Esto supone que las variables de entorno de autenticación y huellas dactilares están configuradas.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-017.png[Comando de copia de seguridad del host de Proxmox VE]
+
+====
+. El proceso de copia de seguridad creará una copia de seguridad del host Proxmox VE y la almacenará en el almacén de datos PBS especificado.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-018.png[Visualización de los archivos desde la interfaz de usuario de Proxmox Backup Server]
+
+====
+. Para restaurar los archivos del host de Proxmox VE desde la copia de seguridad, utilice el `proxmox-backup-client restore` comando con los parámetros apropiados.
+
+
+Proxmox VE admite scripts previos y posteriores a la copia de seguridad para realizar acciones personalizadas antes y después del proceso de copia de seguridad. Utilice estos scripts para preparar máquinas virtuales o contenedores para realizar copias de seguridad, realizar tareas adicionales o limpiar una vez finalizada la copia de seguridad.
+
+. Cree el script de respaldo en el host Proxmox VE. Asegúrese de que el script sea ejecutable y tenga los permisos necesarios.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-020.png[Detalles del argumento del script para el script de respaldo]
+
+====
+. Asegúrese de que el trabajo de respaldo exista.
+. En una shell de Proxmox VE o una sesión SSH, utilice el `pvesh` comando con el `--script` Opción para especificar el script a ejecutar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-019.png[Configuración del script de copia de seguridad en Proxmox VE]
+
+====
+. De manera opcional, utilice agentes invitados QEMU para inactivar el sistema de archivos dentro de la carga de trabajo antes de tomar una instantánea para realizar una copia de seguridad. Asegúrese de que el agente invitado QEMU esté instalado y en ejecución. Coloque los scripts en /etc/qemu/fsfreeze-hook.d/ o /etc/qemu-ga/fsfreeze-hook.d/ dentro de la VM o el contenedor.
+
+
+
+NOTE: Los scripts de gancho también se pueden configurar en el nivel de la máquina virtual o del contenedor usando el `qm set` o `pct set` comandos con el `--hookscript` opción. Para ver un script de gancho de muestra, consulte /usr/share/pve-docs/examples/guest-example-hookscript.pl en el host Proxmox VE.
+
+
+
+== Restaurar máquinas virtuales y contenedores
+
+Restaure máquinas virtuales y contenedores directamente desde la interfaz web de Proxmox VE o desde el almacenamiento PBS.
+
+. Para restaurar una máquina virtual o un contenedor existente, navegue hasta él en la interfaz web de Proxmox VE, haga clic en la pestaña Copia de seguridad, seleccione la copia de seguridad del almacenamiento PBS y haga clic en Restaurar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-021.png[Restauración de una máquina virtual desde PBS en Proxmox VE]
+
+====
++
+Para la recuperación completa o la restauración a un host Proxmox VE diferente, utilice el `proxmox-backup-client` dominio.
+
+. Para restaurar una máquina virtual o un contenedor que no está disponible actualmente en Proxmox VE, navegue a la sección Copias de seguridad de almacenamiento de PBS, seleccione la copia de seguridad y haga clic en Restaurar. Proporcione el almacenamiento de destino y otra información necesaria para completar la restauración.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-022.png[Restauración de una máquina virtual faltante desde el almacenamiento PBS en la interfaz de usuario de Proxmox VE]
+
+====
+
+
+
+
+== Configurar la recuperación ante desastres con SnapMirror
+
+Replique el almacén de datos PBS en el almacenamiento ONTAP a otro sistema ONTAP usando SnapMirror para la recuperación ante desastres. Esto protege los datos de respaldo y permite la restauración después de fallas del sitio.
+
+. Configure la replicación de SnapMirror para el volumen del almacén de datos PBS.
+. En caso de desastre, monte el almacén de datos PBS replicado en una instancia PBS secundaria.
++
+Al agregar el almacén de datos en PBS, habilite la opción avanzada "Reutilizar el almacén de datos existente" para evitar la reinicialización del almacén de datos.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-023.png[Reutilizar el almacén de datos existente en PBS]
+
+====
++
+Para el almacenamiento ONTAP S3, habilite las opciones "Reutilizar almacén de datos existente" y "Sobrescribir marcador en uso" al agregar el almacén de datos en PBS.
+
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-024.png[Reutilización del almacén de datos S3 existente en PBS]
+
+====
++
+.Resultado
+Después de agregar el almacén de datos, puede acceder a los datos de respaldo y realizar operaciones de restauración.
+
+
+
+
+
+== Supervise varios clústeres con Proxmox Datacenter Manager
+
+Supervise y administre múltiples instancias de Proxmox VE y Proxmox Backup Server utilizando Proxmox Datacenter Manager (PDM). PDM proporciona una interfaz de administración centralizada para monitorear la salud, el rendimiento y el estado de múltiples clústeres Proxmox VE e instancias PBS.
+
+.Mostrar ejemplo
+[%collapsible]
+====
+image::proxmox-wkld-dp-pbs-025.png[Descripción general de Proxmox Datacenter Manager]
+
+====
+
+
+== Resumen
+
+El servidor de respaldo Proxmox integrado con el almacenamiento NetApp ONTAP ofrece protección de datos sólida y eficiente para las cargas de trabajo de Proxmox VE. Las organizaciones pueden garantizar la disponibilidad e integridad de la carga de trabajo virtualizada aprovechando las funciones avanzadas de gestión de datos de ONTAP y las capacidades de respaldo de PBS.
