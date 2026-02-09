@@ -1,0 +1,195 @@
+---
+sidebar: sidebar 
+permalink: opennebula/opennebula-ontap-iscsi.html 
+keywords: netapp, opennebula, volume group, iscsi, lvm, lvm thin pool, ontap, storage 
+summary: 'Configura Logical Volume Manager (LVM) Datastore con iSCSI para OpenNebula usando ONTAP. Este procedimiento incluye la configuración de iSCSI y multivía y la creación de grupo de volúmenes.' 
+---
+= Configura LVM Thin con ONTAP iSCSI para OpenNebula
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configura el almacén de datos Logical Volume Manager (LVM) para almacenamiento compartido entre hosts OpenNebula usando el protocolo iSCSI con NetApp ONTAP. Esta configuración permite el acceso al almacenamiento a nivel de bloque sobre redes Ethernet estándar con soporte multivía.
+
+
+
+== Tareas iniciales del administrador de virtualización
+
+Completa estas tareas iniciales para preparar los hosts OpenNebula para la conectividad iSCSI y recopilar la información necesaria para el administrador de almacenamiento.
+
+. Verifique que haya dos interfaces VLAN de Linux disponibles.
+. Asegúrate de que las utilidades multipath-tools e iSCSI initiator están instaladas en todos los hosts OpenNebula y se inician al arrancar.
++
+[role="tabbed-block"]
+====
+.Debian/Ubuntu
+--
+[source, shell]
+----
+apt list | grep multipath-tools
+# If need to install, execute the following line.
+apt-get install multipath-tools open-iscsi
+# If /etc/multipath.conf is not present, first make sure the multipathd service is started.
+systemctl enable --now multipathd
+systemctl enable --now open-iscsi
+----
+--
+.RHEL/AlmaLinux
+--
+[source, shell]
+----
+dnf list installed | grep device-mapper-multipath
+# If need to install, execute the following line.
+dnf install device-mapper-multipath iscsi-initiator-utils
+# If /etc/multipath.conf is not present, first make sure the multipathd service is started.
+systemctl enable --now multipathd
+systemctl enable --now iscsid
+----
+--
+====
+. Recopila el IQN del host iSCSI para todos los hosts de OpenNebula y dáselo al administrador de almacenamiento.
++
+[source, shell]
+----
+cat /etc/iscsi/initiator.name
+----
+
+
+Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejor experiencia.
+
+. Asegúrese de que la SVM esté disponible con el protocolo iSCSI habilitado. Seguir link:https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Documentación de ONTAP 9"].
+. Crea dos LIF por controlador dedicados para iSCSI. Se recomiendan dos LIF por controlador para redundancia y rendimiento multivía. Asegúrate de que los LIF se creen en las interfaces VLAN configuradas en los hosts OpenNebula. Se recomiendan tramas jumbo (MTU 9000) para mejor rendimiento.
++
+image:opennebula-ontap-iscsi-001.png["detalles de la interfaz iscsi"]
+
+. Crea LUNs y preséntalos a los iniciadores iSCSI del host. Normalmente se crea un igroup para un OpenNebula cluster. Incluye servidores frontend y hosts hipervisor en el mismo igroup para soportar tanto almacenes de datos de imagen como de sistema.
+. Notifique al administrador de virtualización que se creó el LUN.
+
+
+
+
+== Tareas finales del administrador de virtualización
+
+Completa estas tareas para configurar el iSCSI LUN como LVM Datastore compartido en OpenNebula.
+
+. Accede por SSH a uno de los servidores frontend y descubre todos los portales iSCSI Lif proporcionando una de las direcciones de iSCSI data lif.
++
+[source, shell]
+----
+iscsiadm -m discovery -t sendtargets -p <iscsi data lif address>
+iscsiadm -m node
+iscsiadm -m node -l
+iscsiadm -m session
+----
+. Ejecuta `rescan-scsi-bus.sh` o `echo "- - -" > /sys/class/scsi_host/host*/scan` para volver a escanear el bus SCSI y detectar nuevos LUNs.
+. Verifica que el LUN sea visible en todos los hosts OpenNebula usando el comando `lsblk -S` o fdisk -l.
+. Ejecuta `iscsiadm -m session -P 3` para recuperar la asignación de LUN a nombre de dispositivo.
+. Agrega el dispositivo a la configuración multivía ejecutando `multipath -a /dev/<device_name>`. Luego, ejecuta `multipath -r` para recargar la configuración multivía. Verifica la configuración multivía ejecutando el comando `multipath -ll`.
+. Crea un archivo de configuración basado en el tipo de Datastore que quieras. Para ver la lista completa de atributos, consulta https://docs.opennebula.io/7.0/product/cluster_configuration/san_storage/lvm_drivers/["OpenNebula documentación LVM"]. A continuación se muestran archivos de ejemplo:
++
+[role="tabbed-block"]
+====
+.Copia de seguridad
+--
+.. Para Restic,
+
+
+[listing]
+----
+$cat iscsi-restic.conf
+NAME = "Backup-Restic-iSCSI01"
+TYPE = "BACKUP_DS"
+
+DS_MAD = "restic"
+TM_MAD = "-"
+
+RESTIC_PASSWORD = "<restic_password>"
+RESTIC_SFTP_SERVER = "<backup server>"
+----
+.. Para Rsync,
+
+
+[listing]
+----
+$cat iscsi-rsync.conf
+NAME = "Backup-Rsync-iSCSI02"
+TYPE = "BACKUP_DS"
+
+DS_MAD = "rsync"
+TM_MAD = "-"
+
+RSYNC_USER = "<rsync_user>"
+RSYNC_HOST = "<backup server>"
+----
+--
+.Archivo
+[source, shell]
+----
+$cat iscsi-kernel.conf
+NAME = "File-Kernel-iSCSI03"
+TYPE = "FILE_DS"
+DS_MAD = "fs"
+TM_MAD = "local"
+SAFE_DIRS = "/var/tmp/files"
+----
+.Imagen
+[source, shell]
+----
+$cat iscsi-image.conf
+NAME = "Image-iSCSI04"
+TYPE = "IMAGE_DS"
+DS_MAD = "fs"
+TM_MAD = "fs_lvm_ssh"
+DISK_TYPE = "block"
+LVM_THIN_ENABLE = "yes"
+----
+.Sistema
+[source, shell]
+----
+$cat iscsi-system.conf
+NAME = "System-iSCSI05"
+TYPE = "SYSTEM_DS"
+TM_MAD = "fs_lvm_ssh"
+DISK_TYPE = "block"
+BRIDGE_LIST = "<space-separated list of OpenNebula hosts>" # If LUN not presented to frontend hosts
+LVM_THIN_ENABLE = "yes"
+----
+====
+. Ejecuta `onedatastore create <configuration file>`. Toma nota del ID de datastore que se devuelve después de la creación.
++
+[]
+====
+onedatastore create iscsi-system.conf ID: 106
+
+====
+. Crea un grupo de volúmenes en el LUN iSCSI usando el comando `vgcreate <vg_name> <multipath_device>`. Para los almacenes de datos de imagen, el nombre del grupo de volúmenes puede ser el que quieras. Para los almacenes de datos de sistema, el nombre del grupo de volúmenes debe tener el formato `vg-one-<datastore id>`. Esto es necesario para que OpenNebula identifique el grupo de volúmenes correcto para los almacenes de datos de sistema. Sigue estos pasos si estás creando un almacén de datos de copia de seguridad/archivo/imagen. Para los almacenes de datos de sistema, detente aquí.
+. Crea el thin pool de volúmenes lógicos usando el comando  `lvcreate -l 100%FREE -n <logical volume name> <volume group name>`. Para los almacenes de datos del sistema, OpenNebula crea automáticamente el thin pool LVM cuando es necesario.
+. Crea un sistema de archivos en el volumen lógico usando el comando `mkfs.ext4 /dev/<volume group>/<logical volume>`. Los almacenes de datos del sistema no requieren crear un sistema de archivos.
+. Actualiza /etc/fstab o la configuración de automount para montar el almacén de datos con las opciones de montaje deseadas. Asumiendo la ubicación predeterminada del almacén de datos como /var/lib/one/datastores. Puede validarse con `onedatastore show <datastore_id>`. Si no, revisa el parámetro DATASTORE_LOCATION en /etc/one/oned.conf. Asegúrate de que la carpeta <datastore_id> existe bajo la ubicación de los almacenes de datos. A continuación se muestran entradas de ejemplo:
++
+[role="tabbed-block"]
+====
+.Uso de /etc/fstab
+--
+[source, shell]
+----
+/dev/<vg name>/<logical volume> /var/lib/one/datastores/<datastore_id> ext4 _netdev,noauto,x-systemd.automount,nofail 0 2
+----
+--
+.Uso de automount
+--
+[source, shell]
+----
+/var/lib/one/datastores/<datastore_id> -fstype=ext4,_netdev,noauto,x-systemd.automount,nofail,rw :/dev/<vg name>/<logical volume>
+----
+--
+====
+. Monta el almacén de datos usando `mount -a` o `systemctl reload autofs` command.
+. Verifica que el almacén de datos está montado con el comando mount y verifica la capacidad del almacén de datos con el comando  `onedatastore show <datastore_id>`.
+. Asegúrate de que el usuario y el grupo oneadmin sean los propietarios de la carpeta datastore. Ajusta los permisos usando el comando `chown -R oneadmin:oneadmin /var/lib/one/datastores/<datastore_id>`.
+

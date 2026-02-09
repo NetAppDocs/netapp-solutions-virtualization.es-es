@@ -1,0 +1,151 @@
+---
+sidebar: sidebar 
+permalink: opennebula/opennebula-overview.html 
+keywords: opennebula, kvm, qemu, lxc, suse rancher, kubernetes, private cloud, public cloud, hybrid cloud, virtualization, containers, hypervisor, vm, virtual machine, container orchestration, cloud management platform, cmp, cloud infrastructure, cloud computing 
+summary:  
+---
+= Conoce OpenNebula
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+OpenNebula es una plataforma de gestión de la nube de código abierto para gestionar infraestructuras heterogéneas de centros de datos distribuidos. Ofrece una solución sencilla pero modular y rica en funciones para crear plataformas de computación en la nube y en el edge. OpenNebula es compatible con máquinas virtuales con KVM, contenedores linux con LXC y clústeres Kubernetes certificados por CNCF basados en SUSE Rancher.
+
+
+
+== Descripción general
+
+OpenNebula ofrece un completo conjunto de funciones para gestionar el ciclo de vida completo de las máquinas virtuales y los contenedores, incluido el despliegue, la supervisión, el escalado y el decomisionado. Admite una amplia gama de opciones de almacenamiento y redes, lo que la hace flexible para varios casos de uso.
+
+image:opennebula-overview-001.png["OpenNebula descripción general"]
+
+OpenNebula ofrece una interfaz web fácil de usar y una potente interfaz de línea de comandos (CLI) para que administradores y usuarios interactúen con la plataforma. También proporciona una API RESTful para automatización e integración con otras herramientas. La plataforma admite multi-tenancy, permitiendo que varios usuarios y grupos compartan la misma infraestructura de forma segura.
+
+image:opennebula-overview-002.png["OpenNebula arquitectura modular"]
+
+OpenNebula tiene una arquitectura modular que permite una fácil integración con herramientas y servicios de terceros. Puede ampliarse con plugins y drivers para adaptarse fácilmente a requisitos específicos.
+
+
+
+== Interfaz de usuario frontend
+
+OpenNebula proporciona una interfaz de usuario basada en web llamada Sunstone, que permite a los usuarios gestionar fácilmente sus máquinas virtuales y contenedores. La interfaz es intuitiva y fácil de usar, lo que hace que tanto los administradores como los usuarios finales puedan navegar y realizar tareas fácilmente. Por defecto, se ejecuta en el puerto 2616. Los datos persistentes se almacenan en una base de datos backend, que puede ser SQLite (por defecto para cargas de trabajo pequeñas) o MySQL/MariaDB (para entornos de producción). Se pueden desplegar varias instancias de servidores frontend para garantizar alta disponibilidad y equilibrio de carga.
+
+image:opennebula-overview-003.png["Interfaz OpenNebula Sunstone"]
+
+OpenNebula Sunstone proporciona vistas y paneles personalizables, permitiendo a los usuarios adaptar la interfaz a sus necesidades específicas. También admite el control de acceso basado en roles (RBAC), permitiendo a los administradores definir diferentes niveles de acceso para usuarios y grupos.
+
+La función de acceso a la consola permite a los usuarios conectarse a sus máquinas virtuales directamente desde la interfaz web, proporcionando una experiencia fluida para gestionar e interactuar con sus instancias. También incluye un marketplace donde los usuarios pueden explorar e implementar plantillas y aplicaciones de máquinas virtuales preconfiguradas. Los usuarios también pueden acceder a las máquinas virtuales mediante SSH u otros métodos de acceso remoto desde la interfaz web.
+
+Las capacidades de federación permiten que varias instancias de OpenNebula (Zones) estén conectadas, lo que permite compartir recursos y distribuir la carga de trabajo entre diferentes centros de datos o ubicaciones geográficas. Las políticas de acceso se definen en toda la federación, donde los usuarios pueden restringirse a ciertas Zones o a clústeres específicos dentro de una Zone.
+
+
+
+== Calcular
+
+OpenNebula admite KVM para máquinas virtuales y LXC para contenedores Linux. Los sistemas operativos admitidos incluyen Ubuntu, Debian, RHEL y AlmaLinux. Las máquinas virtuales pueden desplegarse desde plantillas preconfiguradas o imágenes personalizadas. Un conjunto de máquinas virtuales (servicio) también puede desplegarse usando plantillas de servicio. OneFlow permite definir y gestionar aplicaciones multinivel compuestas por varias máquinas virtuales interconectadas. OneGate permite comunicarse con el backend de OpenNebula desde dentro de las máquinas virtuales, permitiendo capacidades avanzadas de supervisión y gestión.
+
+La función de personalización de máquinas virtuales permite personalizar la configuración de la máquina virtual durante la implementación, incluida la configuración de red, el nombre de host, la contraseña y las claves SSH. La función de contextualización permite inyectar datos de configuración en las máquinas virtuales en el momento de arranque, lo que permite una configuración dinámica basada en el entorno de implementación. Se pueden encontrar más detalles sobre la contextualización de máquinas virtuales en https://docs.opennebula.io/7.0/product/operation_references/configuration_references/template/#context-section["OpenNebula Referencias de operación"].
+
+Un conjunto de hipervisores se agrupan en clústeres para la gestión y programación de recursos. OneDRS (Distributed Resource Scheduler) permite la colocación automática y el equilibrio de carga de máquinas virtuales entre los hipervisores disponibles según la utilización de recursos y políticas predefinidas. La política puede ser pack o balance.
+
+image:opennebula-overview-004.png["Gestión de Compute de OpenNebula"]
+
+OpenNebula también admite la migración en vivo de máquinas virtuales, lo que permite un equilibrio de carga y mantenimiento sin tiempo de inactividad.
+
+Un host físico puede ser miembro de un clúster a la vez. Pero puede compartir almacenamiento y recursos de red entre clústeres. Se puede asignar un subconjunto de recursos de clúster a un centro de datos virtual (VDC) específico para proporcionar aislamiento de recursos para diferentes grupos de usuarios.
+
+image:opennebula-overview-005.png["Clusters y VDCs de OpenNebula"]
+
+Los clústeres extendidos permiten desplegar máquinas virtuales con alta disponibilidad en varios sitios físicos. En caso de un fallo del sitio, las máquinas virtuales pueden seguir funcionando desde el otro sitio sin interrupción.
+
+
+NOTE: Los clústeres extendidos requieren almacenamiento compartido accesible desde todos los sitios. Normalmente se utiliza la replicación síncrona para garantizar la coherencia de los datos entre los sitios.
+
+Se pueden definir reglas de afinidad/antiafinidad entre máquinas virtuales para controlar la colocación de máquinas virtuales en hosts físicos. Esto permite asegurar que ciertas máquinas virtuales siempre se desplieguen juntas o separadas entre sí según los requisitos de la aplicación. De manera similar, se pueden definir reglas de afinidad/antiafinidad entre hosts para controlar la colocación de máquinas virtuales en hosts físicos específicos. Se definen roles para agrupar máquinas virtuales con reglas de afinidad/antiafinidad similares.
+
+Los clústeres Kubernetes se pueden desplegar usando el servicio OneKE. OneKE permite crear y gestionar clústeres Kubernetes certificados por CNCF basados en SUSE Rancher. Los clústeres Kubernetes se pueden desplegar sobre las máquinas virtuales de OpenNebula, proporcionando una integración fluida entre la infraestructura cloud y la orquestación de contenedores.
+
+OpenNebula admite NVIDIA vGPU y MIG (Multi Instance GPU) para máquinas virtuales para aprovechar la potencia de las GPU para computación de alto rendimiento, aprendizaje automático y otras cargas de trabajo intensivas en GPU.
+
+
+
+== Almacenamiento
+
+OpenNebula proporciona cuatro tipos de almacenes de datos para gestionar recursos de almacenamiento: sistema, imagen, archivo y copia de seguridad. Los almacenes de datos de sistema se utilizan para almacenar los discos de las máquinas virtuales y los archivos de configuración. Los almacenes de datos de imagen se utilizan para almacenar imágenes de máquinas virtuales, ISOs y discos de datos. Los almacenes de datos de archivo se utilizan para almacenar archivos a los que pueden acceder las máquinas virtuales. Los almacenes de datos de copia de seguridad se utilizan para almacenar copias de seguridad de las máquinas virtuales y sus datos.
+
+
+NOTE: Los almacenes de datos de imágenes pueden compartirse entre clústeres y servidores Front-end, mientras que los almacenes de datos System, File y Backup se asignan a un clúster específico.
+
+Cada almacén de datos del sistema especifica un módulo para manejar la gestión de transferencias desde el servidor Front-end a los hipervisores. Los gestores de transferencia soportados incluyen SSH, sistema de archivos compartido (por ejemplo, NFS, GlusterFS) y otros. Los almacenes de datos normalmente se montan en la carpeta /var/lib/one/datastores o como lo define el atributo DATASTORE_LOCATION en el archivo /etc/one/oned.conf. Cada almacén de datos del sistema define el almacén de datos de imagen correspondiente. Cuando se despliega una máquina virtual, sus discos normalmente se clonan desde el almacén de datos de imagen al almacén de datos del sistema usando el gestor de transferencia definido.
+
+image:opennebula-overview-006.png["OpenNebula estructura de ejemplo de directorio de almacenamiento"]
+
+ONTAP FlexCache puede utilizarse para almacenes de datos de imágenes en ubicaciones remotas dentro de la misma OpenNebula Zone. Esto permite almacenar en caché localmente las imágenes a las que se accede con frecuencia, reduciendo la latencia y mejorando el rendimiento de los despliegues de máquinas virtuales.
+
+La edición Enterprise de OpenNebula incluye el controlador NetApp para crear y gestionar discos de máquinas virtuales en sistemas de almacenamiento NetApp usando ONTAP API. Esto permite aprovechar funciones de almacenamiento avanzadas como thin provisioning, deduplicación y snapshots para discos de máquinas virtuales.
+
+Las imágenes pueden descargarse de repositorios de imágenes públicos o privados, como OpenNebula Marketplace, Linux Container o Private Marketplace alojados en http o almacenamiento S3. Los marketplaces privados permiten a las organizaciones mantener un conjunto de imágenes seleccionadas para sus usuarios en toda la federación.
+
+Cloud Images requiere la capa de contextualización para usarse con OpenNebula. Las imágenes pueden ser persistentes o no persistentes. Las imágenes persistentes retienen los cambios realizados durante el tiempo de ejecución de la máquina virtual, mientras que las imágenes no persistentes no retienen ningún cambio hecho por la VM después de que se termina. Pero retienen los cambios en el almacén de datos del sistema cuando se apaga.
+
+Las imágenes persistentes se suelen usar para crear imágenes personalizadas de máquinas virtuales. Solo se puede desplegar una máquina virtual desde una imagen persistente a la vez.
+
+Las instantáneas de disco de la máquina virtual pueden utilizarse para crear imágenes a partir de los datos de la máquina virtual en ejecución. El tamaño del disco de la máquina virtual puede redimensionarse durante la implementación o en tiempo de ejecución (redimensionamiento en línea).
+
+El controlador CSI de Trident se utiliza para crear volúmenes persistentes en clústeres de Kubernetes desplegados con OneKE. Esto permite que las cargas de trabajo de Kubernetes aprovechen las funciones de almacenamiento de ONTAP. Trident Protect permite definir políticas de recuperación ante desastres a nivel de aplicación para cargas de trabajo de Kubernetes.
+
+
+
+== Red
+
+OpenNebula se conecta a la infraestructura de red existente para proporcionar capacidades de red para máquinas virtuales y contenedores. Admite varios modelos de red, incluidos Linux bridge, 802.1Q VLAN, VXLAN y redes Open vSwitch. Para redes tipo VPC, se puede usar VXLAN con EVPN para aislar las redes de los inquilinos.
+
+image:opennebula-overview-007.png["Modelos de red de OpenNebula"]
+
+Cada red virtual necesita tener definido un rango de direcciones. Puede ser IPv4, IPv6, ambos o incluso un rango de direcciones MAC (si usas un servidor DHCP externo). La función IPAM (IP Address Management) permite gestionar y asignar direcciones IP de los rangos de direcciones definidos. Admite la asignación automática y manual de direcciones IP, así como la reserva de direcciones IP específicas para máquinas virtuales.
+
+image:opennebula-overview-008.png["OpenNebula red virtual con IPAM"]
+
+Durante el despliegue de la máquina virtual, las interfaces de red se configuran automáticamente según las redes virtuales definidas y la asignación de dirección IP. La configuración de red puede personalizarse usando la función de contextualización de la máquina virtual.
+
+La información de contexto también se puede actualizar usando el botón Update VM Configuration en la interfaz Sunstone. También se pueden conectar en caliente interfaces de red adicionales a máquinas virtuales en ejecución.
+
+Los routers virtuales pueden desplegarse para proporcionar servicios de enrutamiento y NAT para redes virtuales. Las redes virtuales pueden extenderse por varios clústeres, permitiendo topologías de red flexibles.
+
+
+
+== Supervisión y operaciones
+
+OpenNebula incluye un completo sistema de supervisión que proporciona información en tiempo real sobre el rendimiento y la salud de la infraestructura de la nube. Recopila métricas de hipervisores, máquinas virtuales, recursos de almacenamiento y componentes de red, lo que permite a los administradores supervisar la utilización de los recursos e identificar posibles problemas.
+
+OpenNebula incluye exportadores de Prometheus para recopilar métricas para sistemas de monitorización basados en Prometheus. También se integra con Grafana para proporcionar paneles personalizables para visualizar las métricas recopiladas.
+
+image:opennebula-overview-009.png["OpenNebula monitoring con Grafana"]
+
+NetApp Data Infrastructure Insights puede usarse para monitorizar los sistemas de almacenamiento ONTAP usados con OpenNebula. Ofrece información detallada sobre el rendimiento, la capacidad y el estado del almacenamiento, permitiendo a los administradores optimizar los recursos de almacenamiento para máquinas virtuales.
+
+La CLI de OpenNebula se utiliza para realizar diversas operaciones en la infraestructura de la nube, incluyendo la gestión de máquinas virtuales, la gestión de almacenamiento y la gestión de redes. Ofrece una forma potente y flexible de automatizar tareas e integrarse con otras herramientas. Puedes encontrar más información sobre la CLI de OpenNebula en https://docs.opennebula.io/7.0/product/operation_references/command_line_interface/cli/["OpenNebula Referencia de CLI"]. Para una salida personalizada de la CLI, consulta https://docs.opennebula.io/7.0/product/operation_references/command_line_interface/cli_configuration/["Referencia de configuración CLI"].
+
+Los scripts personalizados también pueden ejecutarse como parte del ciclo de vida de la VM. Los hooks permiten desencadenar acciones personalizadas basadas en eventos específicos en la plataforma OpenNebula, como el despliegue, la finalización o la migración de la VM. Esto permite a los administradores automatizar flujos de trabajo e integrarse con sistemas externos.
+
+image:opennebula-overview-010.png["OpenNebula Ganchos y ciclo de vida de las VM"]
+
+Para más información sobre OpenNebula Hooks, consulta https://docs.opennebula.io/7.0/product/integration_references/system_interfaces/hook_driver/["OpenNebula usando hooks"].
+
+https://github.com/OpenNebula/one-swap["Herramienta OneSwap"] permite migrar máquinas virtuales de vSphere al entorno KVM de OpenNebula. Crea las imágenes a partir de archivos VMDK de vSphere y genera las plantillas VM correspondientes de OpenNebula. NetApp Shift toolkit puede convertir archivos VMDK de vSphere a formato QCOW2 para su uso con OpenNebula. Usar NetApp Shift toolkit API con OneSwap permite automatizar el proceso de migración en archivos compartidos ONTAP de manera rápida y eficiente. Para más información sobre NetApp shift toolkit, consulta link:../migration/shift-toolkit-conversion.html["Conversión de Shift Toolkit"].
+
+
+
+== Protección de datos
+
+OpenNebula ofrece soporte para backup usando rsync, restic y Veeam. La integración de Veeam solo está disponible con Enterprise edition. Los backup datastores se usan para almacenar backups de máquinas virtuales y sus datos. Los trabajos de backup se pueden programar para ejecutarse en intervalos específicos, asegurando que las máquinas virtuales se respalden regularmente.
+
+Las copias de seguridad pueden ser instantáneas incrementales o copias de seguridad completas, dependiendo de la estrategia de backup. Las instantáneas incrementales capturan solo los cambios realizados desde el último backup, reduciendo los requisitos de almacenamiento y el tiempo de backup. Las copias de seguridad completas crean una copia completa de la máquina virtual y sus datos. El formato qcow2 permite usar el seguimiento de bloques de cambio para los backups incrementales.
+
+OpenNebula proporciona un servidor oVirt compatible con la API de REST para integrarse con el software Veeam Backup & Replication. Para más información, consulta https://docs.opennebula.io/7.0/product/cluster_configuration/backup_system/veeam/["Integración de OpenNebula con Veeam"].

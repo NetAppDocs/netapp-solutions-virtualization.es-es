@@ -1,0 +1,33 @@
+---
+section: opennebula
+title: OpenNebula
+url: "/opennebula/index.html"
+entries:
+- title: Acerca de OpenNebula
+  pdf-filename: Descripción general de OpenNebula en NetApp
+  url: "/opennebula/opennebula-overview.html"
+- title: Aprovisiona almacenamiento NetApp para OpenNebula
+  pdf-filename: NetApp storage para OpenNebula
+  entries:
+  - title: Arquitectura de la solución
+    url: "/opennebula/opennebula-netapp-architecture.html"
+  - title: Tipos de almacenamiento admitidos
+    url: "/opennebula/opennebula-storage-types.html"
+  - title: Configura los protocolos de almacenamiento con NetApp para OpenNebula
+    entries:
+    - title: Descripción general de los protocolos de almacenamiento
+      url: "/opennebula/opennebula-netapp-protocols.html"
+    - title: Configurar el almacenamiento SMB/CIFS
+      url: "/opennebula/opennebula-ontap-smb.html"
+    - title: Configurar el almacenamiento NFS
+      url: "/opennebula/opennebula-ontap-nfs.html"
+    - title: Configura el almacenamiento iSCSI de NetApp ONTAP
+      url: "/opennebula/opennebula-netapp-iscsi.html"
+    - title: Configurar LVM con FC
+      url: "/opennebula/opennebula-ontap-fc.html"
+    - title: Configurar LVM con iSCSI
+      url: "/opennebula/opennebula-ontap-iscsi.html"
+    - title: Configurar LVM con NVMe/FC
+      url: "/opennebula/opennebula-ontap-nvme-fc.html"
+    - title: Configurar LVM con NVMe/TCP
+      url: "/opennebula/opennebula-ontap-nvme-tcp.html"
