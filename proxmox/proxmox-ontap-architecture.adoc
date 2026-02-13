@@ -75,6 +75,7 @@ ONTAP proporciona un conjunto integral de funciones de almacenamiento empresaria
 * Asignación de nombres entre identidades de Windows y Unix
 * Protección autónoma contra ransomware con detección de amenazas integrada
 * Análisis del sistema de archivos para obtener información sobre capacidad y uso
+* Soporte de Metrocluster para alta disponibilidad.
 
 
 
@@ -82,6 +83,7 @@ ONTAP proporciona un conjunto integral de funciones de almacenamiento empresaria
 === Características del protocolo SAN
 
 * Extienda los clústeres a través de dominios de falla con la sincronización activa de SnapMirror (siempre verifique la https://mysupport.netapp.com/matrix/#welcome["Herramienta de matriz de interoperabilidad"] (para configuraciones compatibles)
+* Soporte de Metrocluster para alta disponibilidad.
 * Los modelos ASA proporcionan multirruta activo-activo y conmutación por error de ruta rápida
 * Compatibilidad de protocolos con FC, iSCSI y NVMe-oF
 * Autenticación mutua iSCSI CHAP

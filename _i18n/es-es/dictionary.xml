@@ -8564,4 +8564,7 @@
   <block id="fae50285a56e2519a749a9e6f1e7aa21" category="sidebar">NetApp storage para OpenNebula</block>
   <block id="8629e03df0633263ab40227fe3986a47" category="sidebar">Configura los protocolos de almacenamiento con NetApp para OpenNebula</block>
   <block id="ff9a52b1a7c26847f2ab026a07420444" category="sidebar">Configura el almacenamiento iSCSI de NetApp ONTAP</block>
+  <block id="12db34d0277dc14c8dfb7f00306bcdb1" category="list-text">Soporte de Metrocluster para alta disponibilidad.</block>
+  <block id="193267cce237caa1ad9fccf574952dd4" category="inline-link-macro">Documentación de ONTAP 9 sobre Proxmox VE 9.x para FCP e iSCSI con almacenamiento ONTAP</block>
+  <block id="191c3e0b6a997326d8f620ef8fbb2776" category="admonition">La configuración deseada para los dispositivos ONTAP multivía ya está incluida en el paquete. Para más información, consulta la <block ref="bbf51a4dc5cabbb4a7cd9e6e15ab2e54" category="inline-link-macro-rx"></block></block>
 </blocks>

@@ -30,8 +30,12 @@ Complete estas tareas iniciales para preparar los hosts Proxmox VE para la conec
 apt list | grep multipath-tools
 # If need to install, execute the following line.
 apt-get install multipath-tools
-systemctl enable multipathd
+systemctl enable --now multipathd
 ----
++
+
+NOTE: La configuración deseada para los dispositivos ONTAP multivía ya está incluida en el paquete. Para más información, consulta la link:https://docs.netapp.com/us-en/ontap-sanhost/hu-proxmox-ve-9x.html#step-1-confirm-the-multipath-configuration-for-your-host["Documentación de ONTAP 9 sobre Proxmox VE 9.x para FCP e iSCSI con almacenamiento ONTAP"]
+
 . Recopile el WWPN de todos los hosts de Proxmox VE y proporciónelo al administrador de almacenamiento.
 +
 [source, shell]
