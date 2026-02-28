@@ -34,9 +34,9 @@ video::27773297-a80c-473c-ab41-b01200fa009a[panopto,width=360]
 
 == Protección de datos y recuperación ante desastres
 
-.Protección de una máquina virtual mediante Trident Protect
+.Proteger una máquina virtual usando Trident Protect
 video::4670e188-3d67-4207-84c5-b2d500f934a0[panopto,width=360]
-.Recuperación ante desastres de una máquina virtual mediante Trident Protect
+.Recuperación ante desastres para una VM usando Trident Protect
 video::ae4bdcf7-b344-4f19-89ed-b2d500f94efd[panopto,width=360]
 .Conmutación por error/recuperación de máquinas virtuales OpenShift mediante capacidades avanzadas de gestión de datos de Trident (solo está disponible el programa de acceso anticipado)
 video::f2a8fa24-2971-4cdc-9bbb-b1f1007032ea[panopto,width=360]

@@ -1,10 +1,10 @@
 ---
 sidebar: sidebar 
 permalink: openshift/osv-vm-dp-using-tp.html 
-keywords: OpenShift, OCP, Trident, Trident protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization,Data Protection, Data Management for VMs, VM protection 
+keywords: OpenShift, OCP, Trident, Trident Protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization, Data Protection, Data Management for VMs, VM protection 
 summary: Protección de datos de virtualización Red Hat OpenShift con NetApp ONTAP 
 ---
-= Proteja las máquinas virtuales en Red Hat OpenShift Virtualization con Trident Protect
+= Protege las máquinas virtuales en Red Hat OpenShift Virtualization usando Trident Protect
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -18,18 +18,18 @@ Proteja las máquinas virtuales en OpenShift Virtualization mediante instantáne
 
 Las máquinas virtuales en el entorno de virtualización OpenShift son aplicaciones en contenedores que se ejecutan en los nodos de trabajo de su plataforma OpenShift Container. Es importante proteger los metadatos de las máquinas virtuales, así como los discos persistentes de las máquinas virtuales, para que cuando se pierdan o se dañen, se puedan recuperar.
 
-Los discos persistentes de las máquinas virtuales de OpenShift Virtualization pueden respaldarse con almacenamiento ONTAP integrado al clúster OpenShift mediantelink:https://docs.netapp.com/us-en/trident/["Trident CSI"] . En esta sección utilizamoslink:https://docs.netapp.com/us-en/trident/trident-protect/learn-about-trident-protect.html["Protección Trident"] para crear instantáneas y copias de seguridad de máquinas virtuales, incluidos sus volúmenes de datos en ONTAP Object Storage.
+Los discos persistentes de las VMs de OpenShift Virtualization pueden estar respaldados por almacenamiento ONTAP integrado al Cluster de OpenShift usando link:https://docs.netapp.com/us-en/trident/["Trident CSI"]. En esta sección usamos link:https://docs.netapp.com/us-en/trident/trident-protect/learn-about-trident-protect.html["Trident Protect"] para crear snapshots y backups de las VMs, incluyendo sus volúmenes de datos, en ONTAP Object Storage.
 
 Luego restauramos desde una instantánea o una copia de seguridad cuando sea necesario.
 
-Trident Protect permite realizar instantáneas, copias de seguridad, restauraciones y recuperación ante desastres de aplicaciones y máquinas virtuales en un clúster OpenShift. Para las máquinas virtuales de OpenShift Virtualization, los datos que se pueden proteger con Trident Protect incluyen objetos de recursos de Kubernetes asociados con las máquinas virtuales, volúmenes persistentes e imágenes internas.
+Trident Protect permite realizar instantáneas, copias de seguridad, restauraciones y recuperación ante desastres de aplicaciones y VMs en un clúster OpenShift. Para OpenShift Virtualization VMs, los datos que se pueden proteger con Trident Protect incluyen objetos de recursos de Kubernetes asociados con las VMs, volúmenes de almacenamiento persistente e imágenes internas.
 
 **Las siguientes son las versiones de los distintos componentes utilizados para los ejemplos de esta sección**
 
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/installing_on_bare_metal/index["Clúster OpenShift 4.17"]
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/virtualization/getting-started#tours-quick-starts_virt-getting-started["OpenShift Virtualization instalado a través del operador de virtualización OpenShift proporcionado por Red Hat"]
 * link:https://docs.netapp.com/us-en/trident/trident-get-started/kubernetes-deploy.html["Trident 25.02"]
-* link:https://docs.netapp.com/us-en/trident/trident-protect/trident-protect-installation.html["Trident protege 25.02"]
+* link:https://docs.netapp.com/us-en/trident/trident-protect/trident-protect-installation.html["Trident Protect 25.02"]
 * link:https://docs.netapp.com/us-en/ontap/["ONTAP 9.16"]
 
 
@@ -40,11 +40,11 @@ Trident Protect permite realizar instantáneas, copias de seguridad, restauracio
 .Crear AppVault
 [%collapsible%open]
 ====
-Antes de crear las instantáneas y las copias de seguridad para una aplicación o una máquina virtual, se debe configurar un almacenamiento de objetos en Trident Protect para almacenar las instantáneas y las copias de seguridad. Esto se hace usando el bucket CR. Sólo los administradores pueden crear un CR de bucket y configurarlo. El contenedor CR se conoce como AppVault en Trident Protect. Los objetos AppVault son la representación declarativa del flujo de trabajo de Kubernetes de un depósito de almacenamiento. Un CR de AppVault contiene las configuraciones necesarias para que un bucket se utilice en operaciones de protección, como copias de seguridad, instantáneas, operaciones de restauración y replicación de SnapMirror .
+Antes de crear las instantáneas y las copias de seguridad de una aplicación o una máquina virtual, se debe configurar un almacenamiento de objetos en Trident Protect para almacenar las instantáneas y las copias de seguridad. Esto se hace usando el CR de bucket. Solo los administradores pueden crear un CR de bucket y configurarlo. El CR de bucket se conoce como AppVault en Trident Protect. Los objetos AppVault son la representación declarativa del flujo de trabajo de Kubernetes de un bucket de almacenamiento. Un CR AppVault contiene las configuraciones necesarias para que un bucket se use en operaciones de protección, como copias de seguridad, instantáneas, operaciones de restauración y replicación SnapMirror.
 
 En este ejemplo, mostraremos el uso de ONTAP S3 como almacenamiento de objetos. Aquí se muestra el flujo de trabajo para crear AppVault CR para ONTAP S3: 1. Cree un servidor de almacén de objetos S3 en la SVM en el clúster ONTAP . 2. Cree un depósito en el servidor de almacén de objetos. 3. Cree un usuario S3 en la SVM. Guarde la clave de acceso y la clave secreta en un lugar seguro. 4. En OpenShift, cree un secreto para almacenar las credenciales de ONTAP S3. 5. Crear un objeto AppVault para ONTAP S3
 
-**Configurar Trident Protect AppVault para ONTAP S3**
+**Configura Trident Protect AppVault para ONTAP S3**
 
 [source, yaml]
 ----
