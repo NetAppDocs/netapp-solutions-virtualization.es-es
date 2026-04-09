@@ -1,0 +1,931 @@
+---
+sidebar: sidebar 
+permalink: proxmox/proxmox-smp.html 
+keywords: proxmox, storage manager, smp, ontap, nfs, iscsi, backup, restore, clone, data protection 
+summary: 'Storage Manager for Proxmox (SMP) proporciona un completo aprovisionamiento de almacenamiento y gestión del ciclo de vida para máquinas virtuales en entornos Proxmox que utilizan sistemas de almacenamiento NetApp ONTAP. SMP permite a los administradores gestionar el almacenamiento directamente, simplificando las operaciones mediante capacidades automatizadas de aprovisionamiento, copia de seguridad, restauración y clonación.' 
+---
+= Configurar y utilizar Storage Manager para Proxmox
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+:linkattrs: 
+
+
+[role="lead"]
+Storage Manager for Proxmox (SMP) proporciona un completo aprovisionamiento de almacenamiento y gestión del ciclo de vida para máquinas virtuales en entornos Proxmox que utilizan sistemas de almacenamiento NetApp ONTAP. SMP permite a los administradores gestionar el almacenamiento directamente, simplificando las operaciones mediante capacidades automatizadas de aprovisionamiento, copia de seguridad, restauración y clonación.
+
+
+
+== Conoce Storage Manager para Proxmox
+
+Storage Manager for Proxmox (SMP) ofrece una gestión integral del almacenamiento para máquinas virtuales dentro de entornos Proxmox que utilizan sistemas de almacenamiento NetApp. Al permitir a los administradores gestionar directamente el almacenamiento, SMP simplifica tanto las tareas de almacenamiento como las de gestión de datos en entornos Proxmox.
+
+
+
+=== Funciones clave
+
+* *Gestión integral del almacenamiento*: SMP proporciona una gestión completa del ciclo de vida de las máquinas virtuales, desde el aprovisionamiento de almacenamiento hasta las copias de seguridad y la recuperación.
+* *Gestión directa del almacenamiento*: los administradores de Proxmox pueden gestionar directamente el almacenamiento, agilizando las operaciones y reduciendo la complejidad.
+* *Instalador independiente*: SMP se entrega como un instalador independiente que se conecta sin problemas a los nodos Proxmox a través de API.
+
+
+
+
+=== Capacidades
+
+Cada componente de SMP está diseñado para mejorar la eficiencia de la gestión del almacenamiento:
+
+* *Aprovisionamiento de almacenamiento*: Asigna y gestiona fácilmente recursos de almacenamiento para hosts Proxmox y máquinas virtuales asociadas.
++
+** *Aprovisionamiento de almacenamiento NFS*: Configura y ajusta el almacenamiento NFS de ONTAP para usarlo con tu entorno Proxmox.
+** *aprovisionamiento de almacenamiento iSCSI*: Implementa LVM grueso con multivía para una gestión del almacenamiento iSCSI robusta y eficiente.
+
+
+* *Copias de seguridad y recuperación*: Realiza copias de seguridad fiables y recuperaciones rápidas para garantizar la integridad de los datos y la disponibilidad.
++
+** *Backups coherentes ante fallos y coherentes a nivel de archivos*: Garantiza la integridad de los datos configurando mecanismos de backup tanto coherentes ante fallos como coherentes a nivel de archivos.
+** *Operaciones de restauración de máquinas virtuales*: Ejecuta procesos de restauración de máquinas virtuales para recuperar datos y mantener la disponibilidad del sistema.
+
+
+* *Eficiencia del almacenamiento*: ONTAP proporciona un conjunto completo de tecnologías de eficiencia del almacenamiento diseñadas para minimizar el almacenamiento necesario para los datos. Estas tecnologías no solo reducen el consumo de almacenamiento, sino que también mejoran el rendimiento del sistema, ofreciendo:
++
+** *Aprovisionamiento rápido de máquinas virtuales*: agiliza el aprovisionamiento de máquinas virtuales para un despliegue más rápido.
+** *Copias de conjuntos de datos más rápidas*: Acelera la duplicación de conjuntos de datos para una gestión eficiente de los datos.
+
+
+
+
+
+
+=== Prerrequisitos
+
+Asegúrate de haber completado lo siguiente antes de continuar:
+
+* Cluster Proxmox Virtual Environment (PVE) 9.x o posterior en funcionamiento.
+* Almacenamiento All Flash FAS (AFF) de ONTAP con los protocolos NFS e iSCSI activados en el nivel SVM. Para obtener instrucciones, consulta link:proxmox-ontap-nfs.html["Configurar almacenes de datos NFS con ONTAP"] y link:proxmox-ontap-iscsi.html["Configurar Proxmox VE 9.x para iSCSI con almacenamiento ONTAP"].
++
+[NOTE]
+====
+Para la configuración de iSCSI LUN, se debe habilitar lo siguiente:
+
+*Instalar multivía e iSCSI en todos los hosts Proxmox:*
+
+[source, shell]
+----
+apt update
+apt install open-iscsi multipath-tools -y
+systemctl enable --now iscsid multipathd
+----
+*Configura el iniciador iSCSI y conéctate a través de iSCSI (en hosts Proxmox):*
+
+Crear o actualizar `/etc/multipath.conf`:
+
+[source, shell]
+----
+touch /etc/multipath.conf
+----
+O usa:
+
+[source, shell]
+----
+cat << 'EOF' > /etc/multipath.conf
+defaults {
+   user_friendly_names yes
+   find_multipaths yes
+}
+blacklist {
+   devnode "^sd[a]$"
+}
+EOF
+----
+====
+* Los hosts Proxmox y el almacenamiento ONTAP son accesibles en red desde el host SMP.
+
+
+
+
+== Instalar y configurar Storage Manager para Proxmox
+
+Para empezar con SMP, usa un sistema operativo Windows en una máquina virtual designada. SMP se puede ejecutar en Windows Server 2019, 2022 y 2025.
+
+.Pasos
+. Descarga el paquete SMP (~17MB) desde el https://console.bluexp.netapp.com/automationHub["Hub de automatización de NetApp Console"^].
++
+.Ver la página de descarga de SMP
+[%collapsible]
+====
+image::proxmox-smp-image1.png[Página de descarga del instalador de SMP en el centro de automatización de la NetApp Console]
+
+====
+. Descomprime el paquete.
+. Ejecuta el archivo ejecutable para instalar e iniciar el servicio.
++
+
+NOTE: No se requieren dependencias de paquetes adicionales porque SMP aprovecha las API disponibles para orquestar los flujos de trabajo de aprovisionamiento y protección de datos.
+
++
+.Ver el asistente de instalación de SMP
+[%collapsible]
+====
+image::proxmox-smp-image2.png[Asistente de instalación SMP]
+
+====
++
+*Instalación alternativa con el kit de herramientas Shift*
+
++
+Como alternativa al instalador independiente, puedes instalar Proxmox VE Storage Manager utilizando el kit de herramientas Shift:
+
++
+** Open Shift Toolkit.
+** Ve a *Configuración* > *Avanzado* > *Administrador de almacenamiento*.
+** Activa Proxmox VE usando el interruptor de palanca.
+** Espera a que el sistema instale automáticamente los componentes necesarios.
+** Una vez finalizada la instalación, accede a Storage Manager haciendo clic en *Ver* o abriendo un navegador web para `https://<Shift_server_IP>:4001`
++
+Por ejemplo: `https://10.61.187.117:4001`
+
+
+
+. Abre un navegador web y accede a la interfaz de usuario de SMP introduciendo `http://<IP address specified during installation>:4001`
++
+.Ver la pantalla de inicio de sesión de SMP
+[%collapsible]
+====
+image::proxmox-smp-image4.png[Pantalla de inicio de sesión SMP]
+
+====
++
+.Ver la pantalla de inicio de SMP
+[%collapsible]
+====
+image::proxmox-smp-image5.png[Pantalla de inicio de la interfaz de usuario de SMP]
+
+====
+
+
+
+
+== Configura Storage Manager para Proxmox
+
+Cuando el almacenamiento y la conectividad a los nodos de almacenamiento y Proxmox se hayan configurado correctamente, configura SMP para automatizar el aprovisionamiento y la protección de las máquinas virtuales aprovechando las funcionalidades de ONTAP Snapshot y FlexClone.
+
+El primer paso es descubrir y añadir el punto final de almacenamiento ONTAP y luego los nodos Proxmox de destino a SMP.
+
+.Antes de empezar
+Asegúrese de que se cumplan los siguientes requisitos previos:
+
+* SMP está instalado
+* La instancia SMP tiene conectividad con los nodos Proxmox y los sistemas de almacenamiento
+* Cluster de ONTAP para proporcionar pools de almacenamiento NFS o iSCSI
+* La resolución DNS está en su lugar cuando se utilizan nombres DNS. De lo contrario, usa direcciones IP para el descubrimiento.
+* El entorno cuenta con versiones compatibles de los servidores Proxmox Virtual Environment
+
+
+.Acerca de esta tarea
+Una vez establecida la conectividad entre el hipervisor y el almacenamiento, la configuración requiere un par de clics y unos 2 minutos.
+
+.Pasos
+. Inicia sesión en SMP.
+. En el menú de navegación izquierdo de SMP, selecciona *Plan*.
+. Haz clic en *Add Plan*.
++
+.Ver Add Plan
+[%collapsible]
+====
+image::proxmox-smp-image6.png[Página de configuración del Plan SMP con la opción Add Plan]
+
+====
+. Haz clic en *Add ONTAP* para añadir las credenciales de un sistema de almacenamiento ONTAP.
++
+Puedes agregar ONTAP utilizando el endpoint del clúster o el LIF de gestión de SVM.
+
+. Para agregar usando el cluster endpoint, proporciona los siguientes detalles:
++
+.. Dirección IP del clúster o FQDN
+.. Nombre de usuario para acceder al clúster ONTAP
+.. Contraseña para acceder al cluster ONTAP
+.. Selecciona *Aceptar certificado autofirmado* y haz clic en *Add Storage Cluster*
++
+.Ver Add ONTAP: cluster endpoint
+[%collapsible]
+====
+image::proxmox-smp-image7.png[Cuadro de diálogo Add ONTAP para credenciales de endpoint de clúster]
+
+====
+
+
+. Para agregar usando la LIF de gestión de SVM, proporciona los siguientes detalles:
++
+.. LIF o FQDN de gestión de SVM
+.. Nombre de usuario para acceder al SVM
+.. Contraseña de acceso al SVM
+.. Selecciona *Aceptar certificado autofirmado* y haz clic en *Add Storage Cluster*
++
+.Ver Add ONTAP: gestión de SVM LIF
+[%collapsible]
+====
+image::proxmox-smp-image8.png[Agregar diálogo de ONTAP para las credenciales LIF de administración de SVM]
+
+====
+
+
+. Haz clic en *Add Proxmox* para añadir las credenciales de un nodo Proxmox que se registrará en SMP.
++
+Para agregar nodos Proxmox, especifica la dirección IP de uno de los nodos Proxmox existentes. El trabajo de descubrimiento consulta automáticamente el clúster para recopilar todos los detalles esenciales de configuración.
+
+. Facilita los siguientes datos:
++
+.. Dirección IP independiente de Proxmox o FQDN
+.. Nombre de usuario para acceder a Proxmox
+.. Contraseña de acceso al host Proxmox para realizar el inventario de los recursos
+.. Selecciona *Aceptar certificado autofirmado* y haz clic en *Continuar*
++
+.Ver Add Proxmox: credenciales de nodo
+[%collapsible]
+====
+image::proxmox-smp-image9.png[Agregar diálogo de Proxmox para credenciales de nodo]
+
+====
++
+Alternativamente, usa un token de API para acceder a las API proporcionando:
+
++
+*** ID de token de API
+*** Secreto del token de API
++
+
+NOTE: En esta versión, el token de API solo se permite para operaciones NFS.
+
++
+.Ver Add Proxmox: API token
+[%collapsible]
+====
+image::proxmox-smp-image10.png[Agregar el cuadro de diálogo de Proxmox con la opción de token de API]
+
+====
+
+
+
+
+. Verifica que los trabajos de detección se hayan realizado correctamente y que el estado de cada plan esté marcado como *Success*.
++
+Una vez añadido, SMP realiza automáticamente una exploración de detección y muestra las máquinas virtuales junto con sus metadatos asociados. También se detectan los volúmenes de almacenamiento o LUN asignados existentes.
+
++
+.Ver los resultados del descubrimiento de planes
+[%collapsible]
+====
+image::proxmox-smp-image11.png[Descubrimiento del plan SMP que muestra las máquinas virtuales y los metadatos asociados]
+
+====
+
+
+.Después de que termines
+* Si realizas alguna modificación en los nodos Proxmox o en el almacenamiento, ejecuta el descubrimiento para obtener la información más reciente. Haz clic en los tres puntos junto al nombre del plan y haz clic en *Discover*.
+* Asegúrate de que el sistema de almacenamiento ONTAP se añade primero, para que la tarea de descubrimiento pueda asignar los recursos existentes en consecuencia. Si Proxmox se añade primero, ejecuta una tarea de descubrimiento contra ONTAP.
+* Si la credencial o el token de API requiere una actualización posterior, ve a *Configuración* y selecciona la opción *Actualizar credenciales*.
+
+
+.Ver actualización de credenciales
+[%collapsible]
+====
+image::proxmox-smp-image12.png[Vista general del Plan SMP tras una configuración correcta]
+
+====
+
+
+== Aprovisionar almacenamiento
+
+El aprovisionamiento de un volumen como un conjunto de almacenamiento, comúnmente conocido como datastore, crea un contenedor lógico para máquinas virtuales y sus discos virtuales (QCOW2 o RAW). SMP permite aprovisionar un datastore y luego adjuntarlo a un único host o a todos los hosts dentro de un clúster.
+
+
+
+=== Provisionar almacenamiento NFS
+
+Usa SMP para aprovisionar y montar un volumen ONTAP como datastore NFS.
+
+.Pasos
+. En la GUI SMP, ve a la pestaña *Provision*.
+. Navega hasta *Add Volume*.
++
+.Ver pestaña Provisión: Add Volume
+[%collapsible]
+====
+image::proxmox-smp-image13.png[Pestaña SMP Provision con la opción Add Volume]
+
+====
+. En el asistente de Nuevo Volumen, en el paso de Aprovisionamiento rápido, selecciona *NFS*.
++
+
+NOTE: NFS está seleccionado por defecto. El aprovisionamiento rápido ofrece una configuración más rápida usando los ajustes predeterminados para implementaciones estándar. El aprovisionamiento avanzado ofrece opciones ampliadas para capacidades HA y BCDR, que se introducirán en futuras versiones.
+
++
+.Ver asistente para nuevo volumen: NFS
+[%collapsible]
+====
+image::proxmox-smp-image14.png[Asistente de Nuevo Volumen con NFS seleccionado en el paso de Aprovisionamiento Rápido]
+
+====
+. En la sección *ONTAP Details*, proporciona la siguiente información:
++
+.. Selecciona el clúster ONTAP o la máquina virtual de almacenamiento (SVM) designada en el menú desplegable *Storage Cluster*
+.. Proporciona un valor único en el campo *Nombre del volumen*
+.. Introduce la capacidad necesaria para el volumen del datastore en el campo *Size*
+.. Elige los recursos de almacenamiento de ONTAP seleccionando las opciones adecuadas para:
++
+*** Nombre agregado
+*** Máquina virtual de almacenamiento (SVM)
+*** LIF preferido para el acceso al almacén de datos
+
+
+.. Selecciona una *Export Policy* existente o crea una personalizada haciendo clic en el signo (+) según sea necesario
++
+.Ver detalles de ONTAP: NFS
+[%collapsible]
+====
+image::proxmox-smp-image15.png[Sección de detalles de ONTAP para el aprovisionamiento de volúmenes NFS]
+
+====
+
+
+. En la sección *Detalles de Proxmox*, proporciona la siguiente información:
++
+.. En el campo *Proxmox*, elige el clúster de destino y luego selecciona todos los nodos que requieren acceso al almacén de datos
+.. En el campo *Versión NFS*, selecciona el protocolo NFS que prefieras (NFS v3 o NFS v4.1)
+.. En la sección *Contenido*, selecciona los tipos de contenido que se habilitarán para este almacén de datos:
++
+*** Imagen de disco
+*** Imagen ISO
+*** Plantilla de contenedor
+*** Copia de seguridad
+*** Fragmentos
+*** Importar
+*** O selecciona *Todos* los tipos de contenido
+
+
+.. (Opcional) Activa la opción *nconnect* si deseas múltiples conexiones TCP
+.. Asegúrate de que la casilla *Montar el almacén de datos* esté marcada para que el almacén de datos se monte en los nodos Proxmox seleccionados
++
+.Ver detalles de Proxmox: NFS
+[%collapsible]
+====
+image::proxmox-smp-image16.png[Sección de detalles de Proxmox para la configuración de almacenes de datos NFS]
+
+====
+
+
+. Haz clic en *Provision* para crear el volumen ONTAP y registrar el datastore (pool de almacenamiento) dentro del clúster Proxmox seleccionado.
++
+.Ver el resultado del aprovisionamiento NFS
+[%collapsible]
+====
+image::proxmox-smp-image18a.png[Aprovisionamiento de volumen NFS en curso]
+
+image::proxmox-smp-image18.png[El aprovisionamiento de almacenes de datos NFS se ha completado correctamente]
+
+====
++
+.Ver almacén de datos NFS en Proxmox
+[%collapsible]
+====
+image::proxmox-smp-image17.png[Datastore NFS registrado en el clúster Proxmox]
+
+====
+
+
+
+
+==== Editar un volumen aprovisionado
+
+Usa SMP para modificar la configuración del volumen después del aprovisionamiento.
+
+.Pasos
+. En la GUI SMP, localiza el volumen en la pestaña *Provision*.
+. Haz clic en los tres puntos verticales (⋮) situados junto al volumen.
+. Selecciona *Editar* en el menú contextual para abrir los ajustes de volumen.
++
+.Ver diálogo Editar Volumen
+[%collapsible]
+====
+image::proxmox-smp-image18b.png[El cuadro de diálogo Editar volumen muestra las opciones de configuración del volumen]
+
+====
+. Modifica los ajustes de volumen según sea necesario:
++
+** *Redimensionar volumen*: ajusta la capacidad de almacenamiento del volumen
++
+
+NOTE: El redimensionamiento solo es aplicable a volúmenes NFS.
+
+** *Bloqueo de instantáneas*: activar para evitar que las instantáneas se borren o alteren
++
+
+NOTE: Para ello es necesario instalar la licencia SnapLock en el clúster, y el reloj de conformidad del clúster debe estar inicializado.
+
+** *Protección antirransomware*: permite detectar y alertar de forma proactiva sobre actividades inusuales que podrían indicar un ataque de ransomware
+** *Política de exportación*: actualizar o modificar la política de exportación
+
+
+. Haz clic en *Guardar* para aplicar los cambios.
+
+
+
+
+=== Provisiona almacenamiento iSCSI
+
+Usa SMP para configurar un backend iSCSI para máquinas virtuales.
+
+.Pasos
+. En la GUI SMP, ve a la pestaña *Provision*.
+. Navega hasta *Add Volume*.
+. En el asistente de Nuevo Volumen, en el paso de Aprovisionamiento Rápido, selecciona *iSCSI*.
++
+.Ver asistente de nuevo volumen: iSCSI
+[%collapsible]
+====
+image::proxmox-smp-image19.png[Asistente de Nuevo Volumen con iSCSI seleccionado en el paso de Aprovisionamiento Rápido]
+
+====
+. En el protocolo iSCSI, en la sección *ONTAP Details*, proporciona la siguiente información:
++
+.. Elige el clúster ONTAP adecuado o la Storage Virtual Machine (SVM) designada en el menú desplegable *Storage Cluster*
+.. Selecciona las opciones para:
++
+*** Nombre agregado
+*** Máquina virtual de almacenamiento (SVM)
+
+
+.. Introduce un valor único en el campo *Nombre LUN*
+.. Indica el número necesario de LUNs en el campo *Número de LUNs* (por defecto es 1; se pueden crear en paralelo LUNs adicionales del mismo tamaño)
+.. Ingresa el tamaño deseado para cada LUN en el campo *Capacidad por LUN*
+.. Elige un *Grupo Iniciador* (igroup) para el control de acceso a iSCSI. Puedes seleccionar un igroup existente o crear uno nuevo.
++
+.Ver detalles de ONTAP: configuración de iSCSI LUN
+[%collapsible]
+====
+image::proxmox-smp-image20.png[sección de detalles de iSCSI ONTAP que muestra las opciones de configuración de LUN]
+
+====
++
+.Ver la selección del igroup iSCSI
+[%collapsible]
+====
+image::proxmox-smp-image21.png[selección de igroup iSCSI para el control de acceso]
+
+====
+
+
+. En la sección *Detalles de Proxmox*, proporciona la siguiente información:
++
+.. En el menú desplegable *Proxmox*, elige el clúster de destino y luego selecciona todos los nodos que requieran acceso al almacenamiento
+.. Selecciona el *LVM ID* apropiado que representará el pool de almacenamiento respaldado por iSCSI dentro de Proxmox
+.. En el campo *Nodos*, elige todos los nodos que requieren acceso a los objetivos iSCSI presentados
+.. (Opcional) Si se requiere segmentación VLAN, elige la *VLAN de almacenamiento* deseada
+.. En la sección *Contenido*, selecciona los tipos de contenido compatibles con este almacén de datos:
++
+*** Imagen de disco
+*** Contenedor
+*** O selecciona *Todos* los tipos de contenido
+
+
+.. Asegúrate de que *Mount the datastore* esté seleccionado para que el almacenamiento esté disponible en los nodos Proxmox elegidos
+.. (Opcional) Activa *Compartido* si varios nodos van a acceder simultáneamente al grupo de almacenamiento
++
+.Ver detalles de Proxmox: iSCSI
+[%collapsible]
+====
+image::proxmox-smp-image22.png[sección de detalles de iSCSI Proxmox que muestra la configuración del grupo de almacenamiento]
+
+====
+
+
+. Haz clic en *Provision* para crear el LUN ONTAP y registrar el datastore (pool de almacenamiento) dentro del clúster Proxmox seleccionado.
++
+.Ver aprovisionamiento de LUN iSCSI
+[%collapsible]
+====
+image::proxmox-smp-image23.png[aprovisionamiento de LUN iSCSI en curso]
+
+====
++
+.Ver aprovisionamiento iSCSI completado
+[%collapsible]
+====
+image::proxmox-smp-image24.png[provisión de LUN iSCSI completada]
+
+====
++
+.Ver datastore iSCSI en Proxmox
+[%collapsible]
+====
+image::proxmox-smp-image25.png[datastore iSCSI registrado en clúster Proxmox]
+
+====
+. Valida que los LUNs NFS e iSCSI han sido conectados accediendo al endpoint Proxmox.
++
+El almacenamiento conectado ya está disponible para el aprovisionamiento de máquinas virtuales.
+
++
+.Vista de almacenamiento de Proxmox
+[%collapsible]
+====
+image::proxmox-smp-image26.png[La vista de almacenamiento de Proxmox confirma que los almacenes de datos NFS e iSCSI están conectados]
+
+====
+
+
+
+
+=== Opciones de configuración del volumen
+
+Cuando SMP aprovisiona nuevos volúmenes y LUNs de ONTAP FlexVol, se aplican automáticamente varios valores de configuración por defecto:
+
+[cols="2*"]
+|===
+| Configuración de ONTAP | Valor por defecto 
+
+
+| Reserva de snapshot (-percent-snapshot-space) | 0% 
+
+
+| Reserva fraccionaria (-fractional-reserve) | 0% 
+
+
+| Actualización del tiempo de acceso (-atime-update) | Deshabilitado 
+
+
+| Readahead mínimo (-min-readahead) | Deshabilitado 
+
+
+| Instantáneas programadas | Ninguno 
+
+
+| Eficiencia del almacenamiento | Habilitado 
+
+
+| Garantía de volumen | Ninguno (thin provisioned) 
+
+
+| Tamaño automático del volumen | crecer_contraer 
+
+
+| Reserva de espacio LUN | Deshabilitado 
+
+
+| Asignación de espacio LUN | Habilitado 
+|===
+
+
+=== Comportamiento de NConnect
+
+Cuando utilices almacenamiento NFS con Proxmox VE, ten en cuenta el comportamiento específico del cliente de NFS de Linux (tal y como lo utiliza Debian, el SO base de Proxmox VE). El kernel de Linux puede reutilizar los parámetros de montaje de la primera vez que se monta una exportación NFS en un nodo. Si se vuelve a montar la misma exportación con diferentes opciones de montaje, puede que no se apliquen esas nuevas opciones.
+
+Como práctica recomendada, crea y monta exportaciones independientes y utiliza direcciones IP de servidores NFS diferentes, como LIF de datos distintos. SMP detecta automáticamente las conexiones existentes junto con sus valores nconnect asociados y aplica el valor nconnect adecuado a cualquier conexión nueva.
+
+
+
+== Proteger las máquinas virtuales
+
+Cuando las máquinas virtuales se ejecutan en almacenes de datos NFS respaldados por ONTAP, el enfoque de protección más racionalizado consiste en dejar que Proxmox establezca la coherencia del sistema de archivos, mientras que ONTAP captura el punto de backup real en la capa de almacenamiento. Las snapshots de ONTAP proporcionan copias a un momento específico rápidas y con gestión eficiente del espacio del volumen del almacén de datos y pueden utilizarse después para recuperar almacenes de datos completos, archivos individuales o contenido de máquinas virtuales.
+
+SMP proporciona un orquestador sencillo para la protección de datos coherente con fallos y con máquinas virtuales, así como para la gestión de clones. Este software simplifica los ciclos de vida de backup, restauración y clonación mediante la creación de políticas de backup que pueden aplicarse a varios trabajos. Estas políticas pueden definir la programación, la retención, la replicación y otras capacidades. Permiten la selección opcional de snapshots coherentes con archivos; este enfoque utiliza la capacidad de QEMU para poner en reposo la E/S antes de tomar un snapshot de ONTAP.
+
+SMP permite proteger un datastore completo, donde un volumen NFS de ONTAP contiene múltiples máquinas virtuales, grupos de máquinas virtuales que pueden abarcar varios datastores o a nivel de máquina virtual individual.
+
+
+
+=== Copia de seguridad de máquinas virtuales
+
+Una vez que los volúmenes ONTAP han sido aprovisionados, usa la opción Backup para listar todas las máquinas virtuales que están ejecutándose en el cluster de Proxmox y realizar un backup coherente a nivel de crash o a nivel de archivos de las máquinas virtuales.
+
+.Pasos
+. Accede a *Proteger* > *Copia de seguridad* desde el panel de navegación de la izquierda.
++
+.Ver la página Protect Backup
+[%collapsible]
+====
+image::proxmox-smp-image27.png[Página de copia de seguridad de SMP Protect que enumera las máquinas virtuales Proxmox]
+
+====
+. Selecciona la máquina virtual que quieres respaldar y haz clic en *Backup*.
++
+.Cuadro de diálogo Ver copia de backup: selección de VM
+[%collapsible]
+====
+image::proxmox-smp-image28.png[Diálogo de copia de seguridad que muestra la selección de máquinas virtuales y las opciones de copia de seguridad]
+
+====
+. El flujo de trabajo de copia de seguridad permite seleccionar entre protección coherente con los fallos y protección coherente con los archivos.
++
+El modo consistente con archivos utiliza opcionalmente QEMU fsfreeze para asegurar la inactividad del sistema de archivos invitado antes de tomar la snapshot. Si fsfreeze falla, el sistema recurre a usar una snapshot de Proxmox.
+
++
+
+NOTE: Este mecanismo de emergencia solo se aplica a las máquinas virtuales almacenadas en volúmenes NFS.
+
++
+.Ver cuadro de diálogo Copia de seguridad: opciones de coherencia
+[%collapsible]
+====
+image::proxmox-smp-image29.png[Diálogo de copia de seguridad que muestra las opciones de protección coherente con fallos y coherente con archivos]
+
+====
++
+.Ver el progreso de la copia de backup
+[%collapsible]
+====
+image::proxmox-smp-image30.png[Progreso de la copia de seguridad mostrando la creación de snapshot temporal de Proxmox y snapshot de ONTAP]
+
+====
++
+
+NOTE: Las instantáneas de ONTAP se toman a nivel de volumen, capturando todos los discos de VM y archivos de configuración dentro del datastore NFS en una única instantánea. Cuando se selecciona la protección consistente con VM, fsfreeze se emite solo contra las VM elegidas; todas las demás VM del volumen se incluyen como consistentes con fallos dentro de la misma instantánea de ONTAP.
+
+
+
+.Opciones adicionales de copia de seguridad
+* Para hacer una copia de seguridad de un único almacén de datos, selecciona la pestaña *Almacenamiento* y elige la opción *Copia de seguridad*.
+* Para realizar copias de seguridad de varios almacenes de datos como una unidad o proteger grupos de máquinas virtuales que abarcan diferentes almacenes de datos, usa la opción *Grupo de recursos*. Los grupos de recursos permiten organizar los almacenes de datos o las máquinas virtuales en conjuntos lógicos de protección.
++
+.Ver pestaña Grupo de recursos
+[%collapsible]
+====
+image::proxmox-smp-image31.png[Pestaña Grupo de recursos con la opción de crear un nuevo grupo de recursos]
+
+====
+
+
+.Crear un grupo de recursos
+. Abre la pestaña *Grupo de recursos* y selecciona *Añadir*.
+. Introduce un nombre para el nuevo grupo de recursos.
+. Elige el tipo de recurso: *VM* o *Datastore*.
+. Selecciona el *Protocolo* adecuado.
+. Elige las máquinas virtuales o los almacenes de datos específicos que quieres incluir, según el tipo de recurso seleccionado.
+. Haz clic en *Crear grupo de recursos* para completar la configuración.
++
+.Ver el cuadro de diálogo Crear grupo de recursos
+[%collapsible]
+====
+image::proxmox-smp-image32.png[Cuadro de diálogo Crear grupo de recursos con opciones de selección de máquinas virtuales y almacenes de datos]
+
+====
+
+
+
+NOTE: Las copias de seguridad realizadas a nivel de datastore (volumen) siempre son coherentes con los fallos. Un grupo de recursos solo puede contener un tipo de recurso: máquinas virtuales o datastores. Para el almacenamiento basado en iSCSI, las copias de seguridad siempre son coherentes con los fallos.
+
+
+
+=== Detalles del flujo de trabajo de copia de backup
+
+El flujo de trabajo de copia de seguridad a grandes rasgos incluye:
+
+. *Define el ámbito de protección*: Selecciona si el objetivo de protección es un datastore (volumen ONTAP), un grupo de recursos (múltiples volúmenes o VMs) o una VM individual.
+. *Confirma el método de coherencia*: Elige cómo se crea la coherencia antes de la snapshot de ONTAP:
++
+** Congelación/descongelación del agente invitado de QEMU para la inactividad del sistema de archivos dentro del invitado y la integración con Windows VSS.
+
+
+. *Vuelca los archivos de configuración de la máquina virtual*.
+. *Toma la snapshot de ONTAP*: Captura una snapshot de ONTAP del volumen del datastore mientras las máquinas virtuales están en un estado coherente. Esto se convierte en la copia de backup retenida.
+. *Elimina las instantáneas temporales de Proxmox*: Elimina las instantáneas de Proxmox después de que se complete la instantánea de ONTAP para evitar el crecimiento del archivo delta.
+. *Aplicar políticas de retención y replicación (mediante políticas)*: aplica la política de retención de ONTAP configurada y replica el conjunto de snapshots si está activada la replicación de recuperación ante desastres.
+
+
+Este enfoque minimiza el espacio de almacenamiento y el ancho de banda de la red almacenando únicamente la información modificada. Usa copias Snapshot para hacer copias rápidas de la máquina virtual o del almacén de datos sin afectar el rendimiento y luego envíalas a un sistema secundario usando la tecnología NetApp SnapMirror para la protección de datos a largo plazo y fuera del sitio.
+
+
+
+=== Automatiza las tareas de copia de seguridad de máquinas virtuales
+
+Automatiza las copias de seguridad de Proxmox VM configurando un calendario. Crear copias de seguridad periódicas es crucial para la protección de datos y la recuperación ante desastres.
+
+.Pasos
+. Ve a *Protect* > *Backup* > *Policies* y haz clic en *Add* para añadir una nueva política de backup y programación.
++
+.Ver la página de políticas de backup
+[%collapsible]
+====
+image::proxmox-smp-image33.png[Página de políticas de backup con opción de añadir una nueva política]
+
+====
+. Configura los ajustes generales:
++
+.. Introduce un nombre para la política
+.. Selecciona el *Tipo de política* (volumen o grupo de recursos)
+.. Elige el *Objetivo* en función del tipo seleccionado
+.. Establece la *frecuencia de las copias de backup* (cada hora, cada día, cada semana o cada mes)
+.. Configura *Retención*, utilizando "Días para conservar" o "Número para conservar" (el valor de retención por defecto es 7)
+.. Elige el *Modo de replicación* (desactivado en la versión actual):
++
+*** Actualizar SnapMirror después del backup
+*** Actualizar SnapVault tras la copia de backup
++
+
+NOTE: La replicación de SnapMirror debe configurarse en ONTAP usando la CLI o System Manager.
+
+
+
+
+
+. En *Advanced Options*, activa *VM Consistency* si deben utilizarse snapshots de Proxmox o fsfreeze antes de activar el snapshot de ONTAP.
+. Haz clic en *Crear política* para guardar la configuración.
++
+.Ver política de backup: planificación y retención
+[%collapsible]
+====
+image::proxmox-smp-image34.png[Configuración de política de backup mostrando calendario y ajustes de retención]
+
+====
++
+.Ver política de backup: replicación y opciones avanzadas
+[%collapsible]
+====
+image::proxmox-smp-image35.png[Configuración de política de backup mostrando replicación y opciones avanzadas]
+
+====
+
+
+
+NOTE: Un trabajo de copia de seguridad de máquinas virtuales también puede activarse inmediatamente haciendo clic en *Copia de seguridad*, en lugar de esperar a la hora de ejecución programada de un grupo de recursos.
+
+
+
+== Restaurar máquinas virtuales o datastores
+
+Usa SMP para restaurar una máquina virtual Proxmox desde un backup.
+
+.Antes de empezar
+Las máquinas virtuales deben estar apagadas antes de realizar una operación de restauración.
+
+.Pasos
+. Selecciona la opción *Restaurar* en el panel de navegación en el lado izquierdo de la interfaz web.
+. Selecciona la máquina virtual, el almacenamiento o el grupo de recursos que necesitas restaurar.
++
+.Ver la página de restauración
+[%collapsible]
+====
+image::proxmox-smp-image36.png[Restaurar página con la lista de máquinas virtuales,storage,and resource groups]
+
+====
+. Haz clic en el icono *Restore*.
++
+Dependiendo de la selección (ya sea VM, almacenamiento o grupo de recursos), se abrirá la ventana emergente de restauración.
+
++
+
+NOTE: Dependiendo del recurso seleccionado, se mostrarán las instantáneas creadas para los componentes respectivos. Por ejemplo, las instantáneas creadas a nivel de grupo de recursos solo se mostrarán cuando se seleccione un grupo de recursos. Lo mismo aplica al almacenamiento. Sin embargo, para las máquinas virtuales, se mostrarán todas las instantáneas creadas en los componentes para que puedas seleccionarlas.
+
++
+.Ver cuadro de diálogo Restaurar: selección de snapshot
+[%collapsible]
+====
+image::proxmox-smp-image37.png[Diálogo de restauración que muestra la selección de snapshot para la restauración a un momento específico]
+
+====
+. Selecciona las opciones requeridas:
++
+.. *Destino de restauración*: opción de restaurar en el mismo host o en un host alternativo
+.. *Host*: Si se selecciona host alternativo, el desplegable permite seleccionar cualquier host disponible dentro del clúster
+.. *Instantánea*: Elige la instantánea adecuada para la restauración a un momento específico
+
+
+. Haz clic en *Restaurar*.
++
+.Ver restauración en curso
+[%collapsible]
+====
+image::proxmox-smp-image38.png[Operación de restauración en curso]
+
+====
++
+.Ver restauración completada
+[%collapsible]
+====
+image::proxmox-smp-image39.png[Operación de restauración completada con éxito]
+
+====
+
+
+
+NOTE: Cuando se inicia una restauración a nivel de almacenamiento, todas las máquinas virtuales de ese volumen o LUN se apagan y el sistema restaura toda la entidad de almacenamiento en su conjunto.
+
+.Ver restauración a nivel de almacenamiento
+[%collapsible]
+====
+image::proxmox-smp-image40.png[Restauración a nivel de almacenamiento que muestra todas las máquinas virtuales en el volumen seleccionado]
+
+====
+
+
+=== Detalles del flujo de trabajo de restauración
+
+El flujo de trabajo de restauración varía en función del tipo de almacenamiento subyacente e implica los siguientes pasos clave:
+
+. *Define el alcance de la restauración*: selecciona si el objetivo de protección es un datastore (volumen ONTAP), un grupo de recursos (múltiples volúmenes o VMs) o una VM individual.
+. *Ejecuta la operación de restauración*: El proceso de restauración de la máquina virtual varía en función del protocolo de almacenamiento:
++
+** *Restauraciones basadas en NFS*: Al restaurar un volumen o un almacén de datos en NFS, SMP inicia una operación de restauración de instantánea de volumen en el volumen de destino. Para las máquinas virtuales alojadas en volúmenes NFS, SMP valida los parámetros de restauración, incluidos el ID de la máquina virtual, el nombre de la instantánea, los ID de sitio y el tipo de almacenamiento. Si la máquina virtual está en ejecución, SMP la detiene sondeando su estado y emitiendo un comando de parada. A continuación, el sistema restaura los discos de la máquina virtual a partir de la instantánea mediante una operación de restauración a nivel de archivo.
+** *restauraciones basadas en iSCSI*: Para los datastores o LUN iSCSI, SMP restaura el LUN de la instantánea, verifica el dispositivo restaurado, realiza una nueva exploración iSCSI en los nodos Proxmox y garantiza la accesibilidad del dispositivo. Para las VMs que residen en almacenamiento iSCSI, SMP clona los LUN de la instantánea, asigna los LUN clonados al host Proxmox y realiza la detección iSCSI para importarlos. Luego se añade el almacenamiento restaurado y se actualizan las configuraciones de las VMs. Los discos de las VMs se mueven de nuevo a su almacenamiento original y se realiza un seguimiento del progreso por VM. El proceso concluye con actividades de limpieza, incluida la eliminación del almacenamiento temporal y el borrado de los LUN clonados.
+
+
+
+
+
+
+== Clonar máquinas virtuales
+
+Usa SMP para crear clones de máquinas virtuales para desarrollo, pruebas o aprovisionamiento rápido.
+
+.Pasos
+. Abre la sección *Proteger* y selecciona *Clonar* en el menú de navegación de la izquierda.
+. En la lista de VM, localiza la VM que necesitas y haz clic en *Clonar* en la columna Acciones.
+. En la ventana Clonar VM, elige el *Nodo Destino* donde se creará el clon.
++
+.Ver diálogo Clonar VM
+[%collapsible]
+====
+image::proxmox-smp-image41.png[El diálogo Clonar VM muestra la selección del nodo de destino]
+
+====
+. Selecciona la *Snapshot* a utilizar como fuente para el clon.
++
+
+NOTE: En la versión actual, el clon se realiza contra el sistema de archivos activo. En una próxima versión, el flujo de trabajo de clonación permitirá la selección de una instantánea, en cuyo caso los clones de archivo se realizan utilizando un nuevo volumen creado a partir de la instantánea seleccionada.
+
+. Especifica el *Número de copias*, *Núcleos de CPU*, *Sockets* y *Memoria* para la máquina virtual clonada.
+. (Opcional) Activa *Power on after clone* si la VM clonada debe iniciarse automáticamente tras su creación.
+. (Opcional) Selecciona *Crear un nuevo almacén de datos* si el clon debe colocarse en un almacén de datos recién creado.
+. En *Opciones avanzadas*, activa *Configuración de red* si la configuración de red debe aplicarse automáticamente al clon.
+. Haz clic en *Clonar* para iniciar el proceso de clonación.
++
+El flujo de trabajo de clonación aprovisiona la nueva VM utilizando las APIs de clonación rápida de ONTAP y asigna un GUID único de cinco dígitos a la instancia clonada.
+
++
+.Ver operación de clonación
+[%collapsible]
+====
+image::proxmox-smp-image42.png[Operación de clonado en curso con ONTAP FlexClone]
+
+====
+
+
+
+NOTE: La máquina virtual clonada aparece tanto en la lista de copias de seguridad como en la de clones y puede protegerse mediante las políticas de copia de seguridad existentes. Para que las máquinas virtuales clonadas aparezcan en estas listas, ejecuta una detección en los planes de Proxmox y ONTAP.
+
+.Ver máquinas virtuales clonadas en listas
+[%collapsible]
+====
+image::proxmox-smp-image43.png[Las máquinas virtuales clonadas aparecen en las listas de copia de seguridad y clonación]
+
+====
+
+
+=== Detalles del flujo de trabajo de clonación
+
+SMP automatiza la clonación rápida de máquinas virtuales descargando el trabajo pesado a ONTAP para realizar clones del lado del almacenamiento en lugar de copias de archivos del lado del host. De forma encubierta, SMP aprovecha la semántica de ONTAP FlexClone (clones basados en instantáneas, con capacidad de escritura y con gestión eficiente del espacio) para que los clones se creen rápidamente y consuman poca capacidad inicialmente; evita las lecturas/escrituras de datos a través del host Proxmox siempre que sea posible.
+
+Este enfoque acelera el aprovisionamiento de máquinas virtuales al trasladar el trabajo de clonación a ONTAP, entregando clones rápidos, finos y con gestión eficiente del espacio, adecuados para Dev/Test, laboratorios y ciclos de actualización rápidos.
+
+Por defecto, el clon se realiza contra el sistema de archivos activo. El flujo de trabajo de clonación también permite seleccionar una instantánea, en cuyo caso los clones de archivo se realizan utilizando un nuevo volumen creado a partir de la instantánea seleccionada.
+
+
+
+== Supervisar las operaciones
+
+Utiliza los registros de procesos y las vistas de consola para supervisar y hacer un seguimiento de las operaciones de SMP.
+
+
+
+=== Registros de procesos
+
+La vista de registros de procesos proporciona un registro consolidado de todas las operaciones realizadas a través de Storage Manager para Proxmox. Cada entrada muestra el estado del trabajo, el ID del trabajo, la acción realizada, la hora de inicio y la duración. Esto facilita el seguimiento de las tareas completadas, la identificación de cualquier operación fallida o parcial y la revisión de la secuencia de acciones ejecutadas en el entorno.
+
+Dispone de filtros y opciones de búsqueda para localizar rápidamente trabajos específicos o restringir la lista por estado.
+
+.Vista de registros de procesos
+[%collapsible]
+====
+image::proxmox-smp-image44.png[Vista de registros de procesos que muestra el historial de trabajos y el estado de las operaciones]
+
+====
+
+
+=== Consola
+
+El panel de control proporciona una visión general de todo el entorno de Storage Manager for Proxmox. Resume el inventario clave, como el número de clústeres Proxmox, hosts, almacenes de datos, clústeres ONTAP y máquinas virtuales protegidas. El uso de la capacidad, el total de volúmenes de almacenamiento, las políticas de protección y los grupos de recursos también se muestran para ofrecer una imagen clara de la utilización del sistema.
+
+La salud del clúster se muestra de forma destacada, indicando el estado de todos los nodos conectados. La sección inferior del panel destaca la distribución de las máquinas virtuales (total, en ejecución y detenidas) y proporciona la utilización de recursos Proxmox en tiempo real para memoria, almacenamiento y CPU. Esta vista ayuda a evaluar rápidamente la salud del sistema, identificar presiones sobre los recursos y supervisar el estado operativo general.
+
+.Ver panel
+[%collapsible]
+====
+image::proxmox-smp-image45.png[Panel SMP que muestra el estado del clúster,VM distribution,and resource utilization]
+
+====
+
+
+== Resumen
+
+Storage Manager para Proxmox ofrece una forma racionalizada y unificada de gestionar las operaciones de protección, clonación y recuperación en todos los entornos Proxmox. Al integrarse directamente con ONTAP, la solución aporta la eficiencia, fiabilidad y rendimiento del almacenamiento para la gran empresa a los flujos de trabajo cotidianos de las máquinas virtuales. Las instantáneas con gestión eficiente del espacio de ONTAP, las capacidades de clonación rápida y la replicación incorporada proporcionan una protección de datos coherente y predecible, mientras que SMP simplifica estas capacidades en una interfaz intuitiva y centrada en las tareas.
