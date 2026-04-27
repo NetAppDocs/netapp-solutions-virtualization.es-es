@@ -56,9 +56,9 @@ NOTE: Las máquinas virtuales deben estar apagadas antes de iniciar la migració
 NOTE: La eliminación de las VMware tools ocurre en el hipervisor de destino una vez que las máquinas virtuales están encendidas
 
 * Usa una cuenta de administrador local cuando ejecutes Invoke-VMScript para preparar máquinas virtuales de Windows o usa una cuenta de Active Directory que sea parte del grupo de administradores locales. Para sistemas Linux, usa una cuenta que pueda ejecutar comandos sin requerir contraseña (por ejemplo, mediante sudo sin contraseña).
-* Para máquinas virtuales Windows, asegúrate de que la ISO de VirtIO está montada; de lo contrario, el proceso de preparación fallará. El controlador ISO de VirtIO se puede descargar desde aquí. El script detectará la unidad montada y copiará los archivos necesarios automáticamente.
+* Para máquinas virtuales Windows, asegúrate de que la ISO de VirtIO esté montada; de lo contrario, el proceso de preparación fallará. El controlador ISO de VirtIO puede descargarse de link:https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.271-1/virtio-win-0.1.271.iso["aquí"]. El script detectará la unidad montada y copiará los archivos necesarios automáticamente.
 +
-** Asegúrate de que la ISO especificada en el enlace se use, ya que el script de preparación utiliza el paquete .msi para instalar los controladores y qemu-guest-agents. Una vez que los requisitos previos estén listos, inicia sesión en la interfaz de usuario de Shift toolkit y configura el sitio con Proxmox VE como hipervisor de destino. Para añadir, haz clic en “Add New Site” y selecciona “Destination”.
+** Asegúrate de que se use la ISO especificada en el enlace, ya que el script de preparación utiliza el paquete .msi para instalar los drivers y los qemu-guest-agents. Una vez que los requisitos previos estén listos, inicia sesión en la interfaz de usuario de Shift toolkit y configura el sitio con Proxmox VE como hipervisor de destino. Para añadir, haz clic en “Add New Site” y selecciona “Destination”.
 
 
 
