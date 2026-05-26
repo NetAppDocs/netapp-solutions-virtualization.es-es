@@ -36,6 +36,8 @@ El kit de herramientas Shift proporciona flexibilidad en un entorno de múltiple
 * Microsoft Hyper-V a VMware ESXi
 * VMWare ESXi a Oracle Linux Virtualization Manager (OLVM)
 * Virtualización de VMware ESXi a Red Hat OpenShift
+* De VMware ESXi a Red Hat OpenShift Virtualization usando Migration Toolkit for Virtualization (MTV)
+* VMware ESXi a Proxmox VE
 
 
 El kit de herramientas Shift admite conversiones a nivel de disco de discos virtuales entre hipervisores para los siguientes formatos de disco:
