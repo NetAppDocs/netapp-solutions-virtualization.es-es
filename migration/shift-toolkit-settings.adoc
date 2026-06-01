@@ -347,3 +347,56 @@ Shift Toolkit ofrece la opción de cancelar un trabajo en ejecución en cualquie
 
 
 Dado que Shift Toolkit no modifica la máquina virtual de origen de ninguna manera, la reversión es sencilla: basta con encender la máquina virtual de origen.  No se requieren otras acciones de reversión.
+
+
+
+== Verificar la migración
+
+Shift toolkit ahora proporciona una opción de verificación a nivel de blueprint que se activa después de que el estado de la migración se marque como "Success" o "Partial Failure". Una vez completado, la opción de verificación iniciará un nuevo trabajo y comprobará la configuración de la máquina virtual tal como se especifica en las asignaciones del blueprint. El estado del trabajo de verificación de la migración aparecerá en Job Monitoring y los detalles se pueden ver haciendo clic en el trabajo y seleccionando "view logs".
+
+
+NOTE: La opción de verificación también puede seleccionarse al crear el blueprint, en cuyo caso el trabajo de verificación se activará después de 5 minutos una vez que el trabajo de migración haya finalizado.
+
+
+NOTE: Si se selecciona la verificación después del trabajo de migración, entonces se activará un trabajo de verificación sobre la marcha y el asistente mostrará el trabajo.
+
+image::shift-toolkit-471.png[Verifica los detalles del trabajo de migración]
+
+image::shift-toolkit-472.png[Verifica la lista de trabajos de migración]
+
+
+
+== Flujo de trabajo dividido
+
+El flujo de trabajo de división (aplicable únicamente a los planos de migración de OpenShift que utilizan el controlador ONTAP NAS) descubre automáticamente los volúmenes asociados a las VMs, así como sus correspondientes volúmenes FlexClone.
+
+En función de la versión de ONTAP, se selecciona automáticamente la estrategia de división adecuada. La pauta general es la siguiente:
+
+* Split Clone para volúmenes en ONTAP 9.17.1 y posteriores, con 20 ejecuciones paralelas
+* Volume Move para versiones de ONTAP anteriores a 9.17.1, utilizando hasta cuatro subprocesos paralelos
+
+
+El proceso de clonación dividida supervisa continuamente el progreso y gestiona la cola de trabajos en consecuencia. Una vez finalizada la operación de división o movimiento de volumen, se elimina la instantánea asociada.
+
+El estado del trabajo de pasos divididos aparecerá en Monitorización de trabajos. Para ver más detalles, haz clic en el trabajo dividido y selecciona "Ver registros".
+
+
+NOTE: Shift Toolkit actualmente no cambia el tamaño de los volúmenes después de la eliminación de instantáneas. Esta capacidad está prevista para una futura versión.
+
+image::shift-toolkit-473.png[Selección de la estrategia de flujo de trabajo dividido]
+
+image::shift-toolkit-474.png[Progreso del trabajo de Split Workflow]
+
+
+
+== Configuración avanzada del hipervisor
+
+Shift Toolkit incluye ajustes avanzados de hipervisor para trabajos de migración a hipervisores de destino. Estos ajustes permiten a los administradores de migración habilitar funciones para cada ola de migración de VM según sea necesario. Shift Toolkit lee los ajustes en tiempo de ejecución, así que cada trabajo aplica las opciones seleccionadas cuando se inicia.
+
+image::shift-toolkit-475.png[Visión general de la configuración avanzada del hipervisor]
+
+image::shift-toolkit-476.png[Opciones avanzadas de configuración del hipervisor]
+
+image::shift-toolkit-477.png[Configuración avanzada de los parámetros del hipervisor]
+
+image::shift-toolkit-478.png[Detalles de la tarea de configuración avanzada del hipervisor]

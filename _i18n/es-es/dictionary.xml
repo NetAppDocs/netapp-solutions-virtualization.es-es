@@ -9041,4 +9041,26 @@
   <block id="ff9844b2de7cfcbbdfa55375ab39a06f" category="list-text"><block ref="ff9844b2de7cfcbbdfa55375ab39a06f" category="inline-link-macro-rx"></block></block>
   <block id="990fa9f57e4aad9dabc3374936fa135c" category="inline-link-macro">VMware ESXi a Proxmox VE</block>
   <block id="0844e7bd233e5a61e8cb4e245ed8e467" category="list-text"><block ref="0844e7bd233e5a61e8cb4e245ed8e467" category="inline-link-macro-rx"></block></block>
+  <block id="5ee3244123f8d6e1cd95dd20bbd4c917" category="section-title">Verificar la migración</block>
+  <block id="a72a581a13e85fc031dd394d163e7318" category="paragraph">Shift toolkit ahora proporciona una opción de verificación a nivel de blueprint que se activa después de que el estado de la migración se marque como "Success" o "Partial Failure". Una vez completado, la opción de verificación iniciará un nuevo trabajo y comprobará la configuración de la máquina virtual tal como se especifica en las asignaciones del blueprint. El estado del trabajo de verificación de la migración aparecerá en Job Monitoring y los detalles se pueden ver haciendo clic en el trabajo y seleccionando "view logs".</block>
+  <block id="f32310bcb640784ccc77c7dd4c4b3dbf" category="admonition">La opción de verificación también puede seleccionarse al crear el blueprint, en cuyo caso el trabajo de verificación se activará después de 5 minutos una vez que el trabajo de migración haya finalizado.</block>
+  <block id="9d40980b6999e7f166bfa40856a00fec" category="admonition">Si se selecciona la verificación después del trabajo de migración, entonces se activará un trabajo de verificación sobre la marcha y el asistente mostrará el trabajo.</block>
+  <block id="56ac9d919bb8cab4f6077b76fb1f62a9" category="image-alt">Verifica los detalles del trabajo de migración</block>
+  <block id="bcf221f3eb2ff23d03e933df5dc05c15" category="image-alt">Verifica la lista de trabajos de migración</block>
+  <block id="4215a20f35c33323f41cfdcc53561758" category="section-title">Flujo de trabajo dividido</block>
+  <block id="b648dea0c6088fda044bba8739f233dd" category="paragraph">El flujo de trabajo de división (aplicable únicamente a los planos de migración de OpenShift que utilizan el controlador ONTAP NAS) descubre automáticamente los volúmenes asociados a las VMs, así como sus correspondientes volúmenes FlexClone.</block>
+  <block id="8aa0551ed462370f4ba674dbd90ceb17" category="paragraph">En función de la versión de ONTAP, se selecciona automáticamente la estrategia de división adecuada. La pauta general es la siguiente:</block>
+  <block id="6d574a30eced387339f80ba54a89cc7d" category="list-text">Split Clone para volúmenes en ONTAP 9.17.1 y posteriores, con 20 ejecuciones paralelas</block>
+  <block id="3880a6f70719d876e231d8e2879f85ee" category="list-text">Volume Move para versiones de ONTAP anteriores a 9.17.1, utilizando hasta cuatro subprocesos paralelos</block>
+  <block id="1a3cae237cc41487606878fecfbf5dbd" category="paragraph">El proceso de clonación dividida supervisa continuamente el progreso y gestiona la cola de trabajos en consecuencia. Una vez finalizada la operación de división o movimiento de volumen, se elimina la instantánea asociada.</block>
+  <block id="9c3a731812fdeaa07c81b64877fdd363" category="paragraph">El estado del trabajo de pasos divididos aparecerá en Monitorización de trabajos. Para ver más detalles, haz clic en el trabajo dividido y selecciona "Ver registros".</block>
+  <block id="e9957f4f6643604e2e240ef6506687cd" category="admonition">Shift Toolkit actualmente no cambia el tamaño de los volúmenes después de la eliminación de instantáneas. Esta capacidad está prevista para una futura versión.</block>
+  <block id="240aa9b96ee46082f68f7be9164d556b" category="image-alt">Selección de la estrategia de flujo de trabajo dividido</block>
+  <block id="17ad14aae32d21937aca67c32e7957b4" category="image-alt">Progreso del trabajo de Split Workflow</block>
+  <block id="403f27f7aab7b0ad3c0682d7cca0a733" category="section-title">Configuración avanzada del hipervisor</block>
+  <block id="d77c1cd5f2b0ce7f2dd95f4c5bc3c495" category="paragraph">Shift Toolkit incluye ajustes avanzados de hipervisor para trabajos de migración a hipervisores de destino. Estos ajustes permiten a los administradores de migración habilitar funciones para cada ola de migración de VM según sea necesario. Shift Toolkit lee los ajustes en tiempo de ejecución, así que cada trabajo aplica las opciones seleccionadas cuando se inicia.</block>
+  <block id="4502be711601ff984509d35dfc59750d" category="image-alt">Visión general de la configuración avanzada del hipervisor</block>
+  <block id="d54ff9be113864ba45f6c548b61f0360" category="image-alt">Opciones avanzadas de configuración del hipervisor</block>
+  <block id="891154c0cb3c52a4cadf0de9b589ee45" category="image-alt">Configuración avanzada de los parámetros del hipervisor</block>
+  <block id="8639d82053466ca0d28ba6da8779cf53" category="image-alt">Detalles de la tarea de configuración avanzada del hipervisor</block>
 </blocks>
