@@ -1,0 +1,96 @@
+---
+sidebar: sidebar 
+permalink: euc/omnissa-netapp-architecture.html 
+keywords: euc, digital workspace, virtual desktop, vdi, virtual desktop infrastructure, cloud desktop, virtual application, application virtualization, app virtualization, virtual desktop management, desktop management, application management 
+summary:  
+---
+= Omnissa con la arquitectura de NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta sección proporciona una visión general de la arquitectura de Omnissa con NetApp, incluidos los componentes y las tecnologías que intervienen en la solución. También destaca las ventajas de utilizar el almacenamiento NetApp en un entorno EUC y cómo puede ayudar a las organizaciones a optimizar sus despliegues de escritorios virtuales y aplicaciones.
+
+
+
+== Descripción general de la arquitectura
+
+La arquitectura de Omnissa con NetApp está diseñada para ofrecer una solución escalable y flexible para entornos EUC. La solución consta de varios componentes, incluyendo la plataforma de gestión Omnissa, las matrices de almacenamiento NetApp y la infraestructura de escritorios virtuales y de aplicaciones. La plataforma de gestión Omnissa proporciona una interfaz centralizada para gestionar la infraestructura de escritorios virtuales y de aplicaciones, mientras que las matrices de almacenamiento NetApp proporcionan almacenamiento de alto rendimiento y fiable para los escritorios virtuales y las aplicaciones. La arquitectura está diseñada para admitir una amplia gama de casos de uso de EUC, incluyendo la infraestructura de escritorios virtuales (VDI), la virtualización de aplicaciones y los archivos compartidos para datos de usuario.
+
+image:omnissa-netapp-architecture-001.png["Omnissa con la arquitectura de NetApp"]
+
+Omnissa Horizon puede implantarse en las instalaciones, en la nube o en un entorno híbrido, lo que proporciona a las organizaciones la flexibilidad necesaria para elegir el modelo de implantación que mejor se adapte a sus necesidades. La arquitectura está diseñada para admitir una amplia gama de casos de uso, como VDI, virtualización de aplicaciones y Remote Desktop Services (RDS).
+
+Omnissa Horizon Client es la interfaz de usuario final para acceder a escritorios y aplicaciones virtuales. Está disponible para dispositivos Windows, macOS, Linux, iOS y Android, lo que permite a los usuarios conectarse a sus escritorios y aplicaciones virtuales desde una amplia gama de dispositivos. Se puede utilizar un navegador web como cliente HTML para dispositivos en los que no es posible instalar software cliente.
+
+Los clientes ligeros y los clientes cero también pueden utilizarse para acceder a los escritorios y aplicaciones virtuales, lo que supone una solución rentable para las organizaciones que quieren desplegar escritorios y aplicaciones virtuales a un gran número de usuarios.
+
+Omnissa Horizon permite crear e intermediar conexiones con escritorios virtuales Windows, escritorios virtuales Linux, aplicaciones y escritorios alojados en Remote Desktop Server (RDS), aplicaciones alojadas en Linux y máquinas físicas Windows.
+
+El servidor de Horizon Connection autentica a los usuarios a través de Active Directory y dirige la solicitud al recurso adecuado y autorizado.
+
+Los agentes Omnissa Horizon se instalan en las máquinas físicas, los escritorios virtuales y los Remote Desktop Session Hosts (RDSH) para permitir la comunicación con el servidor de Horizon Connection y proporcionar una experiencia de usuario fluida. Los agentes también proporcionan funciones como la gestión de sesiones, la impresión y la redirección USB.
+
+Unified Access Gateway (UAG) es una pasarela segura que proporciona acceso remoto a escritorios y aplicaciones virtuales. Normalmente se despliega en la DMZ y proporciona acceso seguro al servidor Horizon Connection desde fuera de la red corporativa.
+
+La instancia de base de datos externa se utiliza para almacenar los eventos del servidor de Horizon Connection y otra información. La base de datos puede alojarse en Microsoft SQL Server, PostgreSQL u Oracle Database, lo que proporciona a las organizaciones la flexibilidad de elegir la plataforma de base de datos que mejor se adapte a sus necesidades.
+
+Cuando se utiliza Horizon SaaS, se implanta el dispositivo Horizon Edge Gateway para crear conexiones con el servicio Horizon SaaS. Edge Gateway proporciona un acceso seguro al servicio Horizon SaaS y permite a las organizaciones aprovechar las ventajas de una solución basada en cloud mientras mantienen el control sobre su escritorio virtual y su infraestructura de aplicaciones.
+
+Para más detalles, consulta https://techzone.omnissa.com/resource/horizon-8-architecture["Arquitectura de Horizon 8"].
+
+Las matrices de almacenamiento NetApp se utilizan para proporcionar almacenamiento de alto rendimiento y fiable para alojar escritorios y aplicaciones virtuales, así como para los datos de los usuarios. Las matrices de almacenamiento NetApp ofrecen opciones de implementación flexibles y la capacidad de escalar a medida que crecen las necesidades de la organización. También ofrecen funciones como la deduplicación de datos, la compresión y el aprovisionamiento fino, que pueden ayudar a las organizaciones a optimizar sus recursos de almacenamiento y reducir costes.
+
+
+
+== Arquitectura de Pod y Block
+
+Omnissa Horizon utiliza una arquitectura de pods y bloques para proporcionar una solución escalable y repetible para entornos EUC. Un pod es un grupo de servidores Horizon Connection interconectados que pueden servir sesiones de hasta 20,000 escritorios y aplicaciones virtuales. Un pod puede contener hasta 7 servidores Horizon Connection que deben estar ubicados en el mismo centro de datos y no pueden abarcar varias ubicaciones. Se pueden interconectar varios pods mediante Cloud Pod Architecture (CPA) para proporcionar una solución escalable para entornos más grandes. Con CPA, el número de sesiones se puede escalar hasta 250,000. Para un mayor número de sesiones, se pueden añadir CPA adicionales a la arquitectura.
+
+Un bloque es una colección de clusters de computación que se utilizan para alojar escritorios virtuales y sesiones RDSH. Cada bloque tiene su propio gestor de hipervisor que es vCenter para entornos VMware. En entornos VCF, cada Workload Domain constituye un bloque. Un bloque puede coexistir en el mismo centro de datos que el pod o puede estar ubicado en un centro de datos diferente. Para agentes remotos, el máximo de sesiones recomendadas es 1000 por bloque. El número de VM por bloque varía en función de la configuración de Horizon VM.
+
+Las sesiones de Virtual Desktop y Windows Servers para RDSH se alojan en los clusters de computación de los bloques. En entornos vSphere, las máquinas virtuales se alojan en Datastores que están conectados a los clusters de computación. ONTAP tools for VMware vSphere proporciona integración con vCenter que permite a los administradores gestionar el almacenamiento NetApp directamente desde la interfaz de vCenter. ONTAP soporta tanto los protocolos de bloque (iSCSI, NVMeoF y Fibre Channel) como los protocolos de archivo (NFS) para la conectividad de Datastore.
+
+vSphere API for Array Integration (VAAI) es un conjunto de APIs que permite a vSphere descargar ciertas operaciones de almacenamiento a la matriz de almacenamiento, mejorando el rendimiento y la eficiencia. Las matrices de almacenamiento NetApp soportan VAAI, permitiendo características tales como el bloqueo asistido por hardware, la puesta a cero de bloques y las operaciones de copia completa. Para NFS Datastores, el componente VAAI necesita ser instalado en los hosts vSphere para habilitar el soporte VAAI. Con VAAI, el tiempo de aprovisionamiento de puestos de trabajo virtuales se puede reducir significativamente.
+
+image:omnissa-netapp-architecture-003.png["Almacén de datos con almacenamiento de archivos"]
+
+Las matrices de almacenamiento NetApp también ofrecen funciones como la deduplicación de datos, la compresión y el aprovisionamiento delgado, que pueden ayudar a las organizaciones a optimizar sus recursos de almacenamiento y reducir costes. Estas funciones pueden ser especialmente beneficiosas en un entorno EUC, donde puede haber un gran número de escritorios y aplicaciones virtuales que requieran recursos de almacenamiento.
+
+Para una alta disponibilidad de vSphere Datastore que aloja escritorios virtuales y sesiones RDSH, los datastores pueden protegerse utilizando la replicación de sincronización activa NetApp SnapMirror a un array de almacenamiento secundario NetApp. En caso de fallo del array de almacenamiento primario, el array de almacenamiento secundario puede tomar el relevo y proporcionar acceso a los escritorios virtuales y aplicaciones sin tiempo de inactividad utilizando el modo de acceso uniforme. En el caso de NFS Datastores, puede protegerse utilizando la configuración NetApp MetroCluster.
+
+image:omnissa-netapp-architecture-002.png["Almacén de datos con almacenamiento en bloques"]
+
+
+NOTE: No se admiten configuraciones de clúster extendidas entre los sitios para los servidores de Horizon Connection en un pod. Utilízalo en casos de uso en los que se requiera alta disponibilidad para los escritorios y aplicaciones virtuales dentro de un centro de datos. Los archivos compartidos para los datos de usuario alojados en MetroCluster pueden proporcionar acceso activo-activo a los datos de usuario desde varios centros de datos. Cada centro de datos puede tener su servidor de archivos (SVM) alojando los archivos compartidos para los datos de usuario. El SVM está protegido mediante la configuración MetroCluster, proporcionando alta disponibilidad y capacidades de recuperación ante desastres para los datos de usuario.
+
+
+
+== Virtualización de aplicaciones
+
+Un reto común en los entornos VDI es la proliferación de plantillas VDI debido a las aplicaciones preinstaladas. Con Omnissa Horizon, App Volumes puede utilizarse para distribuir aplicaciones a escritorios virtuales y hosts de aplicaciones publicados. Los volúmenes grabables por el usuario permiten a los usuarios instalar aplicaciones. Esto reduce la necesidad de escritorios persistentes. Con App Volumes, las aplicaciones se empaquetan y entregan a escritorios virtuales y sesiones RDSH en tiempo real. Basado en Machine Manager, las aplicaciones empaquetadas se almacenan en archivos VMDK en Datastores o archivos VHD en recursos compartidos de archivos SMB que son gestionados por el App Volumes Agent para montar y desmontar en los escritorios virtuales y servidores RDSH.
+
+image:omnissa-netapp-architecture-004.png["Arquitectura de volúmenes de aplicaciones"]
+
+Se puede utilizar Microsoft SQL Server o SQL Server Express como base de datos para App Volumes Manager. Los vSphere Datastores pueden ser VMFS o NFS. Los Datastores pueden aprovisionarse utilizando ONTAP tools for VMware vSphere, que proporciona integración con vCenter para gestionar el almacenamiento NetApp directamente desde la interfaz de vCenter.
+
+Omnissa App Volumes es compatible con Citrix Virtual Apps and Desktops y Microsoft Remote Desktop Services (RDS), además de Omnissa Horizon. Esto permite a las organizaciones utilizar App Volumes para la entrega de aplicaciones a través de múltiples plataformas EUC, proporcionando una experiencia de usuario consistente y simplificando la gestión de aplicaciones.
+
+Para más detalles, consulta https://techzone.omnissa.com/resource/app-volumes-architecture["Arquitectura de App Volumes"].
+
+
+
+== Gestión de perfiles de usuario
+
+La gestión de perfiles de usuario es un componente crítico de cualquier entorno EUC, ya que garantiza que los usuarios tengan una experiencia coherente en los distintos escritorios virtuales y aplicaciones. Omnissa Horizon es compatible con varias soluciones de gestión de perfiles de usuario, incluidas Microsoft FSLogix y Omnissa Dynamic Environment Manager (DEM) o la combinación de ambas. FSLogix proporciona una solución de perfil de usuario en contenedor que permite inicios de sesión rápidos y una experiencia de usuario coherente en los distintos escritorios virtuales y aplicaciones. DEM proporciona un enfoque más granular para la gestión del perfil de usuario, permitiendo a los administradores gestionar los ajustes y configuraciones de usuario en función de condiciones y criterios específicos. Para obtener más información sobre DEM, consulta https://techzone.omnissa.com/resource/dynamic-environment-manager-architecture["Arquitectura de Dynamic Environment Manager"].
+
+Al contenerizar los perfiles de usuario con FSLogix, el usuario puede asignarse a cualquier escritorio virtual o sesión RDSH y seguir teniendo acceso a sus ajustes y datos personalizados. Los datos de usuario pueden redirigirse a un recurso compartido de archivos SMB para reducir el tamaño del contenedor y facilitar la gestión. Tanto DEM como FSLogix requieren un recurso compartido de archivos para almacenar el contenedor de perfiles de usuario y los ajustes. ONTAP admite Global Namespace (GNS), lo que permite crear un único espacio de nombres para los recursos compartidos de archivos que alojan los perfiles de usuario en varios centros de datos o puede integrarse con Microsoft Distributed File System (DFS) para proporcionar un espacio de nombres unificado para el almacenamiento de perfiles de usuario. Esto permite una alta disponibilidad y capacidades de recuperación ante desastres para los perfiles de usuario, así como proporcionar una experiencia fluida a los usuarios independientemente de su ubicación o del escritorio virtual al que accedan.
+
+ONTAP FlexGroup proporciona una solución escalable y de alto rendimiento para alojar perfiles de usuario en un entorno EUC. FlexGroups están diseñados para ofrecer un alto rendimiento y una baja latencia, por lo que resultan ideales para alojar perfiles de usuario que requieren un acceso rápido a los datos.
+
+ONTAP FlexCache utilizado junto con Microsoft DFS puede proporcionar una solución de almacenamiento en caché distribuida para perfiles de usuario, lo que permite un acceso más rápido a los datos de usuario y un rendimiento mejorado en un entorno EUC. Con FlexCache, los datos de perfil de usuario a los que se accede con frecuencia pueden almacenarse en caché localmente, lo que reduce la latencia y mejora la experiencia del usuario.

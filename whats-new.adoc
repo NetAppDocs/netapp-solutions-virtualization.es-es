@@ -15,6 +15,13 @@ Descubra las novedades en soluciones de virtualización.
 
 
 
+== 10 de mayo de 2026
+
+* Se añadieron soluciones de End User Computing (EUC) para NetApp ONTAP.
+
+
+
+
 == 15 de enero de 2026
 
 * Se actualizó el contenido de la solución Proxmox VE para reflejar el lanzamiento de Proxmox VE 9.

@@ -68,6 +68,14 @@ indexpage:
       url: "/vmware/vmw-getting-started-snapcenter.html"
     - title: NetApp Disaster Recovery
       url: "/vmware/vmw-dr-gs.html"
+  - title: Soluciones de End User Computing (EUC)
+    links:
+    - title: Conoce la informática para el usuario final con NetApp
+      url: "/euc/euc-overview.html"
+    - title: Ventajas del almacenamiento NetApp para la informática de usuario final
+      url: "/euc/euc-benefits.html"
+    - title: Omnissa Horizon y arquitectura NetApp
+      url: "/euc/omnissa-netapp-architecture.html"
   - title: Solicitudes de soluciones y comentarios
     links:
     - title: Automatización de solicitudes
