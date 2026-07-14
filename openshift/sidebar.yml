@@ -3,75 +3,58 @@ section: osv
 title: Virtualización de OpenShift
 url: "/openshift/index.html"
 entries:
-- title: Empezar
+- title: Descripción general
   pdf-filename: Descripción general de Red Hat OpenShift Virtualization
+  url: "/openshift/osv-overview.html"
+- title: Modelos de implementación
+  pdf-filename: Modelos de implementación de Red Hat OpenShift Virtualization
+  url: "/openshift/osv-deployment-models.html"
+- title: Introducción al almacenamiento y la virtualización
+  pdf-filename: Almacenamiento y virtualización de Red Hat OpenShift
   entries:
-  - title: Acerca de OpenShift Virtualization
-    url: "/openshift/osv-overview.html"
-  - title: Aprovisionamiento de almacenamiento para OpenShift
-    url: "/openshift/os-netapp-overview.html"
-  - title: Integración de almacenamiento NetApp Trident
-    url: "/openshift/os-storint-overview.html"
-- title: Mejores prácticas para la implementación
-  pdf-filename: Mejores prácticas para la virtualización de Red Hat OpenShift en NetApp
-  url: "/openshift/os-osv-bpg.html"
-- title: Instalar Trident
-  pdf-filename: Instalar Trident
-  url: "/openshift/osv-trident-install.html"
-- title: Implementar en las instalaciones
-  pdf-filename: Implementar Red Hat OpenShift Virtualization en las instalaciones
-  entries:
-  - title: Requisitos de implementación
-    url: "/openshift/osv-deployment-prerequisites.html"
-  - title: Implementar la virtualización OpenShift
+  - title: Primeros pasos con el almacenamiento
+    url: "/openshift/osv-storage-getting-started.html"
+  - title: Aprovisionamiento de almacenamiento
+    url: "/openshift/osv-trident-install.html"
+  - title: Implementar Red Hat OpenShift Virtualization con ONTAP
     url: "/openshift/osv-deployment.html"
-  - title: Crear máquinas virtuales
-    url: "/openshift/osv-workflow-create-vm.html"
-  - title: Migrar máquinas virtuales desde VMware
-    url: "/openshift/osv-workflow-vm-migration-mtv.html"
-  - title: Migrar máquinas virtuales entre dos nodos del clúster
-    url: "/openshift/osv-workflow-vm-live-migration.html"
-  - title: Clonar máquinas virtuales
-    url: "/openshift/osv-workflow-clone-vm.html"
-  - title: Crear máquinas virtuales a partir de una instantánea
-    url: "/openshift/osv-workflow-vm-from-snapshot.html"
-- title: Implementar en ROSA con FSxN
-  pdf-filename: Implemente Red Hat OpenShift Virtualization en ROSA con Amazon FSx
-    para ONTAP
-  entries:
-  - title: Implementar OpenShift en ROSA
-    url: "/openshift/osv-rosa-overview.html"
-  - title: Reiniciar o migrar en vivo las máquinas virtuales
-    url: "/openshift/osv-rosa-vm-workflows.html"
-- title: Proteja las máquinas virtuales con Trident y Trident Protect
-  entries:
-  - title: Proteger las máquinas virtuales mediante instantáneas de grupos de volúmenes
-    url: "/openshift/osv-vm-dp-using-vgs.html"
-  - title: Proteja las máquinas virtuales con instantáneas y copias de seguridad
-    url: "/openshift/osv-vm-dp-using-tp.html"
-  - title: Configurar conmutación por error y recuperación
-    url: "/openshift/osv-vm-dr-using-tp.html"
-- title: Proteja las máquinas virtuales mediante herramientas de terceros
+  - title: Implementación de máquinas virtuales
+    url: "/openshift/osv-vm-deployment.html"
+  - title: Otros métodos para crear máquinas virtuales
+    url: "/openshift/osv-vm-deployment-other-methods.html"
+  - title: Migración en vivo de máquinas virtuales entre nodos del clúster
+    url: "/openshift/osv-vm-live-migration.html"
+  - title: Migración de máquinas virtuales entre clases de almacenamiento
+    url: "/openshift/osv-migration-vm-storage.html"
+- title: Protección de datos
   pdf-filename: Protección de datos de virtualización de Red Hat OpenShift
   entries:
-  - title: Proteja las máquinas virtuales mediante OADP y Velero
-    url: "/openshift/osv-vm-dp-using-velero-overview.html"
-  - title: Instalar OADP
-    url: "/openshift/osv-oadp-installation.html"
-  - title: Copia de seguridad de máquinas virtuales con Velero
-    url: "/openshift/osv-vm-dp-using-velero.html"
-  - title: Restaurar máquinas virtuales mediante Velero
-    url: "/openshift/osv-vm-restore-using-velero.html"
-  - title: Eliminar copias de seguridad y restauraciones
-    url: "/openshift/osv-vm-dp-delete-using-velero.html"
-- title: Supervisar máquinas virtuales con DII
-  pdf-filename: Monitoreo de virtualización de Red Hat OpenShift
+  - title: Copia de seguridad y restauración con Trident Protect
+    url: "/openshift/osv-vm-dp-using-tp.html"
+  - title: Proteger las máquinas virtuales mediante instantáneas de grupos de volúmenes
+    url: "/openshift/osv-vm-dp-using-vgs.html"
+  - title: Copia de seguridad y restauración mediante herramientas de terceros
+    url: "/openshift/osv-data-protection-third-party-tools.html"
+- title: Recuperación ante desastres
+  pdf-filename: Recuperación ante desastres de Red Hat OpenShift Virtualization
   entries:
-  - title: Acerca de DII
+  - title: Requisitos
+    url: "/openshift/osv-disaster-recovery-requirements.html"
+  - title: Configuración del clúster de origen
+    url: "/openshift/osv-disaster-recovery-source-cluster-setup.html"
+  - title: Configuración del clúster de destino
+    url: "/openshift/osv-disaster-recovery-target-cluster-setup.html"
+  - title: Recuperación ante desastres - DR manual
+    url: "/openshift/osv-disaster-recovery-simulate-dr.html"
+  - title: Recuperación tras un fallo - DR en tiempo real
+    url: "/openshift/osv-disaster-recovery-failback.html"
+- title: Supervise las máquinas virtuales con Data Infrastructure Insights
+  pdf-filename: 'Red Hat OpenShift Virtualization: supervisa las máquinas virtuales
+    con Data Infrastructure Insights'
+  entries:
+  - title: Acerca de Data Infrastructure Insights
     url: "/openshift/os-ci-overview.html"
-  - title: Configurar D II
+  - title: Configurar Data Infrastructure Insights
     url: "/openshift/os-ci-integration.html"
-  - title: Supervisar máquinas virtuales mediante DII
+  - title: Supervisar máquinas virtuales mediante Data Infrastructure Insights
     url: "/openshift/os-ci-samples.html"
-- title: Recursos adicionales
-  url: "/openshift/os-additional-information.html"

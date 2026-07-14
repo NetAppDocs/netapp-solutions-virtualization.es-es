@@ -56,6 +56,7 @@ image:vmware-vcf-asa-107.png["Hosts conectados al almacén de datos"]
 
 
 
+[[additional-information]]
 == Información adicional
 
 * Para obtener más información sobre cómo configurar SAN para redundancia, consulte lalink:https://docs.netapp.com/us-en/ontap/san-config/index.html["Referencia de configuración de SAN de NetApp"^] .

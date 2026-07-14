@@ -20,6 +20,7 @@ Realice los siguientes pasos en el clúster del dominio de carga de trabajo VI m
 
 
 
+[[step-1-create-a-distributed-port-group-for-nfs-traffic]]
 == Paso 1: Crear un grupo de puertos distribuidos para el tráfico NFS
 
 Complete los siguientes pasos para crear un nuevo grupo de puertos distribuidos para que la red transporte tráfico NFS.
@@ -64,6 +65,7 @@ image:vmware-vcf-aff-038.png["DPG - enlaces ascendentes del equipo"]
 
 
 
+[[step-2-create-a-vmkernel-adapter-on-each-esxi-host]]
 == Paso 2: Cree un adaptador VMkernel en cada host ESXi
 
 Cree un adaptador VMkernel en cada host ESXi en el dominio de carga de trabajo.
@@ -114,6 +116,7 @@ image:vmware-vcf-aff-041.png["Revisar las selecciones de VMkernel"]
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de configurar la red para NFS en todos los hosts ESXi en el dominio de carga de trabajo,link:vmw-vcf-viwld-supp-nfs-vvols-storage.html["Configurar almacenamiento para vVols NFS"] .

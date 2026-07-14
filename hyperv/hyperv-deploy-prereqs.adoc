@@ -18,6 +18,7 @@ Prepare su entorno para implementar un clúster de Microsoft Hyper-V con sistema
 
 
 
+[[pre-requisites-for-deployment-procedure]]
 == Requisitos previos para el procedimiento de implementación
 
 * Todo el hardware debe estar certificado para la versión de Windows Server que esté ejecutando, y la solución completa del clúster de conmutación por error debe pasar todas las pruebas del Asistente para validar una configuración.
@@ -39,6 +40,7 @@ Para obtener más información, consulte:
 
 
 
+[[installing-windows-features]]
 === Instalación de características de Windows
 
 Los siguientes pasos describen cómo instalar las características necesarias de Windows Server 2022.
@@ -58,6 +60,7 @@ Add-WindowsFeature Hyper-V, Failover-Clustering, Multipath-IO `-IncludeManagemen
 
 
 
+[[configuring-networks]]
 === Configuración de redes
 
 La planificación adecuada de la red es clave para lograr una implementación tolerante a fallas.  La sugerencia estándar para un clúster de conmutación por error era configurar adaptadores de red físicos distintos para cada tipo de tráfico.  Con la capacidad de agregar adaptadores de red virtuales, conmutación de equipos integrados (SET) y características como Hyper-V QoS introducidos, condense el tráfico de red en menos adaptadores físicos.  Diseñe la configuración de la red teniendo en cuenta la calidad del servicio, la redundancia y el aislamiento del tráfico.  La configuración de técnicas de aislamiento de red, como VLAN, junto con técnicas de aislamiento de tráfico, proporciona redundancia para el tráfico y calidad de servicio, lo que mejoraría y agregaría consistencia al rendimiento del tráfico de almacenamiento.
@@ -79,6 +82,7 @@ Para obtener información adicional, consultelink:https://learn.microsoft.com/en
 
 
 
+[[deciding-on-storage-design-for-hyper-v]]
 === Decidir sobre el diseño de almacenamiento para Hyper-V
 
 Hyper-V admite NAS (SMB3.0) y almacenamiento en bloque (iSCSI/FC) como almacenamiento de respaldo para máquinas virtuales.  NetApp admite el protocolo SMB3.0, iSCSI y FC, que se puede utilizar como almacenamiento nativo para máquinas virtuales: volúmenes compartidos de clúster (CSV) que utilizan iSCSI/FC y SMB3.  Los clientes también pueden utilizar SMB3 e iSCSI como opciones de almacenamiento conectado a invitados para cargas de trabajo que requieren acceso directo al almacenamiento.  ONTAP ofrece opciones flexibles con almacenamiento unificado (All Flash Array) para cargas de trabajo que requieren acceso a protocolos mixtos y almacenamiento optimizado SAN (All SAN Array) para configuraciones solo SAN.
@@ -100,6 +104,7 @@ La decisión de utilizar SMB3 frente a iSCSI/FC está impulsada por la infraestr
 
 
 
+[[installing-netapp-windows-iscsi-host-utilities]]
 === Instalación de utilidades de host iSCSI de NetApp para Windows
 
 En la siguiente sección se describe cómo realizar una instalación desatendida de las utilidades de host iSCSI de Windows de NetApp .  Para obtener información detallada sobre la instalación, consulte lalink:https://docs.netapp.com/us-en/ontap-sanhost/hu_wuhu_72.html["Instalar Windows Unified Host Utilities 7.2 (o la última versión compatible)"]
@@ -125,6 +130,7 @@ Unblock-file ~\Downloads\netapp_windows_host_utilities_7.2_x64.msi
 
 
 
+[[configuring-windows-host-iscsi-initiator]]
 === Configuración del iniciador iSCSI del host de Windows
 
 Los siguientes pasos describen cómo configurar el iniciador iSCSI integrado de Microsoft.
@@ -182,6 +188,7 @@ Get-IscsiTarget | Connect-IscsiTarget -IsPersistent $true -IsMultipathEnabled $t
 
 
 
+[[creating-a-cluster]]
 === Creando un clúster
 
 *Solo un servidor*

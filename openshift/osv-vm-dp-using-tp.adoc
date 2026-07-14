@@ -28,17 +28,18 @@ Trident Protect permite realizar instantáneas, copias de seguridad, restauracio
 
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/installing_on_bare_metal/index["Clúster OpenShift 4.17"]
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/virtualization/getting-started#tours-quick-starts_virt-getting-started["OpenShift Virtualization instalado a través del operador de virtualización OpenShift proporcionado por Red Hat"]
-* link:https://docs.netapp.com/us-en/trident/trident-get-started/kubernetes-deploy.html["Trident 25.02"]
+* link:https://docs.netapp.com/us-en/trident/trident-get-started/quickstart.html["Trident 25.02"]
 * link:https://docs.netapp.com/us-en/trident/trident-protect/trident-protect-installation.html["Trident Protect 25.02"]
 * link:https://docs.netapp.com/us-en/ontap/["ONTAP 9.16"]
 
 
 
 
+[[create-app-vault-for-object-storage]]
 == Crear un almacén de aplicaciones para el almacenamiento de objetos
 
 .Crear AppVault
-[%collapsible%open]
+[%collapsible]
 ====
 Antes de crear las instantáneas y las copias de seguridad de una aplicación o una máquina virtual, se debe configurar un almacenamiento de objetos en Trident Protect para almacenar las instantáneas y las copias de seguridad. Esto se hace usando el CR de bucket. Solo los administradores pueden crear un CR de bucket y configurarlo. El CR de bucket se conoce como AppVault en Trident Protect. Los objetos AppVault son la representación declarativa del flujo de trabajo de Kubernetes de un bucket de almacenamiento. Un CR AppVault contiene las configuraciones necesarias para que un bucket se use en operaciones de protección, como copias de seguridad, instantáneas, operaciones de restauración y replicación SnapMirror.
 
@@ -105,10 +106,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-008.png["Se creó ONTAP S3 Appvault"]
 ====
 
 
+[[create-a-vm-in-openshift-virtualization]]
 == Crear una máquina virtual en OpenShift Virtualization
 
 .Crear una máquina virtual en OpenShift Virtualization
-[%collapsible%open]
+[%collapsible]
 ====
 Las siguientes capturas de pantalla muestran la creación de la VM (demo-fedora en el espacio de nombres demo) desde la consola usando la plantilla. El disco raíz elige automáticamente la clase de almacenamiento predeterminada, por lo tanto, verifique que la clase de almacenamiento predeterminada esté configurada adecuadamente. En esta configuración, la clase de almacenamiento predeterminada es **sc-zonea-san**. Asegúrese de que cuando cree el disco adicional, elija la clase de almacenamiento sc-zonea-san y marque la casilla de verificación "**Aplicar configuración de almacenamiento optimizada**". Esto establecerá los modos de acceso en RWX y el modo de volumen en Bloquear.
 
@@ -132,10 +134,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-007.png["vm, pods y pvc creados"]
 ====
 
 
+[[create-an-app]]
 == Crear una aplicación
 
 .Crear aplicación
-[%collapsible%open]
+[%collapsible]
 ====
 **Crear una aplicación de protección Trident para la máquina virtual**
 
@@ -163,10 +166,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-009.png["Aplicación creada"]
 ====
 
 
+[[protect-the-app-by-creating-a-backup]]
 == Proteja la aplicación creando una copia de seguridad
 
 .Crear copias de seguridad
-[%collapsible%open]
+[%collapsible]
 ====
 **Crear una copia de seguridad a pedido**
 
@@ -217,10 +221,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-017.png["Copias de seguridad creadas a pedido 
 ====
 
 
+[[restore-from-backup]]
 == Restaurar desde una copia de seguridad
 
 .Restaurar desde copias de seguridad
-[%collapsible%open]
+[%collapsible]
 ====
 **Restaurar la máquina virtual al mismo espacio de nombres**
 
@@ -301,10 +306,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-023.png["VM en el nuevo espacio de nombres"]
 ====
 
 
+[[protect-the-app-using-snapshots]]
 == Proteger la aplicación usando instantáneas
 
 .Crear instantáneas
-[%collapsible%open]
+[%collapsible]
 ====
 **Crear una instantánea a pedido** Cree una instantánea para la aplicación y especifique el almacén de aplicaciones donde debe almacenarse.
 
@@ -373,10 +379,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-026.png["instantánea programada"]
 ====
 
 
+[[restore-from-snapshot]]
 == Restaurar desde una instantánea
 
 .Restaurar desde una instantánea
-[%collapsible%open]
+[%collapsible]
 ====
 **Restaurar la VM desde la instantánea al mismo espacio de nombres** Eliminar la VM demo-fedora del espacio de nombres demo2.
 
@@ -455,10 +462,11 @@ image:rh-os-n-use-case-ocpv-tp-dp-032.png["VM restaurada en nuevo espacio de nom
 ====
 
 
+[[restore-a-specific-vm]]
 == Restaurar una máquina virtual específica
 
 .Seleccionar máquinas virtuales específicas en un espacio de nombres para crear instantáneas/copias de seguridad y restaurar
-[%collapsible%open]
+[%collapsible]
 ====
 En el ejemplo anterior, teníamos una sola VM dentro de un espacio de nombres. Al incluir todo el espacio de nombres en la copia de seguridad, se capturaron todos los recursos asociados con esa máquina virtual. En el siguiente ejemplo, agregamos otra VM al mismo espacio de nombres y creamos una aplicación solo para esta nueva VM usando un selector de etiquetas.
 
@@ -548,6 +556,56 @@ image:rh-os-n-use-case-ocpv-tp-dp-038.png["máquina virtual centos creada"]
 ====
 
 
+[[single-file-restore-for-a-vm]]
+== Restauración de un único archivo para una VM
+
+Este método de restauración de un único archivo solo se aplica a volúmenes NAS o basados en archivos que estén montados como un sistema de archivos en el pod cliente, como los volúmenes NFS. No se aplica a volúmenes SAN o de bloques sin formato, incluidos los discos de máquinas virtuales aprovisionados con `volumeMode: Block` como se mostró antes.
+
+Para los volúmenes NAS o basados en archivos compatibles, una forma sencilla de restaurar un archivo específico es hacer que el directorio de instantáneas en el volumen de respaldo sea visible para el cliente. Esto se puede hacer editando la configuración del backend de Trident para incluir la sección defaults y establecer el parámetro  `snapshotDir` en  `true`. Esto permite acceder al directorio  `.snapshot` desde la misma ubicación de montaje que el volumen principal. El directorio  `.snapshot` contiene todas las instantáneas. Puedes cambiar al directorio de instantáneas que necesites, buscar el archivo que quieres restaurar y copiarlo a la ubicación que prefieras.
+
+
+NOTE: Este método expone datos históricos a cargas de trabajo o usuarios con acceso de montaje y puede incumplir las expectativas de privilegio mínimo o cumplimiento. Por favor, considera el impacto en la seguridad y el funcionamiento, y ten en cuenta que deberías habilitarlo temporalmente y revertirlo después de restaurar un archivo. Además, si estás usando la versión de NFS 4, no puedes ver el directorio `.snapshot` cuando listas archivos con un comando `ls`. Sin embargo, puedes `cd` al directorio `.snapshot`.
+
+.Ejemplo de restauración de un único archivo accediendo al directorio .snapshot y copiando un archivo de una snapshot
+[%collapsible]
+====
+[source, yaml]
+----
+#single-file-restore.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-single-file-restore
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: test-trident-set-defaults
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: /data
+          name: task-pv-storage
+# oc apply -f single-file-restore.yaml
+----
+image:rh-os-n-use-case-ocpv-tp-dp-sfr-001.png["el pod y el PVC de la máquina virtual"]
+
+image:rh-os-n-use-case-ocpv-tp-dp-sfr-002.png["Nombre del volumen ONTAP para el disco de la máquina virtual"]
+
+image:rh-os-n-use-case-ocpv-tp-dp-sfr-003.png["directorio de instantáneas visible en el cliente"]
+
+image:rh-os-n-use-case-ocpv-tp-dp-sfr-004.png["montar el directorio en la máquina virtual"]
+
+image:rh-os-n-use-case-ocpv-tp-dp-sfr-005.png["perder un archivo en la VM y copiar el archivo del directorio de instantáneas al directorio principal para restaurarlo"]
+
+====
+
+
+[[video-demonstration]]
 == Demostración en video
 
 El siguiente video muestra una demostración de cómo proteger una máquina virtual mediante instantáneas

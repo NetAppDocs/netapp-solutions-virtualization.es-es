@@ -20,6 +20,7 @@ image:vmware-vcf-asa-mgmt-stretchcluster-001.png["Instancia única - Múltiples 
 
 
 
+[[scenario-overview]]
 == Descripción general del escenario
 
 Los almacenes de datos en el dominio de carga de trabajo VCF se pueden proteger con la sincronización activa de SnapMirror para proporcionar una solución de clúster extendido.  La protección está habilitada en el nivel del clúster vSphere y todos los almacenes de datos de bloques ONTAP en el clúster estarán protegidos.
@@ -50,6 +51,7 @@ TIP: Si un clúster de vSphere está protegido, todos los almacenes de datos del
 ====
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
@@ -58,6 +60,7 @@ Para obtener información sobre la configuración de VCF, consultelink:https://t
 
 
 
+[[video-demo-for-this-solution]]
 == Demostración en vídeo de esta solución
 
 .Ampliar clúster para VCF con herramientas ONTAP

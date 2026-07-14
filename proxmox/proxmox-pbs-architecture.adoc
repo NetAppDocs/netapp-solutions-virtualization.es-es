@@ -19,6 +19,7 @@ PBS admite varios backends de almacenamiento, incluidos almacenamiento local, NF
 
 
 
+[[solution-architecture]]
 == Arquitectura de la solución
 
 La solución incluye los siguientes componentes:

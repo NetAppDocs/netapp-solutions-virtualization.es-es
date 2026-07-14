@@ -20,6 +20,7 @@ El Shift Toolkit permite la migración de máquinas virtuales entre plataformas 
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 Verifique que se cumplan los siguientes requisitos previos antes de iniciar la migración.
@@ -65,6 +66,7 @@ NOTE: La eliminación de las VMware tools ocurre en el hipervisor de destino una
 
 
 
+[[step-1-add-the-destination-site-proxmox-ve]]
 == Paso 1: agrega el sitio de destino (Proxmox VE)
 
 Agrega el entorno de destino Proxmox VE al Shift Toolkit.
@@ -118,6 +120,7 @@ NOTE: El volumen de origen y el volumen de destino serán los mismos, ya que la 
 
 
 
+[[step-2-create-resource-groups]]
 == Paso 2: Crear grupos de recursos
 
 Organice las máquinas virtuales en grupos de recursos para preservar el orden de arranque y las configuraciones de retardo de arranque.
@@ -203,6 +206,7 @@ El grupo de recursos está creado y listo para la configuración del plano.
 
 
 
+[[step-3-create-a-migration-blueprint]]
 == Paso 3: Crear un plan de migración
 
 Cree un plan maestro para definir el plan de migración, incluyendo la asignación de plataformas, la configuración de red y la configuración de las máquinas virtuales.
@@ -345,6 +349,7 @@ Cuando prepareVM se completa correctamente, el estado del plano se actualiza a "
 
 
 
+[[step-4-execute-the-migration]]
 == Paso 4: Ejecutar la migración
 
 Activa el flujo de trabajo de migración para convertir las máquinas virtuales de VMware ESXi a Proxmox VE.
@@ -391,6 +396,7 @@ image::shift-toolkit-468.png[VMs en Proxmox VE]
 ====
 
 
+[[shift-toolkit-workflow]]
 == Flujo de trabajo de Shift toolkit
 
 Las siguientes secciones explican qué pasos activa el Shift toolkit para convertir el VMDK y crear VMs en el lado de Proxmox VE.
@@ -419,6 +425,7 @@ image::shift-toolkit-470.png[Detalles de la VM de Proxmox VE]
 
 
 
+[[minimum-permissions-for-migrating-and-creating-vms-in-proxmox-ve]]
 == Permisos mínimos para migrar y crear VMs en Proxmox VE
 
 Esta sección describe los pasos necesarios para crear una cuenta de usuario dedicada con los privilegios mínimos necesarios para realizar migraciones de máquinas virtuales.

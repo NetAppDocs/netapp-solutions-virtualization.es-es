@@ -25,6 +25,7 @@ NOTE: Las contraseñas se guardan en archivos de texto sin cifrar y sólo el usu
 video::5b4ae54a-08d2-4f7d-95ec-b22d015f6035[panopto,width=360]
 
 
+[[storage-administrator-tasks]]
 == Tareas del administrador de almacenamiento
 
 Si es nuevo en ONTAP, utilice la Interfaz del Administrador del sistema para completar estas tareas.
@@ -67,6 +68,7 @@ image:proxmox-ontap-smb-004.png["Información sobre acciones de SMB"]
 
 
 
+[[virtualization-administrator-tasks]]
 == Tareas del administrador de virtualización
 
 Complete estas tareas para agregar el recurso compartido SMB como almacenamiento en Proxmox VE y habilitar el multicanal para mejorar el rendimiento y la tolerancia a fallas.

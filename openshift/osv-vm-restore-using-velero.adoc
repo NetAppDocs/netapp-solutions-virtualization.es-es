@@ -18,6 +18,7 @@ Restaure máquinas virtuales en OpenShift Virtualization utilizando Velero y la 
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 Para restaurar desde una copia de seguridad, supongamos que el espacio de nombres donde existía la máquina virtual se eliminó accidentalmente.

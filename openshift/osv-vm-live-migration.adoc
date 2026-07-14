@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: openshift/osv-workflow-vm-live-migration.html 
+permalink: openshift/osv-vm-live-migration.html 
 keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization 
 summary: Virtualización de Red Hat OpenShift con NetApp ONTAP 
 ---
@@ -18,6 +18,7 @@ Migre una VM en OpenShift Virtualization entre dos nodos en el clúster sin tiem
 
 
 
+[[vm-live-migration]]
 == Migración en vivo de máquinas virtuales
 
 La migración en vivo es un proceso de migración de una instancia de VM de un nodo a otro en un clúster OpenShift sin tiempo de inactividad.  Para que la migración en vivo funcione en un clúster OpenShift, las máquinas virtuales deben estar vinculadas a PVC con modo de acceso ReadWriteMany compartido.  Los backends Trident configurados mediante controladores ontap-nas admiten el modo de acceso RWX para los protocolos de sistema de archivos NFS y SMB.  Consulte la documentaciónlink:https://docs.netapp.com/us-en/trident/trident-use/ontap-nas.html["aquí"] .  Los backends Trident configurados mediante controladores ontap-san admiten el modo de acceso RWX para el modo de volumen de bloque para los protocolos iSCSI y NVMe/TCP.  Consulte la documentaciónlink:https://docs.netapp.com/us-en/trident/trident-use/ontap-san.html["aquí"] .

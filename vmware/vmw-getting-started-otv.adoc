@@ -18,12 +18,14 @@ Las ONTAP tools for VMware vSphere optimizan la gestión del ciclo de vida de la
 
 
 
+[[introduction]]
 == Introducción
 
 Permite a los administradores administrar el almacenamiento dentro de vCenter Server directamente y simplificar la administración del almacenamiento y los datos para entornos VMware.  La herramienta de complemento VMware vSphere Client está diseñada para integrar la funcionalidad del complemento en vSphere Client sin la necesidad de ejecutarse dentro de vCenter Server.  Esto proporciona aislamiento de complementos y permite la ampliación horizontal de complementos que operan en entornos vSphere grandes.
 
 
 
+[[ontap-tools-components]]
 == Componentes de herramientas de ONTAP
 
 * *Consola de almacenamiento virtual (VSC)* La VSC incluye la interfaz integrada con el cliente vSphere donde puede agregar controladores de almacenamiento, aprovisionar almacenes de datos, monitorear el rendimiento de los almacenes de datos y ver y actualizar la configuración del host ESXi.

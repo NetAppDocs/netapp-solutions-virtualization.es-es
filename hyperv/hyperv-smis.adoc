@@ -20,6 +20,7 @@ Esta solución integral proporciona una interfaz estandarizada para la gestión 
 
 
 
+[[introduction]]
 == Introducción
 
 La especificación de iniciativa de administración de almacenamiento de NetApp (SMI-S) es una herramienta poderosa para administrar y monitorear sistemas de almacenamiento.  NetApp SMI-S aprovecha los protocolos de gestión empresarial basada en web (WBEM) para proporcionar una interfaz unificada para diversas tareas de gestión, incluido el manejo de LUN, volúmenes, configuraciones de CIMOM y usuarios del servidor CIM.
@@ -28,6 +29,7 @@ SCVMM es una solución de gestión integral para centros de datos virtualizados.
 
 
 
+[[benefits-of-using-netapp-smi-s-provider-with-scvmm]]
 === Beneficios de utilizar NetApp SMI-S Provider con SCVMM
 
 La integración de NetApp SMI-S Provider con SCVMM permite a las organizaciones administrar los recursos de almacenamiento de manera más efectiva en un centro de datos virtualizado al proporcionar una interfaz estandarizada para la administración del almacenamiento.
@@ -43,6 +45,7 @@ image:hyperv-smis-001.png["NetApp SMI-S con arquitectura Hyper-V"]
 
 
 
+[[get-ready-for-smi-s-provider-deployment]]
 == Prepárese para la implementación del proveedor SMI-S
 
 Una integración perfecta con los sistemas de almacenamiento existentes requiere la instalación y configuración adecuadas de NetApp SMI-S Provider.
@@ -61,6 +64,7 @@ Una integración perfecta con los sistemas de almacenamiento existentes requiere
 
 
 
+[[smi-s-virtual-machine-hardware-requirements]]
 === Requisitos de hardware de la máquina virtual SMI-S
 
 La siguiente tabla muestra los requisitos de hardware de la máquina virtual del proveedor SMI-S de NetApp .
@@ -69,6 +73,7 @@ image:hyperv-smis-002.png["Requisitos de hardware del proveedor SMI-S"]
 
 
 
+[[install-smi-s-provider]]
 === Instalar el proveedor SMI-S
 
 Antes de comenzar la implementación del proveedor SMI-S, debe implementar Microsoft Hyper-V con SCVMM y NetApp 9 sobre el sistema de almacenamiento FAS o AFF .  Es importante comprender la interfaz basada en comandos para realizar diversas tareas de administración, verificarlink:https://docs.netapp.com/us-en/smis-provider/concept-smi-s-provider-commands-overview.html["Comandos del NetApp SMI-S Provider ."]
@@ -87,6 +92,7 @@ Mejor práctica: NetApp recomienda utilizar un servidor Windows dedicado para in
 
 
 
+[[connect-smi-s-provider-with-scvmm]]
 === Conecte el proveedor SMI-S con SCVMM
 
 Para agregar un dispositivo de almacenamiento remoto en SCVMM y conectarse a un proveedor SMI-S, debe asegurarse de que se cumplan los siguientes requisitos previos y pasos:
@@ -114,6 +120,7 @@ Se coloca un certificado obsoleto durante la instalación del proveedor SMI-S.  
 
 
 
+[[provisioning-storage-with-scvmm-using-an-smi-s-provider]]
 === Aprovisionamiento de almacenamiento con SCVMM mediante un proveedor SMI-S
 
 SCVMM utiliza el proveedor SMI-S para interactuar con los sistemas de almacenamiento, lo que le permite crear y administrar recursos de almacenamiento directamente desde SCVMM.
@@ -135,12 +142,14 @@ SCVMM utiliza el proveedor SMI-S para interactuar con los sistemas de almacenami
 
 
 
+[[logs-and-traces]]
 == Registros y seguimientos
 
 Puede configurar cómo SMI-S Provider administra los registros y los archivos de seguimiento, por ejemplo, especificando los niveles de mensajes que se registrarán y el directorio en el que se guardarán los registros.  También debe especificar los componentes que se deben rastrear, el destino en el que se escriben los mensajes de rastreo, el nivel de rastreo y la ubicación del archivo de rastreo.
 
 
 
+[[logs-setting]]
 === Configuración de registros
 
 De forma predeterminada, se registran todos los mensajes del sistema y los registros de mensajes del sistema se ubican en el directorio de registros del directorio en el que está instalado NetApp SMI-S Provider .  Puede cambiar la ubicación y el nivel de los mensajes del sistema que se escriben en el registro del servidor CIM.
@@ -169,6 +178,7 @@ image:hyperv-smis-012.png["Configuración de seguimiento"]
 
 
 
+[[conclusion]]
 == Conclusión
 
 El NetApp SMI-S Provider es una herramienta esencial para los administradores de almacenamiento y proporciona una solución estandarizada, eficiente e integral para administrar y monitorear los sistemas de almacenamiento.  Al utilizar protocolos y esquemas estándar de la industria, se garantiza la compatibilidad y simplifica las complejidades asociadas con la gestión de la red de almacenamiento.

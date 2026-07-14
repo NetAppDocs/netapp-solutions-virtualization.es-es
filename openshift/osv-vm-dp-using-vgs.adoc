@@ -34,6 +34,7 @@ NOTE: Trident admite instantáneas de grupos de volúmenes solo para el protocol
 
 
 
+[[step-1-install-openshift-4-19-and-enable-featuregate-for-volume-group-snapshots]]
 == Paso 1: Instale OpenShift 4.19 y habilite FeatureGate para instantáneas de grupos de volúmenes
 
 Instalar el clúster OpenShift 4.19 con Kubernetes versión 1.32.  Esta versión eleva la función Instantánea de grupo de volúmenes al estado Beta.  Las versiones posteriores de OpenShift pueden incluir versiones de Kubernetes posteriores a la v1.32, que también admiten esta función.
@@ -58,6 +59,7 @@ image:redhat-openshift-ocpv-vgs-002.png["Habilitar VolumeGroupSnapshot FeatureGa
 
 
 
+[[step-2-install-and-configure-trident-25-06-for-volume-group-snapshots]]
 == Paso 2: Instalar y configurar Trident 25.06 para instantáneas de grupos de volúmenes
 
 La función Instantánea de grupo de volúmenes solo es compatible con Trident para el protocolo iSCSI en Trident 25.06.  NOTA: Debe instalar Trident versión 25.06.1 para habilitar el protocolo iSCSI en OpenShift Cluster 4.19.
@@ -176,6 +178,7 @@ image:redhat-openshift-ocpv-vgs-006.png["Clase de instantánea de grupo de volú
 
 
 
+[[step-3-install-openshift-virtualization-and-create-a-test-vm-with-multiple-disks]]
 == Paso 3: Instale OpenShift Virtualization y cree una máquina virtual de prueba con varios discos
 
 Instale el operador de virtualización OpenShift para habilitar las capacidades de administración de máquinas virtuales en su clúster.  Después de la instalación, cree una máquina virtual de prueba con varios discos persistentes para demostrar la funcionalidad de instantánea del grupo de volúmenes.
@@ -207,6 +210,7 @@ image:redhat-openshift-ocpv-vgs-009.png["Discos de máquina virtual"]
 
 
 
+[[step-4-label-vm-disks-for-group-snapshot-protection]]
 == Paso 4: Etiquetar los discos de VM para la protección mediante instantáneas de grupo
 
 Las instantáneas de grupos de volúmenes utilizan selectores de etiquetas para identificar qué PVC pertenecen juntos, lo que garantiza que todos los discos de VM relacionados se capturen simultáneamente en el mismo momento.
@@ -274,6 +278,7 @@ image:redhat-openshift-ocpv-vgs-011.png["Grupo de consistencia de ONTAP"]
 
 
 
+[[step-5-restore-vm-disks-from-snapshots]]
 == Paso 5: Restaurar discos de VM a partir de instantáneas
 
 Este paso valida que las instantáneas puedan recuperar con éxito los datos de la máquina virtual cuando sea necesario.  Supongamos que hemos perdido el `sample.txt` archivo de cada uno de los dos discos de datos.

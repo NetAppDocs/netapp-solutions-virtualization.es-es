@@ -18,6 +18,7 @@ Realice copias de seguridad de máquinas virtuales en OpenShift Virtualization u
 
 
 
+[[steps-to-create-a-backup-of-a-vm]]
 == Pasos para crear una copia de seguridad de una máquina virtual
 
 Para crear una copia de seguridad a pedido de toda la VM (metadatos de la VM y discos de la VM), haga clic en la pestaña **Copia de seguridad**.  Esto crea un recurso personalizado de respaldo (CR). Se proporciona un yaml de muestra para crear el CR de respaldo.  Usando este yaml, se realizará una copia de seguridad de la VM y sus discos en el espacio de nombres especificado. Se pueden configurar parámetros adicionales como se muestra en lalink:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.html["documentación"] .
@@ -51,6 +52,7 @@ image:redhat-openshift-oadp-backup-002.png["Copia de seguridad de objetos en S3"
 
 
 
+[[creating-scheduled-backups-for-vms-in-openshift-virtualization]]
 == Creación de copias de seguridad programadas para máquinas virtuales en OpenShift Virtualization
 
 Para crear copias de seguridad según un cronograma, debe crear una CR programada. La programación es simplemente una expresión Cron que le permite especificar la hora en la que desea crear la copia de seguridad. Un ejemplo de yaml para crear un CR de programación.

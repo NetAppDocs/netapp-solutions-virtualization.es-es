@@ -18,6 +18,7 @@ Utilice el panel de control de supervisión de trabajos de Shift Toolkit para re
 
 
 
+[[job-monitoring-dashboard]]
 == Panel de control de seguimiento de trabajos
 
 El panel de control de supervisión de trabajos proporciona una vista centralizada de todas las operaciones activas y completadas dentro del Kit de Herramientas de Turno.  Utilice este panel de control para supervisar el progreso de sus trabajos de migración, conversión y creación de planos.
@@ -35,6 +36,7 @@ El panel de control muestra información clave para cada trabajo:
 
 
 
+[[understanding-job-status]]
 == Comprender el estado del trabajo
 
 La interfaz intuitiva permite evaluar rápidamente el estado de todas las operaciones e identificar los trabajos que requieren atención.

@@ -20,12 +20,14 @@ Estas son algunas de las principales ventajas del almacenamiento NetApp para la 
 
 
 
+[[support-for-windows-and-linux-virtual-desktops]]
 == Soporte para escritorios virtuales Windows y Linux
 
 Las soluciones de almacenamiento NetApp admiten tanto escritorios virtuales Windows como Linux, lo que permite a las organizaciones elegir el sistema operativo que mejor se adapte a sus necesidades. Esta flexibilidad puede ayudar a las organizaciones a optimizar sus implementaciones de EUC y proporcionar una mejor experiencia de usuario para sus usuarios finales. Se puede usar el mismo recurso compartido de archivos para escritorios virtuales Windows y Linux, proporcionando una experiencia coherente para los usuarios independientemente del sistema operativo que estén usando. Se admiten los protocolos SMB y NFS, lo que permite una integración fluida con la infraestructura existente.
 
 
 
+[[secure-multi-tenancy]]
 == Multi-tenancy seguro
 
 Las soluciones de almacenamiento de NetApp proporcionan multi-tenancy seguro, permitiendo a las organizaciones aislar de forma segura los datos y recursos para diferentes usuarios y grupos. Esto puede ayudar a las organizaciones a mejorar la seguridad y reducir el riesgo de violación de datos en sus entornos EUC. Con las características de multi-tenancy seguro de NetApp, las organizaciones pueden garantizar que los datos se almacenan de forma segura y eficiente, mientras también proporcionan a los usuarios acceso a sus archivos y datos desde cualquier dispositivo, en cualquier lugar. SVM actúa como un dispositivo de almacenamiento virtual, proporcionando un entorno seguro y aislado para cada inquilino, mientras también permite la utilización y gestión eficiente de los recursos.
@@ -40,6 +42,7 @@ ONTAP permite establecer cuotas en recursos compartidos de archivos y directorio
 
 
 
+[[high-performance-and-scalability]]
 == Alto rendimiento y escalabilidad
 
 Las soluciones de almacenamiento de NetApp están diseñadas para ofrecer alto rendimiento y escalabilidad para entornos EUC. Con las soluciones de almacenamiento de NetApp, las organizaciones pueden optimizar sus despliegues EUC y ofrecer una mejor experiencia de usuario a sus usuarios finales. Las soluciones de almacenamiento de NetApp están diseñadas para hacer frente a las exigencias de los entornos EUC, proporcionando alto rendimiento y escalabilidad para soportar un gran número de usuarios y aplicaciones. Con las soluciones de almacenamiento de NetApp, las organizaciones pueden escalar fácilmente sus despliegues EUC según sea necesario, garantizando que pueden satisfacer las necesidades de sus usuarios y aplicaciones a medida que crecen.
@@ -52,6 +55,7 @@ ONTAP WideLink permite a las organizaciones crear un espacio de nombres global a
 
 
 
+[[data-protection-and-disaster-recovery]]
 == Protección de datos y recuperación ante desastres
 
 NetApp Snapshots ofrecen una potente solución de protección de datos y recuperación de desastres para entornos EUC. Con la tecnología Snapshot de NetApp, las organizaciones pueden crear copias eficientes en espacio de sus datos en un momento específico, lo que les permite recuperarse rápidamente de la pérdida o corrupción de datos. Esto puede ayudar a las organizaciones a minimizar el tiempo de inactividad y garantizar que sus usuarios finales puedan seguir accediendo a sus escritorios y aplicaciones sin interrupción. Con la tecnología Snapshot de NetApp, las organizaciones pueden crear y gestionar fácilmente instantáneas de sus datos, proporcionando una potente herramienta para la protección de datos y la recuperación de desastres en sus entornos EUC.
@@ -64,6 +68,7 @@ FlexCache ofrece una potente solución de almacenamiento en caché para entornos
 
 
 
+[[vsphere-integration]]
 == vSphere integración
 
 NetApp Storage es compatible con VAAI (vStorage APIs for Array Integration), que permite descargar determinadas operaciones de almacenamiento en la matriz de almacenamiento, mejorando el rendimiento y reduciendo la carga en los hosts de vSphere. Con el soporte de VAAI de NetApp, las organizaciones pueden optimizar sus implementaciones de EUC y proporcionar un aprovisionamiento más rápido y un mejor rendimiento a sus usuarios finales. El soporte de VAAI está disponible tanto para NFS como para protocolos en bloque, permitiendo una integración fluida con la infraestructura existente.
@@ -74,6 +79,7 @@ NFS nConnect permite establecer múltiples conexiones entre el host de vSphere y
 
 
 
+[[data-services-and-management]]
 == Servicios y gestión de datos
 
 NetApp Console proporciona servicios de datos para descubrir, asignar y perfilar tus datos para cumplir los requisitos de gobernanza y cumplimiento. Con NetApp Console, las organizaciones pueden clasificar fácilmente sus datos en la clase de almacenamiento adecuada, asegurando que puedan optimizar sus recursos de almacenamiento y cumplir con sus requisitos de rendimiento y coste. La función Copy and Sync permite una movilidad de datos eficiente entre los sitios, proporcionando una herramienta potente para gestionar los datos en entornos EUC. Con NetApp Console, las organizaciones pueden gestionar y optimizar fácilmente sus datos en sus entornos EUC, ofreciendo una mejor experiencia de usuario para sus usuarios finales.

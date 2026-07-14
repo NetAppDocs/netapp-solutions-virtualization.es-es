@@ -27,6 +27,7 @@ Para ayudarlo a determinar la capacidad de soporte de productos, protocolos, sis
 
 
 
+[[netapp-ontap-and-vmware-supported-releases]]
 == Versiones compatibles con NetApp ONTAP y VMware
 
 

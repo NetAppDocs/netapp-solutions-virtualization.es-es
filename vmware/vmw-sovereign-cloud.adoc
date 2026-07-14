@@ -20,6 +20,7 @@ El concepto de soberanía está surgiendo como un componente necesario de la com
 
 
 
+[[vmware-sovereign-cloud-initiative]]
 == Iniciativa de nube soberana de VMware
 
 VMware define una nube soberana como aquella que:
@@ -33,6 +34,7 @@ VMware define una nube soberana como aquella que:
 
 
 
+[[partnering-with-a-trusted-vmware-sovereign-cloud-service-provider]]
 == Asociarse con un proveedor confiable de servicios de nube soberana de VMware
 
 Para garantizar el éxito, las organizaciones deben trabajar con socios en los que confíen y que sean capaces de alojar plataformas de nube soberana auténticas y autónomas.  Los proveedores de VMware Cloud reconocidos dentro de la iniciativa VMware Sovereign Cloud se comprometen a diseñar y operar soluciones de nube basadas en arquitecturas modernas definidas por software que incorporan los principios clave y las mejores prácticas descritas en el marco de VMware Sovereign Cloud.

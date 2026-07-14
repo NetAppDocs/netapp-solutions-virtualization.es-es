@@ -12,56 +12,50 @@ indexpage:
     links:
     - title: Acerca de OpenShift Virtualization
       url: osv-overview.html
-    - title: Aprovisionamiento de almacenamiento para OpenShift
-      url: os-netapp-overview.html
-    - title: Integración de almacenamiento NetApp Trident
-      url: os-storint-overview.html
-    - title: Mejores prácticas para la implementación
-      url: os-osv-bpg.html
+    - title: OpenShift Modelos de implementación de Virtualization
+      url: osv-deployment-models.html
     - title: Blogs
       url: "../blogs.html"
     - title: Vídeos
       url: "../videos/openshift-videos.html"
-  - title: Implementar en las instalaciones
+  - title: Introducción al almacenamiento y la virtualización
     links:
-    - title: Requisitos de implementación
-      url: osv-deployment-prerequisites.html
+    - title: Primeros pasos con el almacenamiento
+      url: osv-storage-getting-started.html
+    - title: Aprovisionamiento de almacenamiento
+      url: osv-trident-install.html
     - title: Implementar Red Hat OpenShift Virtualization con ONTAP
       url: osv-deployment.html
-    - title: Crear máquinas virtuales
-      url: osv-workflow-create-vm.html
-    - title: Clonar máquinas virtuales
-      url: osv-workflow-clone-vm.html
-    - title: Crear máquinas virtuales a partir de una instantánea
-      url: osv-workflow-vm-from-snapshot.html
-  - title: Migrar máquinas virtuales
+    - title: Implementación de máquinas virtuales
+      url: osv-vm-deployment.html
+    - title: Otros métodos para crear máquinas virtuales
+      url: osv-vm-deployment-other-methods.html
+    - title: Migración en vivo de máquinas virtuales entre nodos del clúster
+      url: osv-vm-live-migration.html
+    - title: Migración de máquinas virtuales entre clases de almacenamiento
+      url: osv-migration-vm-storage.html
+  - title: Protege las máquinas virtuales con el almacenamiento NetApp
     links:
-    - title: Migrar máquinas virtuales de VMware a un clúster de OpenShift
-      url: osv-workflow-vm-migration-mtv.html
-    - title: Migrar máquinas virtuales entre dos nodos del clúster
-      url: osv-workflow-vm-live-migration.html
-  - title: Proteja las máquinas virtuales con Trident y Trident Protect
-    links:
-    - title: Instalar Trident
-      url: osv-trident-install.html
+    - title: Copia de seguridad y restauración con Trident Protect
+      url: osv-vm-dp-using-tp.html
     - title: Proteger las máquinas virtuales mediante instantáneas de grupos de volúmenes
       url: osv-vm-dp-using-vgs.html
-    - title: Proteja las máquinas virtuales con instantáneas y copias de seguridad
-      url: osv-vm-dp-using-tp.html
-    - title: Configurar conmutación por error y recuperación
-      url: osv-vm-dr-using-tp.html
-  - title: Proteja las máquinas virtuales mediante herramientas de terceros
+    - title: Copia de seguridad y restauración mediante herramientas de terceros
+      url: osv-data-protection-third-party-tools.html
+  - title: Recuperación ante desastres
     links:
-    - title: Proteja las máquinas virtuales mediante OADP y Velero
-      url: osv-vm-dp-using-velero-overview.html
-    - title: Instalar OADP
-      url: osv-oadp-installation.html
-    - title: Copia de seguridad de máquinas virtuales con Velero
-      url: osv-vm-dp-using-velero.html
-    - title: Restaurar máquinas virtuales mediante Velero
-      url: osv-vm-restore-using-velero.html
-    - title: Eliminar copias de seguridad y restauraciones
-      url: osv-vm-dp-delete-using-velero.html
+    - title: Requisitos y aspectos a tener en cuenta para la recuperación ante desastres
+        (DR)
+      url: osv-disaster-recovery-requirements.html
+    - title: Configuración del clúster de origen para DR
+      url: osv-disaster-recovery-source-cluster-setup.html
+    - title: Configuración del clúster de destino para la recuperación ante desastres
+        (DR)
+      url: osv-disaster-recovery-target-cluster-setup.html
+    - title: Recuperación ante desastres - DR manual
+      url: osv-disaster-recovery-simulate-dr.html
+    - title: Recuperación tras un fallo - DR en tiempo real
+      url: osv-disaster-recovery-failback.html
   - title: Supervise las máquinas virtuales con Data Infrastructure Insights
     links:
     - title: Acerca de Data Infrastructure Insights

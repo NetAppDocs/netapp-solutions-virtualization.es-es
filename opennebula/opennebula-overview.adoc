@@ -18,6 +18,7 @@ OpenNebula es una plataforma de gestión de la nube de código abierto para gest
 
 
 
+[[overview]]
 == Descripción general
 
 OpenNebula ofrece un completo conjunto de funciones para gestionar el ciclo de vida completo de las máquinas virtuales y los contenedores, incluido el despliegue, la supervisión, el escalado y el decomisionado. Admite una amplia gama de opciones de almacenamiento y redes, lo que la hace flexible para varios casos de uso.
@@ -32,6 +33,7 @@ OpenNebula tiene una arquitectura modular que permite una fácil integración co
 
 
 
+[[frontend-user-interface]]
 == Interfaz de usuario frontend
 
 OpenNebula proporciona una interfaz de usuario basada en web llamada Sunstone, que permite a los usuarios gestionar fácilmente sus máquinas virtuales y contenedores. La interfaz es intuitiva y fácil de usar, lo que hace que tanto los administradores como los usuarios finales puedan navegar y realizar tareas fácilmente. Por defecto, se ejecuta en el puerto 2616. Los datos persistentes se almacenan en una base de datos backend, que puede ser SQLite (por defecto para cargas de trabajo pequeñas) o MySQL/MariaDB (para entornos de producción). Se pueden desplegar varias instancias de servidores frontend para garantizar alta disponibilidad y equilibrio de carga.
@@ -46,6 +48,7 @@ Las capacidades de federación permiten que varias instancias de OpenNebula (Zon
 
 
 
+[[compute]]
 == Calcular
 
 OpenNebula admite KVM para máquinas virtuales y LXC para contenedores Linux. Los sistemas operativos admitidos incluyen Ubuntu, Debian, RHEL y AlmaLinux. Las máquinas virtuales pueden desplegarse desde plantillas preconfiguradas o imágenes personalizadas. Un conjunto de máquinas virtuales (servicio) también puede desplegarse usando plantillas de servicio. OneFlow permite definir y gestionar aplicaciones multinivel compuestas por varias máquinas virtuales interconectadas. OneGate permite comunicarse con el backend de OpenNebula desde dentro de las máquinas virtuales, permitiendo capacidades avanzadas de supervisión y gestión.
@@ -75,6 +78,7 @@ OpenNebula admite NVIDIA vGPU y MIG (Multi Instance GPU) para máquinas virtuale
 
 
 
+[[storage]]
 == Almacenamiento
 
 OpenNebula proporciona cuatro tipos de almacenes de datos para gestionar recursos de almacenamiento: sistema, imagen, archivo y copia de seguridad. Los almacenes de datos de sistema se utilizan para almacenar los discos de las máquinas virtuales y los archivos de configuración. Los almacenes de datos de imagen se utilizan para almacenar imágenes de máquinas virtuales, ISOs y discos de datos. Los almacenes de datos de archivo se utilizan para almacenar archivos a los que pueden acceder las máquinas virtuales. Los almacenes de datos de copia de seguridad se utilizan para almacenar copias de seguridad de las máquinas virtuales y sus datos.
@@ -102,6 +106,7 @@ El controlador CSI de Trident se utiliza para crear volúmenes persistentes en c
 
 
 
+[[network]]
 == Red
 
 OpenNebula se conecta a la infraestructura de red existente para proporcionar capacidades de red para máquinas virtuales y contenedores. Admite varios modelos de red, incluidos Linux bridge, 802.1Q VLAN, VXLAN y redes Open vSwitch. Para redes tipo VPC, se puede usar VXLAN con EVPN para aislar las redes de los inquilinos.
@@ -120,6 +125,7 @@ Los routers virtuales pueden desplegarse para proporcionar servicios de enrutami
 
 
 
+[[monitoring-and-operations]]
 == Supervisión y operaciones
 
 OpenNebula incluye un completo sistema de supervisión que proporciona información en tiempo real sobre el rendimiento y la salud de la infraestructura de la nube. Recopila métricas de hipervisores, máquinas virtuales, recursos de almacenamiento y componentes de red, lo que permite a los administradores supervisar la utilización de los recursos e identificar posibles problemas.
@@ -142,6 +148,7 @@ https://github.com/OpenNebula/one-swap["Herramienta OneSwap"] permite migrar má
 
 
 
+[[data-protection]]
 == Protección de datos
 
 OpenNebula ofrece soporte para backup usando rsync, restic y Veeam. La integración de Veeam solo está disponible con Enterprise edition. Los backup datastores se usan para almacenar backups de máquinas virtuales y sus datos. Los trabajos de backup se pueden programar para ejecutarse en intervalos específicos, asegurando que las máquinas virtuales se respalden regularmente.

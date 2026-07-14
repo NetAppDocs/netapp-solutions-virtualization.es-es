@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-migration-vm-storage.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, Red Hat OpenShift Virtualization, Storage Class migration, VM storage migration, OpenShift Virtualization storage migration 
+summary: Virtualización de Red Hat OpenShift 
+---
+= Migración de máquinas virtuales entre clases de almacenamiento en OpenShift Virtualization
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+En OpenShift Virtualization, puedes migrar los discos de una máquina virtual (VM) a una clase de almacenamiento diferente directamente a través de la consola web sin eliminar la VM. Este proceso te permite mover todo el almacenamiento de la VM o volúmenes específicos.
+
+Los siguientes pasos describen cómo migrar la clase de almacenamiento de una VM:
+
+. Asegúrate de que la clase de almacenamiento de destino esté correctamente configurada y disponible en tu clúster de OpenShift. Esto incluye tener configurado y accesible el backend de almacenamiento necesario (por ejemplo, NetApp ONTAP).
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-sc-migration-015.png["Configuración del backend de Trident"]
+
+image:osv-sc-migration-017.png["Configuración de la clase de almacenamiento"]
+
+====
+. En la consola web de OpenShift Container Platform, navega a la perspectiva de Virtualización y selecciona la máquina virtual que quieres migrar.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-sc-migration-001.png["VM"]
+
+image:osv-sc-migration-002.png["Discos de máquina virtual"]
+
+image:osv-sc-migration-003.png["Máquinas virtuales y discos mediante la OC CLI"]
+
+====
+. Haz clic en Acciones->Migrar->Migrar almacenamiento. Selecciona los volúmenes que deseas migrar y la clase de almacenamiento de destino, luego haz clic en Migrar. El proceso de migración comenzará y puedes supervisar el progreso en la pestaña de Eventos de la VM. Una vez que la migración esté completa, los discos de la VM usarán la nueva clase de almacenamiento.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-sc-migration-004.png["Migrar almacenamiento"]
+
+image:osv-sc-migration-005.png["Seleccionar volúmenes"]
+
+image:osv-sc-migration-006.png["Seleccionar clase de almacenamiento"]
+
+image:osv-sc-migration-007.png["Migrar el almacenamiento de una máquina virtual"]
+
+image:osv-sc-migration-008.png["Migración en curso"]
+
+====
+. Una vez finalizada la migración, puedes comprobar que los discos de la máquina virtual utilizan ahora la nueva clase de almacenamiento consultando los detalles de la máquina virtual en la consola web o mediante la CLI de OpenShift.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-sc-migration-009.png["Verifica la clase de almacenamiento"]
+
+image:osv-sc-migration-010.png["Verifica todos los objetos usando la OC CLI"]
+
+image:osv-sc-migration-012.png["Nombre del volumen ONTAP mediante OC CLI antes de la migración"]
+
+image:osv-sc-migration-011.png["Volumen en el backend de ONTAP antes de la migración"]
+
+image:osv-sc-migration-018.png["Volumen de nas-economy tras la migración"]
+
+image:osv-sc-migration-019.png["Nombre de qtree nas-economy en el backend de ONTAP después de la migración"]
+
+image:osv-sc-migration-020.png["qtree nas-economy en el backend de ONTAP tras la migración"]
+
+====
+

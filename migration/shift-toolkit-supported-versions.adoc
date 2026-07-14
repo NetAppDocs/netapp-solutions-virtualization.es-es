@@ -17,6 +17,7 @@ Verifique que sus sistemas operativos invitados Windows y Linux, la versión de 
 
 
 
+[[supported-vm-guest-operating-systems]]
 == Sistemas operativos invitados de máquinas virtuales compatibles
 
 Shift Toolkit admite los siguientes sistemas operativos invitados Windows y Linux para la conversión de máquinas virtuales.
@@ -52,12 +53,14 @@ NOTE: Windows Server 2008 no cuenta con soporte oficial. Sin embargo, el proceso
 
 
 
+[[supported-ontap-versions]]
 == Versiones de ONTAP compatibles
 
 El Shift Toolkit es compatible con ONTAP 9.14.1 o posterior.
 
 
 
+[[supported-hypervisors]]
 == Hipervisores compatibles
 
 El Shift Toolkit admite las siguientes plataformas de hipervisor para la migración y conversión de máquinas virtuales.

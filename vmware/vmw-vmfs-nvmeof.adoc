@@ -18,6 +18,7 @@ Esta sección cubre la creación de un almacén de datos VMFS con almacenamiento
 
 
 
+[[what-you-need]]
 == Lo que necesitas
 
 * Habilidades básicas necesarias para administrar un entorno vSphere y ONTAP.
@@ -41,6 +42,7 @@ Esta sección cubre la creación de un almacén de datos VMFS con almacenamiento
 
 
 
+[[provision-vmfs-datastore]]
 == Aprovisionar almacén de datos VMFS
 
 . Comprobar compatibilidad con el https://mysupport.netapp.com/matrix["Herramienta de matriz de interoperabilidad (IMT)"] .
@@ -49,6 +51,7 @@ Esta sección cubre la creación de un almacén de datos VMFS con almacenamiento
 
 
 
+[[ontap-tasks]]
 == Tareas de ONTAP
 
 . link:https://docs.netapp.com/us-en/ontap-cli-98/system-license-show.html["Verificar la licencia de ONTAP para FCP."]Utilice el `system license show` comando y verifique si NVMe_oF está en la lista.  Usar `license add -license-code <license code>` para agregar una licencia.
@@ -69,6 +72,7 @@ Esta sección cubre la creación de un almacén de datos VMFS con almacenamiento
 
 
 
+[[vmware-vsphere-tasks]]
 == Tareas de VMware vSphere
 
 . Verifique que los controladores HBA estén instalados.  Los HBA compatibles con VMware tienen los controladores implementados de forma inmediata y deberían estar visibles enlink:++https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.storage.doc/GUID-ED20B7BE-0D1C-4BF7-85C9-631D45D96FEC.html++["Información del adaptador de almacenamiento"]

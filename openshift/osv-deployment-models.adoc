@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-deployment-models.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift 
+---
+= Modelos de implementación para OpenShift/OpenShift Virtualization
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Los modelos de implementación de OpenShift Container Platform se clasifican principalmente según la infraestructura en la que se ejecutan (nube vs. local) y cómo se gestionan (por Red Hat o por el cliente). OpenShift Virtualization se puede instalar en la plataforma de contenedores OpenShift.
+
+
+
+[[key-deployment-models-include]]
+== Los principales modelos de implementación incluyen
+
+. **Servicios gestionados (Red Hat Managed)**: en este modelo, Red Hat gestiona la infraestructura y las operaciones de la plataforma de contenedores OpenShift. El cliente es responsable de gestionar sus aplicaciones y cargas de trabajo en la plataforma. Ejemplos incluyen:
++
+.. **Red Hat OpenShift Service on AWS (ROSA)**: un servicio gestionado que permite una fácil integración con los servicios de AWS. OpenShift Virtualization está instalada en instancias bare metal de EC2 en AWS.
+.. **Azure Red Hat OpenShift (ARO)**: este es un servicio gestionado en la nube de Azure. OpenShift Virtualization funciona sobre máquinas virtuales de Azure.
+.. **Red Hat OpenShift Dedicated (OSD)**: un servicio totalmente gestionado implementado en Google Cloud y administrado por Red Hat. OpenShift Virtualization se implementa en instancias bare metal de Google Cloud.
+
+
+. **Servicios autogestionados (gestionados por el cliente)**: en este caso, la plataforma de contenedores OpenShift es implementada y gestionada directamente por el cliente en su propia infraestructura. La infraestructura puede estar en la nube pública o en las propias instalaciones.
++
+.. **Nube pública:** implementada en AWS, Azure o GCP usando infraestructura aprovisionada por el instalador (IPI) o infraestructura aprovisionada por el usuario (UPI)
+.. **Bare Metal:** Se implementa directamente en hardware físico.
+.. **Virtualización:** Implementada en plataformas como VMware vSphere.
+
+
+
+
+
+
+[[infrastructure-deployment-options]]
+=== Opciones de implementación de infraestructura
+
+. **Infraestructura aprovisionada por el instalador (IPI):** El programa de instalación automatiza el aprovisionamiento de los componentes de la infraestructura, como la red y los equipos.
+. **Infraestructura gestionada por el usuario (UPI):** El usuario crea y gestiona manualmente la infraestructura, lo que le proporciona más control sobre el entorno.
+
+
+
+
+[[specialized-deployment-models]]
+== Modelos de despliegue especializados
+
+. **OpenShift de un solo nodo (SNO):** Un clúster completo de OpenShift instalado en una sola máquina física o virtual, que suele usarse para edge computing.
+. **Implementación desconectada (air-gapped):** implementada en entornos de red restringidos sin acceso externo a internet.
+. **Red Hat OpenShift Virtualization Engine:** Una infraestructura de virtualización exclusiva para servidores físicos, diseñada específicamente para ofrecer a las empresas una solución fiable y de clase empresarial para implementar, gestionar y escalar máquinas virtuales. Un subconjunto de la funcionalidad de OpenShift, esta edición de OpenShift está dirigida a cargas de trabajo solo de máquinas virtuales.
+
+
+
+
+[[additional-resources]]
+== Recursos adicionales
+
+Para obtener información detallada sobre la plataforma de contenedores OpenShift, consulta la documentación de Red Hat link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/overview/ocp-overview["documentación aquí."]
+
+Para obtener información detallada sobre OpenShift Virtualization, consulta la documentación de Red Hat link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/virtualization/index["documentación aquí."]

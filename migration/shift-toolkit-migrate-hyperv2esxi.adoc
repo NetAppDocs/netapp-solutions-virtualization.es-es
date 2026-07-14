@@ -20,6 +20,7 @@ Shift Toolkit permite la conversión directa de máquinas virtuales entre hiperv
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 Verifique que se cumplan los siguientes requisitos previos antes de iniciar la migración.
@@ -51,6 +52,7 @@ Verifique que se cumplan los siguientes requisitos previos antes de iniciar la m
 
 
 
+[[step-1-add-the-source-site-hyper-v]]
 == Paso 1: Agregar el sitio de origen (Hyper-V)
 
 Agregue el entorno Hyper-V de origen al Shift Toolkit.
@@ -126,6 +128,7 @@ NOTE: El inventario de máquinas virtuales se actualiza automáticamente cada 24
 
 
 
+[[step-2-add-the-destination-site-vmware-esxi]]
 == Paso 2: Agregar el sitio de destino (VMware ESXi)
 
 Agregue el entorno VMware de destino al Shift Toolkit.
@@ -187,6 +190,7 @@ NOTE: El sistema de almacenamiento de origen y destino debe ser el mismo, ya que
 
 
 
+[[step-3-create-resource-groups]]
 == Paso 3: Crear grupos de recursos
 
 Organice las máquinas virtuales en grupos de recursos para preservar el orden de arranque y las configuraciones de retardo de arranque.
@@ -270,6 +274,7 @@ El grupo de recursos está creado y listo para la configuración del plano.
 
 
 
+[[step-4-create-a-migration-blueprint]]
 == Paso 4: Crear un plan de migración
 
 Cree un plan maestro para definir el plan de migración, incluyendo la asignación de plataformas, la configuración de red y la configuración de las máquinas virtuales.
@@ -423,6 +428,7 @@ image::shift-toolkit-376.png[Estado activo del plano]
 ====
 
 
+[[step-5-execute-the-migration]]
 == Paso 5: Ejecutar la migración
 
 Inicie el flujo de trabajo de migración para convertir las máquinas virtuales de Hyper-V a VMware ESXi.
@@ -493,6 +499,7 @@ image::shift-toolkit-381.png[Migración completa]
 ====
 
 
+[[step-6-validate-the-migration]]
 == Paso 6: Validar la migración
 
 Verifique que las máquinas virtuales se estén ejecutando correctamente en el host VMware ESXi.

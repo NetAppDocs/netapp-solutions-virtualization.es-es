@@ -18,6 +18,7 @@ NetApp Disaster Recovery automatiza la replicación y recuperación de máquinas
 
 
 
+[[introduction]]
 == Introducción
 
 Contar con un plan exitoso y una combinación de tecnologías garantiza la protección de datos, aplicaciones y máquinas virtuales críticas.  El desafío con la recuperación ante desastres es determinar el nivel apropiado de protección y los costos asociados.
@@ -28,6 +29,7 @@ Para obtener más información sobre NetApp Disaster Recovery, consultelink:http
 
 
 
+[[considerations]]
 == Consideraciones
 
 Las partes que consumen más tiempo de una conmutación por error de DR en un entorno VMware vSphere son la ejecución de los pasos necesarios para inventariar, registrar, reconfigurar y encender las máquinas virtuales en el sitio de DR. Una solución ideal tiene un RPO bajo (medido en minutos) y un RTO bajo (medido en minutos a horas). Un factor que a menudo se pasa por alto en una solución de DR es la capacidad de probar la solución de DR de manera eficiente en un intervalo periódico.

@@ -18,6 +18,7 @@ Revise los requisitos para agregar almacenes de datos iSCSI como almacenamiento 
 
 
 
+[[infrastructure-requirements]]
 == Requisitos de infraestructura
 
 Asegúrese de que los siguientes componentes y configuraciones estén en su lugar.
@@ -28,6 +29,7 @@ Asegúrese de que los siguientes componentes y configuraciones estén en su luga
 
 
 
+[[recommended-iscsi-network-design]]
 == Diseño de red iSCSI recomendado
 
 Debe configurar diseños de red totalmente redundantes para iSCSI.  El siguiente diagrama muestra un ejemplo de una configuración redundante, que proporciona tolerancia a fallas para sistemas de almacenamiento, conmutadores, adaptadores de red y sistemas host. Consulte NetApplink:https://docs.netapp.com/us-en/ontap/san-config/index.html["Referencia de configuración de SAN"] Para obtener información adicional.
@@ -41,6 +43,7 @@ TIP: En situaciones donde se configuran varios adaptadores VMkernel en la misma 
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de revisar los requisitos de implementación,link:vmw-vcf-mgmt-supplemental-iscsi-svm-lifs.html["crear el SVM y los LIF"] .

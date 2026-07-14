@@ -18,6 +18,7 @@ Esta sección explica cómo el kit de herramientas de migración para virtualiza
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 Verifique que se cumplan los siguientes requisitos previos antes de iniciar la migración.
@@ -54,6 +55,7 @@ NOTE: Cuando los VMDK se colocan dentro de un qtree, Shift Toolkit utiliza el co
 
 
 
+[[step-1-create-migration-plans-using-migration-toolkit-for-virtualization]]
 == Paso 1: Cree planes de migración utilizando el Kit de herramientas de migración para virtualización
 
 . Para aprovechar la conversión ultrarrápida de las máquinas virtuales, el primer paso es crear un plan de migración para las máquinas virtuales mediante MTV a través delink:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.3/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-vms-web-console["consola web"] o ellink:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-virtual-machines-to-virt_mtv#migrating-virtual-machines-cli_mtv["línea de comandos"] .

@@ -20,6 +20,7 @@ Las organizaciones están acelerando sus migraciones a soluciones de computació
 
 
 
+[[overview]]
 == Descripción general
 
 Para las empresas que invierten profundamente en VMware vSphere, migrar a AWS es una opción rentable dadas las condiciones actuales del mercado, una que presenta una oportunidad única.
@@ -32,6 +33,7 @@ Este informe técnico cubre cómo migrar máquinas virtuales VMware vSphere loca
 
 
 
+[[solution-requirements]]
 == Requisitos de la solución
 
 Hay una serie de desafíos que los clientes de VMware buscan resolver actualmente.  Estas organizaciones quieren:
@@ -43,10 +45,12 @@ Hay una serie de desafíos que los clientes de VMware buscan resolver actualment
 
 
 
+[[technical-components-overview]]
 == Descripción general de los componentes técnicos
 
 
 
+[[fsx-ontap-concepts]]
 === Conceptos de FSx ONTAP
 
 Amazon FSx ONTAP es un servicio de almacenamiento de AWS completamente administrado que proporciona sistemas de archivos NetApp ONTAP con todas las características, el rendimiento y las API de administración de datos de ONTAP familiares en AWS.  Su almacenamiento de alto rendimiento admite múltiples protocolos (NFS, SMB, iSCSI), proporcionando un único servicio para cargas de trabajo que utilizan instancias EC2 de Windows, Linux y macOS.
@@ -63,6 +67,7 @@ Los usuarios también pueden elegir entre dos modelos de implementación de alta
 
 
 
+[[storage-virtual-machines]]
 === Máquinas virtuales de almacenamiento
 
 Se accede a los datos del sistema de archivos FSx ONTAP a través de una partición de almacenamiento lógica denominada máquina virtual de almacenamiento (SVM).  Un SVM es en realidad su propio servidor de archivos equipado con sus propios puntos de acceso de datos y administración.  Al acceder a LUN iSCSI en un sistema de archivos FSx ONTAP , la instancia de Amazon EC2 interactúa directamente con la SVM mediante la dirección IP del punto final iSCSI de la SVM.
@@ -77,6 +82,7 @@ Los datos dentro de un SVM de FSx ONTAP se almacenan y organizan en estructuras 
 
 
 
+[[the-cirrus-migrate-cloud-migrateops-concept]]
 === El concepto de MigrateOps de Cirrus Migrate Cloud
 
 CMC es una oferta de software como servicio (SaaS) transaccionable de Cirrus Data Solutions, Inc. que está disponible a través de AWS Marketplace.  MigrateOps es una función de automatización de movilidad de datos como código de CMC que le permite administrar de forma declarativa sus operaciones de movilidad de datos a escala mediante configuraciones de operación simples en YAML.  Una configuración de MigrateOps determina cómo desea que se ejecuten sus tareas de movilidad de datos.  Para obtener más información sobre MigrateOps, consultelink:https://www.google.com/url?q=https://customer.cirrusdata.com/cdc/kb/articles/about-migrateops-hCCHcmhfbj&sa=D&source=docs&ust=1715480377722215&usg=AOvVaw033gzvuAlgxAWDT_kOYLg1["Acerca de MigrateOps"] .
@@ -100,6 +106,7 @@ FSx ONTAP se utiliza para proporcionar LUN de datos y dimensionar correctamente 
 
 
 
+[[benefits-of-using-amazon-fsx-ontap-with-ec2-instances]]
 == Beneficios de usar Amazon FSx ONTAP con instancias EC2
 
 El almacenamiento FSx ONTAP para instancias de Amazon EC2 ofrece varios beneficios:

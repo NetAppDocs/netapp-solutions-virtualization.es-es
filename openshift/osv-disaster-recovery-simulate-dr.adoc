@@ -1,0 +1,80 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-disaster-recovery-simulate-dr.html 
+keywords: OpenShift, OCP, Trident, Trident Protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift 
+---
+= Conmutación por error de una máquina virtual en OpenShift Virtualization Disaster Recovery
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+En esta sección se describe cómo realizar una conmutación por error de una máquina virtual desde un clúster de origen a un clúster de destino de recuperación ante desastres usando NetApp Trident Protect y AppMirror. Esto es útil para probar el proceso de conmutación por error y para realizar mantenimiento planificado en el clúster de origen. Si sigues estos pasos, puedes asegurarte de que tu máquina virtual esté funcionando en el clúster de destino de recuperación ante desastres con todos los cambios intactos después de un evento de recuperación ante desastres.
+
+
+
+[[failover-without-site-outage-for-openshift-virtualization]]
+== Conmutación por error sin fallo energético en el sitio para OpenShift Virtualization
+
+En esta sección se describe cómo realizar una conmutación por error de una máquina virtual desde un clúster de origen sin que se produzca un fallo energético en el sitio. Esto resulta útil para probar el proceso de conmutación por error y para llevar a cabo tareas de mantenimiento planificadas en el clúster de origen. +
+
+Para realizar una conmutación por error sin que se produzca un fallo energético en el sitio, primero asegúrate de que el clúster de origen y el clúster de destino estén configurados para la recuperación ante desastres como se describe en las secciones anteriores. Luego, realiza los siguientes pasos:
+
+. Establece la relación AppMirror entre el clúster de origen y el clúster de destino. Cuando se establece la relación AppMirror, la instantánea más reciente se transfiere al espacio de nombres de destino. El PVC se crea para la VM en el espacio de nombres de destino, pero el pod de la VM aún no se ha creado en el espacio de nombres de destino.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+[source, yaml]
+----
+# application-mirror-relationship.yaml
+apiVersion: protect.trident.netapp.io/v1
+kind: AppMirrorRelationship
+metadata:
+  name: amr1
+spec:
+  desiredState: Established
+  destinationAppVaultRef: ontap-s3-appvault
+  destinationApplicationRef: test-dest-app
+  namespaceMapping:
+  - destination: test-dr-ns-dest
+    source: test-dr-ns
+  recurrenceRule: |-
+    DTSTART:20240901T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  sourceAppVaultRef: ontap-s3-appvault
+  sourceApplicationName: test-source-app
+  sourceApplicationUID: "<application-uid-of-the-source-app>"
+  storageClassName: "sc-nas"
+----
+image:osv-disaster-recovery-009.png["Relación OCP-v AppMirror en el espacio de nombres trident-protect"]
+
+image:osv-disaster-recovery-010.png["Relación OCP-v AppMirror establecida en el espacio de nombres trident-protect"]
+
+
+NOTE: La relación AppMirror debe crearse desde la cli del clúster de destino. Debe crearse con el estado deseado como Established. Esto asegurará que los datos de la instantánea más reciente se reproduzcan en el clúster de destino.
+
+====
+. Promociona la relación AppMirror. Cambia el estado deseado de la relación a "Promocionada" para crear la máquina virtual en el espacio de nombres de destino. La máquina virtual sigue ejecutándose en el espacio de nombres de origen. Los datos de la instantánea más reciente se replican al clúster de destino y la máquina virtual se inicia en el clúster de destino. Este método te permite probar la conmutación por error y mantener la disponibilidad de la máquina virtual sin tener que detener todo el clúster de origen.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+[source, cli]
+----
+oc patch amr amr1 -n test-dr-ns-dest --type=merge -p '{"spec":{"desiredState":"Promoted"}}'
+----
+image:osv-disaster-recovery-012.png["Relación OCP-v AppMirror promocionada"]
+
+[source, cli]
+----
+oc get pod, pvc,vm -n test-dr-ns-dest
+oc get pod, pvc,vm -n test-dr-ns
+----
+====
+

@@ -20,6 +20,7 @@ image:vmware-vcf-asa-mgmt-stretchcluster-001.png["Instancia única - Múltiples 
 
 
 
+[[scenario-overview]]
 == Descripción general del escenario
 
 La solución de clúster extendido se puede implementar en un clúster predeterminado o en un clúster adicional en los dominios de administración de VCF o de carga de trabajo.  VMFS en FC es compatible tanto con el almacén de datos principal como con los almacenes de datos complementarios.  VMFS en iSCSI solo es compatible con almacenes de datos complementarios.  Consulte IMT para obtener soporte de VMFS en NVMe-oF con sincronización activa de SnapMirror .
@@ -60,6 +61,7 @@ NOTE: Cada vez que se expande o se reduce el clúster, es necesario actualizar l
 ====
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
@@ -68,6 +70,7 @@ Para obtener información sobre la configuración de VCF, consultelink:https://t
 
 
 
+[[video-demo-for-this-solution]]
 == Demostración en vídeo de esta solución
 
 .Ampliar clúster para VCF con herramientas ONTAP

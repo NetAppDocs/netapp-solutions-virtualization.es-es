@@ -20,6 +20,7 @@ Realice los siguientes pasos en el clúster de dominio de carga de trabajo VI me
 
 
 
+[[step-1-create-distributed-port-groups-for-nvmetcp-traffic]]
 == Paso 1: Crear grupos de puertos distribuidos para el tráfico NVME/TCP
 
 Complete los siguientes pasos para crear un nuevo grupo de puertos distribuidos para cada red NVMe/TCP.
@@ -81,6 +82,7 @@ image:vmware-vcf-asa-079.png["mover el enlace ascendente 1 a no utilizado"]
 
 
 
+[[step-2-create-the-vmkernel-adapters-on-each-esxi-host]]
 == Paso 2: Cree los adaptadores VMkernel en cada host ESXi
 
 Cree los adaptadores VMkernel en cada host ESXi en el dominio de carga de trabajo.
@@ -139,6 +141,7 @@ image:vmware-vcf-asa-098.png["Revisar las selecciones de VMkernel"]
 
 
 
+[[step-3-add-nvmetcp-adapter]]
 == Paso 3: Agregar el adaptador NVMe/TCP
 
 Cada host ESXi en el clúster de dominio de carga de trabajo debe tener un adaptador de software NVMe/TCP instalado para cada red NVMe/TCP establecida dedicada al tráfico de almacenamiento.
@@ -199,6 +202,7 @@ image:vmware-vcf-asa-103.png["Espacio de nombres NVMe listado en dispositivos"]
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de configurar la red,link:vmw-vcf-viwld-supp-nvme-storage.html["Configurar el almacenamiento para vVols NVMe"] .

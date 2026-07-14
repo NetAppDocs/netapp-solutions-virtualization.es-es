@@ -18,6 +18,7 @@ Revise los requisitos de infraestructura y diseño de red recomendados para impl
 
 
 
+[[infrastructure-requirements]]
 == Requisitos de infraestructura
 
 * Un sistema de almacenamiento ONTAP AFF o ASA con puertos de datos físicos en conmutadores Ethernet dedicados al tráfico de almacenamiento.
@@ -27,6 +28,7 @@ Revise los requisitos de infraestructura y diseño de red recomendados para impl
 
 
 
+[[recommended-nvmetcp-network-design]]
 == Diseño de red NVMe/TCP recomendado
 
 NetApp recomienda diseños de red totalmente redundantes para NVMe/TCP. El siguiente diagrama ilustra un ejemplo de una configuración redundante, que proporciona tolerancia a fallas para sistemas de almacenamiento, conmutadores, adaptadores de red y sistemas host.
@@ -37,6 +39,7 @@ Para rutas múltiples y conmutación por error en múltiples rutas, configure un
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de revisar los requisitos de implementación,link:vmw-vcf-viwld-supp-nvme-svm-lifs.html["crear el SVM y los LIF"] .

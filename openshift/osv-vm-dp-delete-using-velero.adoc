@@ -18,6 +18,7 @@ Eliminar recursos de copia de seguridad y restauración de máquinas virtuales e
 
 
 
+[[deleting-a-backup]]
 == Eliminar una copia de seguridad
 
 Puede eliminar un CR de respaldo sin eliminar los datos de almacenamiento de objetos mediante la herramienta CLI de OC.
@@ -36,6 +37,7 @@ velero backup delete <backup_CR_name> -n <velero_namespace>
 ....
 
 
+[[deleting-a-restore]]
 == Eliminar una restauración
 
 Puede eliminar el CR de restauración mediante la CLI de Velero

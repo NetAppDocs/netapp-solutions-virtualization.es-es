@@ -18,6 +18,7 @@ Utilice el script de PowerShell para migrar máquinas virtuales de VMware vSpher
 
 
 
+[[powershell-script]]
 == Script de PowerShell
 
 [source, powershell]

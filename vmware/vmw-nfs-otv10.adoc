@@ -22,6 +22,7 @@ En este escenario demostraremos cómo implementar y utilizar ONTAP tools for VMw
 
 
 
+[[solution-overview]]
 == Descripción general de la solución
 
 Este escenario cubre los siguientes pasos de alto nivel:
@@ -35,6 +36,7 @@ Este escenario cubre los siguientes pasos de alto nivel:
 
 
 
+[[architecture]]
 == Arquitectura
 
 El siguiente diagrama muestra los componentes arquitectónicos de una implementación de ONTAP tools for VMware vSphere 10.
@@ -43,6 +45,7 @@ image:vmware-nfs-otv10-029.png["arquitectura otv10"]
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 Esta solución requiere los siguientes componentes y configuraciones:
@@ -62,12 +65,14 @@ Herramientas integrales de ONTAP Se pueden encontrar 10 recursos https://docs.ne
 
 
 
+[[deployment-steps]]
 == Pasos de implementación
 
 Para implementar las herramientas ONTAP 10 y usarlas para crear un almacén de datos NFS en el dominio de administración de VCF, complete los siguientes pasos:
 
 
 
+[[create-svm-and-lifs-on-ontap-storage-system]]
 === Crear SVM y LIF en el sistema de almacenamiento ONTAP
 
 El siguiente paso se realiza en ONTAP System Manager.
@@ -108,6 +113,7 @@ image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
 ====
 
 
+[[set-up-networking-for-nfs-on-esxi-hosts]]
 === Configurar la red para NFS en hosts ESXi
 
 Los siguientes pasos se realizan en el clúster de dominio de carga de trabajo VI mediante el cliente vSphere.  En este caso, se utiliza vCenter Single Sign-On para que el cliente vSphere sea común en los dominios de administración y carga de trabajo.
@@ -194,6 +200,7 @@ image:vmware-nfs-otv10-006.png["Revisar las selecciones de VMkernel"]
 ====
 
 
+[[deploy-and-use-ontap-tools-10-to-configure-storage]]
 === Implementar y utilizar las herramientas ONTAP 10 para configurar el almacenamiento
 
 Los siguientes pasos se realizan en el clúster vSphere 8 utilizando el cliente vSphere e implican la implementación de OTV, la configuración del Administrador de herramientas ONTAP y la creación de un almacén de datos NFS vVols .
@@ -439,6 +446,7 @@ image:vmware-nfs-otv10-032.png["Panel de tareas recientes"]
 ====
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener una lista completa de las ONTAP tools for VMware vSphere 10, consulte https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/index.html["ONTAP tools for VMware vSphere Recursos de documentación"] .

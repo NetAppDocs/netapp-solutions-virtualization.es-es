@@ -47,6 +47,7 @@ Agregar un backend de almacenamiento le permite incorporar un clúster ONTAP .
 
 
 
+[[additional-information]]
 == Información adicional
 
 * Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] .

@@ -20,6 +20,7 @@ También veremos cómo conectarnos a la máquina virtual usando las credenciales
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 * link:https://signin.aws.amazon.com/signin?redirect_uri=https://portal.aws.amazon.com/billing/signup/resume&client_id=signup["Cuenta de AWS"]
@@ -39,6 +40,7 @@ A partir de la versión Trident 25.02, puede preparar fácilmente los nodos de t
 
 
 
+[[initial-setup]]
 == Configuración inicial
 
 Configure el backend trident, la clase de almacenamiento y VolumeSnapshotClass.  Puedes consultar ellink:osv-trident-install.html["Sección de instalación del Trident"] Para más detalles.
@@ -99,6 +101,7 @@ Asegúrese de que la clase de almacenamiento y la clase de instantánea de volum
 
 
 
+[[create-a-vm-from-the-template]]
 === **Crear una máquina virtual a partir de la plantilla**
 
 Utilice la consola web para crear una VM a partir de una plantilla.  Desde la consola de RedHat OpenShiftService en AWS, cree una máquina virtual.  Hay plantillas disponibles en el clúster que se pueden usar para crear la VM.  En la captura de pantalla a continuación, elegimos Fedora VM de esta lista.  Dale un nombre a la máquina virtual y haz clic en **Personalizar máquina virtual**.  Seleccione la pestaña **Discos** y haga clic en **Agregar discos**.  Cambie el nombre del disco preferiblemente a algo significativo, asegúrese de que **trident-csi** esté seleccionado para la clase de almacenamiento.  Haga clic en **Guardar**.  Haga clic en **Crear máquina virtual**
@@ -117,6 +120,7 @@ image:redhat-openshift-ocpv-rosa-008.png["Máquina virtual OCP-v en ejecución"]
 
 
 
+[[review-all-the-objects-created-for-the-vm]]
 === **Revisar todos los objetos creados para la máquina virtual**
 
 Los discos de almacenamiento.image:redhat-openshift-ocpv-rosa-009.png["Discos de almacenamiento OCP-v"]
@@ -135,6 +139,7 @@ Aquí podemos ver los dos volúmenes asociados con el pod de VM y los 2 PVC asoc
 
 
 
+[[connect-to-the-vm]]
 === **Conectarse a la máquina virtual**
 
 Haga clic en el botón 'Abrir consola web' e inicie sesión con credenciales de invitadoimage:redhat-openshift-ocpv-rosa-016.png["Conexión de máquina virtual OCP-v"]

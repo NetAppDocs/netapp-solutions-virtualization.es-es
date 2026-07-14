@@ -1,0 +1,109 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-disaster-recovery-failback.html 
+keywords: OpenShift, OCP, Trident, Trident Protect, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift 
+---
+= Reversión de una máquina virtual en la recuperación ante desastres de OpenShift Virtualization
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta sección ofrece información sobre el proceso de reversión (failback) de una VM en OpenShift Virtualization disaster recovery usando NetApp Trident Protect y AppMirror. Después de realizar una operación de conmutación por error para cambiar a un clúster de destino de recuperación ante desastres, puedes usar el proceso de reversión para invertir la dirección de la replicación y restaurar el clúster de origen original como el clúster principal para la VM. Esto implica resincronizar cualquier cambio hecho en la VM durante el periodo de conmutación por error de vuelta al clúster de origen original y luego promover la relación de replicación en la dirección inversa. Siguiendo estos pasos, puedes asegurarte de que tu VM esté ejecutándose en el clúster de origen original con todos los cambios intactos después de un evento de recuperación ante desastres.
+
+
+
+[[failback-for-openshift-virtualization-disaster-recovery]]
+== Recuperación tras un fallo para OpenShift Virtualization Disaster Recovery
+
+Con Trident Protect, puedes lograr la "recuperación" después de una operación de conmutación por error usando la siguiente secuencia de operaciones. En este flujo de trabajo para restaurar la dirección de replicación original, Trident Protect replica (resincroniza) cualquier cambio de la aplicación de vuelta a la aplicación de origen original antes de invertir la dirección de replicación.
+
+Este proceso parte de una relación que ha completado una conmutación por error a un destino e implica los siguientes pasos:
+
+. Empieza con un estado conmutado por error.
+. Volver a sincronizar la relación de replicación
++
+Cuando haces una resincronización inversa de una relación de replicación fallida, la aplicación de destino se convierte en la aplicación de origen y la de origen en la de destino. Los cambios hechos en la aplicación de destino durante el failover se mantienen.
+
++
+.. En el clúster de destino original, elimina el CR AppMirrorRelationship. Esto hace que el destino se convierta en el origen. Si quedan programas de protección en el nuevo clúster de destino, elimínalos.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-disaster-recovery-013.png["Relación OCP-v AppMirror eliminada para iniciar el failback"]
+
+====
+.. Crea una instantánea en el nuevo clúster de origen (destino original) para capturar cualquier cambio realizado durante el periodo de conmutación por error. Esto garantiza que todos los cambios se reproduzcan de nuevo en el clúster de origen original durante el proceso de resincronización.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+[source, yaml]
+----
+# snapshot.yaml
+apiVersion: protect.trident.netapp.io/v1
+kind: Snapshot
+metadata:
+  name: test-source-dr-init-snapshot-failback
+  namespace: test-dr-ns
+spec:
+  applicationRef: test-dest-app
+  appVaultRef: ontap-s3-appvault
+  reclaimPolicy: Delete
+----
+image:osv-disaster-recovery-014.png["Instantánea OCP-v bajo demanda de la máquina virtual creada mediante la CLI de Trident Protect en el nuevo clúster de origen"] image:osv-disaster-recovery-015.png["Instantánea OCP-v bajo demanda de la máquina virtual creada con la CLI de Trident Protect en el nuevo clúster de origen"] image:osv-disaster-recovery-016.png["Instantánea OCP-v bajo demanda de la máquina virtual creada mediante la CLI de Trident Protect en el nuevo clúster de origen"]
+
+====
+.. Configura una relación de replicación desde el nuevo clúster de origen (destino original) hacia el clúster de origen original, configurando los valores para la dirección inversa.
++
+.Mostrar ejemplo
+[%collapsible]
+====
+# application-mirror-relationship.yaml
+
+[source, yaml]
+----
+apiVersion: protect.trident.netapp.io/v1
+kind: AppMirrorRelationship
+metadata:
+  name: amr1
+spec:
+  desiredState: Established
+  destinationAppVaultRef: ontap-s3-appvault
+  destinationApplicationRef: dr-source-vm-failback
+  namespaceMapping:
+  - destination: test-dr-ns
+    source: test-dr-ns-dest
+  recurrenceRule: |-
+    DTSTART:20240901T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  sourceAppVaultRef: ontap-s3-appvault
+  sourceApplicationName: test-dest-app
+  sourceApplicationUID: "uid of the app in the original source cluster"
+  storageClassName: "sc-nas"
+----
+image:osv-disaster-recovery-017.png["Relación OCP-v AppMirror creada en el clúster de origen para invertir la dirección de la replicación"] image:osv-disaster-recovery-018.png["Relación OCP-v AppMirror creada en el clúster de destino original para invertir la dirección de la replicación"]
+
+====
+.. Promociona la relación de replicación desde el nuevo clúster de origen (clúster de destino original) al clúster de origen original actualizando el campo desiredState en el CR de AppMirrorRelationship a "Promoted".
++
+.Mostrar ejemplo
+[%collapsible]
+====
+image:osv-disaster-recovery-019.png["Relación OCP-v AppMirror en el clúster de origen promocionada a failback completo"]
+
+Ahora verás la máquina virtual en ejecución en el clúster de origen original. El proceso de recuperación tras fallo ya ha finalizado. Ahora puedes limpiar los recursos en el clúster de destino original. También puedes configurar una nueva relación de replicación si quieres mantener las capacidades de recuperación ante desastres después del proceso de recuperación tras fallo.
+
+
+NOTE: No realices una operación de resincronización normal, ya que esto descartará los datos escritos en el clúster de destino durante el procedimiento de conmutación por error.
+
+====
+
+
+

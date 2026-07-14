@@ -18,6 +18,7 @@ Configure la recuperación ante desastres para máquinas virtuales en OpenShift 
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 * Debe estar instalado Trident .  Las clases de almacenamiento y backend se deben crear antes de instalar OpenShift Virtualization en el clúster mediante el operador OpenShift Virtualization.
@@ -32,6 +33,7 @@ image:redhat-openshift-ocpv-tp-003.png["Máquina virtual OCP-v instalada en el e
 
 
 
+[[create-appvault-using-ontap-s3]]
 == Crea AppVault usando ONTAP S3
 
 Esta sección muestra cómo configurar un objeto AppVault en Trident Protect usando el almacenamiento de objetos ONTAP S3.
@@ -97,6 +99,7 @@ image:redhat-openshift-ocpv-tp-002.png["OCP-v AppVault en el namespace trident-p
 
 
 
+[[create-a-trident-protect-app-for-the-vm]]
 == Crea una app Trident Protect para la máquina virtual
 
 Cree un recurso de aplicación personalizado en el espacio de nombres donde se encuentra la máquina virtual.
@@ -111,6 +114,7 @@ image:redhat-openshift-ocpv-tp-004.png["Aplicación OCP-v en el espacio de nombr
 
 
 
+[[create-a-trident-protect-app-for-the-disaster-recovery-vm-in-a-new-namespace]]
 == Crea una app Trident Protect para la máquina virtual de recuperación ante desastres en un nuevo espacio de nombres
 
 [source, CLI]
@@ -122,6 +126,7 @@ image:redhat-openshift-ocpv-tp-005.png["Aplicación OCP-v en el espacio de nombr
 
 
 
+[[create-an-appmirror-schedule-in-the-source-namespace]]
 == Cree una programación de AppMirror en el espacio de nombres de origen
 
 Cree una programación para AppMirror usando yaml como se muestra.  Esto creará instantáneas utilizando la programación (cada 5 minutos) y conservará 2 instantáneas
@@ -153,6 +158,7 @@ image:redhat-openshift-ocpv-tp-007.png["Instantánea creada"]
 
 
 
+[[create-an-appmirror-relationship-in-the-dr-namespace]]
 == Cree una relación appMirror en el espacio de nombres DR
 
 Cree una relación de Appmirror en el espacio de nombres Recuperación ante desastres.  Establezca el estado deseado en Establecido.
@@ -195,6 +201,7 @@ image:redhat-openshift-ocpv-tp-012.png["El PVC se crea en el espacio de nombres 
 
 
 
+[[promote-the-relationship-to-failover]]
 == Promover la relación con Failover
 
 Cambie el estado deseado de la relación a "Promocionado" para crear la VM en el espacio de nombres de DR.  La máquina virtual todavía se está ejecutando en el espacio de nombres de origen.
@@ -213,6 +220,7 @@ image:redhat-openshift-ocpv-tp-016.png["La máquina virtual en el servidor de or
 
 
 
+[[establish-the-relationship-again-to-failback]]
 == Establecer nuevamente la relación con Failback
 
 Cambie el estado deseado de la relación a "Establecido".  La VM se elimina en el espacio de nombres DR.  El pvc todavía existe en el espacio de nombres DR.  La máquina virtual todavía se está ejecutando en el espacio de nombres de origen.  Se establece la relación original desde el espacio de nombres de origen a DR ns. .
@@ -231,6 +239,7 @@ image:redhat-openshift-ocpv-tp-020.png["El POD y el PVC en la fuente ns aún per
 
 
 
+[[video-demonstration]]
 == Demostración en video
 
 El siguiente video muestra una demostración de cómo implementar un escenario de recuperación ante desastres para una máquina virtual OpenShift usando Trident Protect

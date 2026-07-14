@@ -18,6 +18,7 @@ Configura Logical Volume Manager (LVM) para un almacén de datos compartido entr
 
 
 
+[[initial-virtualization-administrator-tasks]]
 == Tareas iniciales del administrador de virtualización
 
 Completa estas tareas iniciales para preparar los hosts OpenNebula para la conectividad NVMe/FC y recopilar la información necesaria para el administrador de almacenamiento.
@@ -53,6 +54,7 @@ nvme show-hostnqn
 
 
 
+[[storage-administrator-tasks]]
 == Tareas del administrador de almacenamiento
 
 Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejor experiencia.
@@ -67,6 +69,7 @@ Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejo
 
 
 
+[[final-virtualization-administrator-tasks]]
 == Tareas finales del administrador de virtualización
 
 Completa estas tareas para configurar el espacio de nombres NVMe como almacenamiento compartido LVM en OpenNebula.

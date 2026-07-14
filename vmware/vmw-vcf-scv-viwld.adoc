@@ -20,6 +20,7 @@ En este caso de uso, describimos el procedimiento para utilizar el complemento S
 
 
 
+[[scenario-overview]]
 == Descripción general del escenario
 
 Este escenario cubre los siguientes pasos de alto nivel:
@@ -35,6 +36,7 @@ Este escenario cubre los siguientes pasos de alto nivel:
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 Este escenario requiere los siguientes componentes y configuraciones:
@@ -55,12 +57,14 @@ image:vmware-vcf-asa-108.png["Estrategia de respaldo 3-2-1"]
 
 
 
+[[deployment-steps]]
 == Pasos de implementación
 
 Para implementar el complemento SnapCenter y usarlo para crear copias de seguridad y restaurar máquinas virtuales y almacenes de datos, complete los siguientes pasos:
 
 
 
+[[deploy-and-use-scv-to-protect-data-in-a-vi-workload-domain]]
 === Implementar y usar SCV para proteger datos en un dominio de carga de trabajo VI
 
 Complete los siguientes pasos para implementar, configurar y usar SCV para proteger datos en un dominio de carga de trabajo VI:
@@ -470,6 +474,7 @@ image:vmware-vcf-asa-092.png["Exploración de archivos de invitados 2"]
 ====
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de VCF, consulte https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html["Documentación de VMware Cloud Foundation"] .

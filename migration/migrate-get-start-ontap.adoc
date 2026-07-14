@@ -20,6 +20,7 @@ Esta migración permite una integración perfecta, una mejor protección de dato
 
 
 
+[[use-cases]]
 == Casos de uso
 
 Hay muchas opciones con la migración en términos de origen y destino cuando se considera migrar a almacenes de datos respaldados por ONTAP .

@@ -59,6 +59,7 @@ image:vmware-vcf-asa-004.png["Habilitar cuenta SVM y Finalizar"]
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de crear el SVM y los LIF,link:vmw-vcf-viwld-supp-nfs-vvols-network.html["Configurar la red para NFS en hosts ESXi"] .

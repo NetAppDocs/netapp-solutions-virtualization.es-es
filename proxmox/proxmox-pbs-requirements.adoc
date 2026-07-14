@@ -15,6 +15,7 @@ Revise los requisitos y las consideraciones de implementación para Proxmox Back
 
 
 
+[[deployment-considerations]]
 == Consideraciones de implementación
 
 Implemente PBS en hardware o como una máquina virtual en Proxmox VE. Al implementar PBS como una máquina virtual, tenga en cuenta la disponibilidad del servidor de respaldo si el host Proxmox VE experimenta tiempo de inactividad. Implemente PBS en hardware o en un host o clúster Proxmox VE separado para garantizar la disponibilidad del servidor de respaldo durante fallas del host principal.
@@ -23,6 +24,7 @@ Los contenidos de la copia de seguridad están contenidos en el almacén de dato
 
 
 
+[[storage-backend-support]]
 == Soporte de backend de almacenamiento
 
 PBS admite varios backends de almacenamiento, incluidos almacenamiento local, NFS, iSCSI, FC, NVMe-oF y S3 (vista previa técnica). La integración con el almacenamiento NetApp ONTAP permite a las organizaciones aprovechar las funciones avanzadas de gestión de datos para mejorar la protección y recuperación de datos.
@@ -31,6 +33,7 @@ Utilice ONTAP SnapMirror para replicar el almacén de datos PBS en otro sistema 
 
 
 
+[[multi-cluster-management]]
 == Gestión de múltiples clústeres
 
 Una sola instancia de PBS puede administrar múltiples clústeres Proxmox VE, lo que proporciona una copia de seguridad centralizada para implementaciones a gran escala. Utilice espacios de nombres para separar lógicamente los datos de respaldo para diferentes clústeres o inquilinos, lo que garantiza el aislamiento y la seguridad de los datos.
@@ -39,12 +42,14 @@ Configure políticas de retención de datos para administrar automáticamente el
 
 
 
+[[management-interfaces]]
 == Interfaces de gestión
 
 Administre PBS a través de una interfaz basada en web, herramientas de línea de comandos o API REST. Acceda a la interfaz web en el puerto 8007 usando la URL `https://<pbs-ip-address>:8007`.
 
 
 
+[[network-configuration-best-practices]]
 == Mejores prácticas de configuración de red
 
 Garantice rutas de red redundantes entre PBS y el almacenamiento ONTAP para lograr alta disponibilidad y rendimiento. Considere la agregación de enlaces (LACP) para aumentar el ancho de banda y la redundancia. Configure tramas gigantes (MTU 9000) en todos los dispositivos de red para mejorar el rendimiento del tráfico de almacenamiento.

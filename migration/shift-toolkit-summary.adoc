@@ -18,12 +18,14 @@ Después de convertir o migrar máquinas virtuales mediante Shift Toolkit, revis
 
 
 
+[[conclusion]]
 == Conclusión
 
 El kit de herramientas NetApp Shift ayuda al administrador a convertir máquinas virtuales de VMware a Hyper-V de forma rápida y sencilla. También puede convertir únicamente los discos virtuales entre los diferentes hipervisores.  Por lo tanto, el kit de herramientas Shift le ahorra varias horas de esfuerzo cada vez que desee mover cargas de trabajo de un hipervisor a otro.  Las organizaciones ahora pueden alojar entornos de múltiples hipervisores sin tener que preocuparse de si las cargas de trabajo están vinculadas a un solo hipervisor.  Esta capacidad aumenta la flexibilidad y reduce los costos de licencia, el bloqueo y los compromisos con un solo proveedor.
 
 
 
+[[next-steps]]
 == Próximos pasos
 
 Descubra el potencial de Data ONTAP descargando el paquete de herramientas Shift y comience a migrar o convertir las máquinas virtuales o los archivos de disco para simplificar y agilizar las migraciones.
@@ -34,6 +36,7 @@ Para obtener más información sobre este proceso, no dude en seguir el tutorial
 video::6bf11896-3219-4ba7-9a00-b2d800d47144[panopto,width=360]
 
 
+[[troubleshooting-and-known-issues]]
 == Solución de problemas y problemas conocidos
 
 . El script de activación para configurar la dirección IP y eliminar las herramientas de VMware falla en la máquina virtual Windows con el siguiente error: La credencial no es válida
@@ -116,10 +119,12 @@ a. Decrypt the VMDK inside VMware and retry the operation.
 
 
 
+[[appendix]]
 == Apéndice
 
 
 
+[[custom-ontap-role-for-shift-toolkit]]
 === Rol de ONTAP personalizado para el kit de herramientas Shift
 
 Cree un rol de ONTAP con privilegios mínimos para que no sea necesario utilizar el rol de administrador de ONTAP para realizar operaciones en el kit de herramientas Shift.  Estos roles mínimos son necesarios en el nivel SVM en el lado de almacenamiento de ONTAP .
@@ -154,6 +159,7 @@ Una vez hecho esto, utilice el usuario creado anteriormente mientras configura l
 
 
 
+[[minimum-permissions-role-required-on-vmware]]
 === Rol con permisos mínimos requeridos en VMware
 
 Para migrar máquinas virtuales desde VMware vSphere mediante el kit de herramientas Shift, cree un usuario RBAC con los privilegios mencionados a continuación utilizando Administración > Control de acceso > Roles.

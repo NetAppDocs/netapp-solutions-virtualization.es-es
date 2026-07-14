@@ -18,6 +18,7 @@ Configure el Administrador de volúmenes lógicos (LVM) para el almacenamiento c
 
 
 
+[[initial-virtualization-administrator-tasks]]
 == Tareas iniciales del administrador de virtualización
 
 Complete estas tareas iniciales para preparar los hosts Proxmox VE para la conectividad FC y recopilar la información necesaria para el administrador de almacenamiento.
@@ -46,6 +47,7 @@ cat /sys/class/fc_host/host*/port_name
 
 
 
+[[storage-administrator-tasks]]
 == Tareas del administrador de almacenamiento
 
 Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejor experiencia.
@@ -65,6 +67,7 @@ image:proxmox-ontap-fc-002.png["detalles de lun"]
 
 
 
+[[final-virtualization-administrator-tasks]]
 == Tareas finales del administrador de virtualización
 
 Complete estas tareas para configurar el LUN como almacenamiento LVM compartido en Proxmox VE.

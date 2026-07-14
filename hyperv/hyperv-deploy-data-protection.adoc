@@ -20,6 +20,7 @@ Aprenda a abordar consideraciones únicas de respaldo de Hyper-V, como conflicto
 
 
 
+[[restore-using-netapp-storage-snapshot]]
 == Restaurar mediante una instantánea de almacenamiento de NetApp
 
 Realizar copias de seguridad de máquinas virtuales y recuperarlas o clonarlas rápidamente son algunas de las grandes fortalezas de los volúmenes ONTAP .  Utilice copias instantáneas para realizar copias rápidas de FlexClone de las máquinas virtuales o incluso de todo el volumen CSV sin afectar el rendimiento.  Esto permite trabajar con datos de producción sin el riesgo de corrupción de datos al clonar volúmenes de datos de producción y montarlos en entornos de control de calidad, preparación y desarrollo.  Los volúmenes FlexClone son útiles para realizar copias de prueba de datos de producción, sin tener que duplicar la cantidad de espacio necesario para copiar los datos.
@@ -30,6 +31,7 @@ Si bien es sencillo con los hosts Hyper-V independientes, el procedimiento es di
 
 
 
+[[backup-and-restore-using-third-party-solutions]]
 == Copia de seguridad y restauración mediante soluciones de terceros
 
 *Nota*: Esta sección utiliza Commvault, sin embargo esto es aplicable a otras soluciones de terceros.
@@ -149,6 +151,7 @@ Para conocer los pasos detallados para todas las opciones de restauración compa
 
 
 
+[[advanced-netapp-ontap-options]]
 == Opciones avanzadas de NetApp ONTAP
 
 NetApp SnapMirror permite una replicación eficiente del almacenamiento de sitio a sitio, lo que hace que la recuperación ante desastres sea rápida, confiable y manejable para adaptarse a las empresas globales de la actualidad.  Al replicar datos a altas velocidades a través de redes LAN y WAN, SnapMirror proporciona alta disponibilidad de datos y recuperación rápida para aplicaciones de misión crítica, así como excelentes capacidades de deduplicación de almacenamiento y compresión de red.  Con la tecnología SnapMirror de NetApp , la recuperación ante desastres puede proteger todo el centro de datos.  Los volúmenes pueden respaldarse en una ubicación externa de manera incremental.  SnapMirror realiza una replicación incremental basada en bloques con tanta frecuencia como el RPO requerido.  Las actualizaciones a nivel de bloque reducen los requisitos de ancho de banda y tiempo, y se mantiene la consistencia de los datos en el sitio de recuperación ante desastres.

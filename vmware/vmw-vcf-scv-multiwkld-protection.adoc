@@ -20,6 +20,7 @@ Los dominios de carga de trabajo de VMware Cloud Foundation (VCF) permiten a las
 
 
 
+[[introduction]]
 == Introducción
 
 Los dominios pueden escalar de forma independiente, cumplir con normativas específicas y proporcionar multitenencia.  La protección de datos para VMware Cloud Foundation (VCF) es un aspecto fundamental para garantizar la disponibilidad, integridad y capacidad de recuperación de los datos en todo el dominio de administración y los dominios de carga de trabajo.  El SnapCenter Plug-in for VMware vSphere NetApp SnapCenter para VMware vSphere (SCV) es una potente herramienta que integra las capacidades de protección de datos de NetApp en los entornos VMware.  Simplifica la copia de seguridad, la restauración y la clonación de máquinas virtuales (VM) VMware vSphere alojadas en el almacenamiento de NetApp .
@@ -28,12 +29,14 @@ Este documento proporciona pasos de implementación sobre cómo proteger múltip
 
 
 
+[[audience]]
 == Audiencia
 
 Arquitectos de soluciones o administradores de almacenamiento que garantizan la protección de datos y la recuperación ante desastres para dominios de carga de trabajo de VMware VCF.
 
 
 
+[[architecture-overview]]
 == Descripción general de la arquitectura
 
 SCV se implementa como un dispositivo virtual Linux que utiliza un archivo OVA para brindar operaciones de respaldo y restauración rápidas, eficientes en términos de espacio, consistentes ante fallos y consistentes con las máquinas virtuales para máquinas virtuales, almacenes de datos, archivos y carpetas.  SCV utiliza una arquitectura de complemento remoto.  Se implementaron y alojaron varios SCV en el dominio de administración VCF vCenter.  El dominio SCV y VCF tienen una relación de uno a uno, por lo tanto, el dominio de administración de VCF y cada dominio de carga de trabajo requieren un SCV.
@@ -46,6 +49,7 @@ La regla de copia de seguridad 3-2-1 es una estrategia de protección de datos q
 
 
 
+[[deploy-a-vcf-with-management-domain-and-multiple-workload-domains]]
 == Implementar un VCF con dominio de administración y múltiples dominios de carga de trabajo
 
 Un dominio de carga de trabajo VCF es un grupo de hosts ESXi con uno o más clústeres vSphere, aprovisionados por SDDC Manager y listos para aplicaciones.  En el siguiente ejemplo de VCF, se implementaron un dominio de administración y dos dominios de carga de trabajo.  Para obtener más detalles sobre cómo implementar VCF con almacenamiento NetApp , consultelink:vmw-vcf-overview.html["Documentación de implementación de NetApp VCF."]
@@ -54,6 +58,7 @@ image:vmware-vcf-aff-051.png["VCF un dominio de administración y dos dominios d
 
 
 
+[[scv-deployment-configuration-and-restoration-steps]]
 == Pasos de implementación, configuración y restauración de SCV
 
 En función de la cantidad de dominios de carga de trabajo y del dominio de administración, es necesario implementar varios SCV.  Con dos dominios de carga de trabajo y un dominio de administración, el siguiente ejemplo muestra que se implementan tres SCV en el dominio de administración de VCF vCenter.image:vmware-vcf-aff-063.png["uno a uno entre el dominio VCF y SCV"]
@@ -136,6 +141,7 @@ NetApp SnapCenter para múltiples dominios VCP centraliza la protección de dato
 
 
 
+[[video-demo-for-protect-vcf-multiple-domains-with-scv]]
 == Demostración en video para proteger múltiples dominios VCF con SCV
 
 .Proteja varios dominios de VMware VCF con NetApp SCV

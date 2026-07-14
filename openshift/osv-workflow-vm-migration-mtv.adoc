@@ -30,6 +30,7 @@ En este tipo de migración, la mayoría de los datos se copian durante la etapa 
 ====
 
 
+[[video-demonstration]]
 == Demostración en video
 
 El siguiente video muestra una demostración de la migración en frío de una máquina virtual RHEL de VMware a OpenShift Virtualization utilizando la clase de almacenamiento ontap-san para almacenamiento persistente.
@@ -38,6 +39,7 @@ El siguiente video muestra una demostración de la migración en frío de una m�
 video::bac58645-dd75-4e92-b5fe-b12b015dc199[panopto,width=360]
 
 
+[[migration-of-vm-from-vmware-to-openshift-virtualization-using-migration-toolkit-for-virtualization]]
 == Migración de máquinas virtuales de VMware a OpenShift Virtualization mediante el kit de herramientas de migración para virtualización
 
 En esta sección, veremos cómo utilizar el Kit de herramientas de migración para virtualización (MTV) para migrar máquinas virtuales de VMware a OpenShift Virtualization que se ejecuta en la plataforma OpenShift Container e integrada con el almacenamiento NetApp ONTAP mediante Trident.
@@ -48,10 +50,12 @@ image:rh-os-n-use-case-vm-migration-using-mtv.png["Figura que muestra el diálog
 
 
 
+[[prerequisites-for-the-sample-migration]]
 === Requisitos previos para la migración de muestra
 
 
 
+[[on-vmware]]
 === **En VMware**
 
 * Se instaló una máquina virtual RHEL 9 que utiliza rhel 9.3 con las siguientes configuraciones:
@@ -80,6 +84,7 @@ NOTE: Asegúrese de iniciar el servidor postgresql y habilitar el servicio para 
 
 
 
+[[on-openshift-cluster]]
 === **En el clúster OpenShift**
 
 Las siguientes instalaciones se completaron antes de instalar MTV:
@@ -92,6 +97,7 @@ Las siguientes instalaciones se completaron antes de instalar MTV:
 
 
 
+[[install-mtv]]
 === Instalar MTV
 
 Ahora puede instalar el Kit de herramientas de migración para virtualización (MTV).  Consulte las instrucciones proporcionadaslink:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.5/html/installing_and_using_the_migration_toolkit_for_virtualization/installing-the-operator["aquí"] para obtener ayuda con la instalación.
@@ -137,6 +143,7 @@ image:rh-os-n-use-case-vm-migration-mtv-plan-ready.png["Figura que muestra el di
 
 
 
+[[perform-cold-migration]]
 === Realizar migración en frío
 
 Al hacer clic en *Iniciar* se ejecutará una secuencia de pasos para completar la migración de la máquina virtual.
@@ -149,6 +156,7 @@ Puede iniciar sesión en la máquina virtual y verificar el contenido de las bas
 
 
 
+[[perform-warm-migration]]
 === Realizar migración cálida
 
 Para realizar una migración cálida, después de crear un plan de migración como se muestra arriba, debe editar la configuración del plan para cambiar el tipo de migración predeterminado.  Haga clic en el ícono de edición junto a la migración fría y cambie el botón para configurarlo en migración cálida.  Haga clic en **Guardar**.  Ahora haga clic en **Iniciar** para iniciar la migración.

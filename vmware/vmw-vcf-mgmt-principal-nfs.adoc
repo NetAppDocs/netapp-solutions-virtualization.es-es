@@ -18,6 +18,7 @@ En este caso de uso, describimos el procedimiento para utilizar un almacén de d
 
 
 
+[[introduction]]
 == Introducción
 
 Cuando sea apropiado, haremos referencia a la documentación externa para conocer los pasos que se deben realizar en el Administrador SDDC de VCF y haremos referencia a aquellos pasos que son específicos de la parte de configuración de almacenamiento.
@@ -32,6 +33,7 @@ NOTE: Esta solución es aplicable a las plataformas ONTAP compatibles con almace
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 En este escenario se utilizan los siguientes componentes y configuraciones:
@@ -49,10 +51,12 @@ Para obtener información sobre la configuración de VCF, consultelink:https://d
 
 
 
+[[deployment-steps]]
 == Pasos de implementación
 
 
 
+[[management-domain-default-cluster]]
 === Dominio de administración - Clúster predeterminado
 
 El almacenamiento principal NFS en el clúster inicial solo es compatible con la herramienta de importación brownfield VCF.  Si VCF se implementa con la herramienta Cloud Builder (hasta la versión 5.2.x), solo se admite VSAN.
@@ -61,6 +65,7 @@ Para obtener más información sobre el uso de un entorno vSphere existente, con
 
 
 
+[[management-domain-additional-cluster]]
 === Dominio de administración - Clúster adicional
 
 El clúster vSphere adicional en el dominio de administración se puede implementar con las siguientes opciones:
@@ -72,6 +77,7 @@ El clúster vSphere adicional en el dominio de administración se puede implemen
 
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.

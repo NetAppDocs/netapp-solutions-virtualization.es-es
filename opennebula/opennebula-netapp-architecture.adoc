@@ -18,6 +18,7 @@ NetApp se integra con OpenNebula para proporcionar capacidades de almacenamiento
 
 
 
+[[solution-architecture]]
 == Arquitectura de la solución
 
 La arquitectura de la solución incluye los siguientes componentes clave:
@@ -35,12 +36,14 @@ image::opennebula-netapp-architecture-001.png[OpenNebula con NetApp arquitectura
 
 
 
+[[ontap-features-for-opennebula]]
 == Funciones de ONTAP para OpenNebula
 
 ONTAP proporciona un conjunto completo de funciones de almacenamiento de clase empresarial que mejoran las implementaciones de OpenNebula. Estas funciones abarcan la gestión de datos, la protección, la eficiencia y la compatibilidad de protocolos en arquitecturas de almacenamiento NAS y SAN.
 
 
 
+[[core-data-management-features]]
 === Funciones básicas de gestión de datos
 
 * Arquitectura de clúster escalable
@@ -63,6 +66,7 @@ ONTAP proporciona un conjunto completo de funciones de almacenamiento de clase e
 
 
 
+[[nas-protocol-features]]
 === Características del protocolo NAS
 
 * Los volúmenes FlexGroup proporcionan contenedores NAS escalables con alto rendimiento, distribución de carga y escalabilidad.
@@ -82,6 +86,7 @@ ONTAP proporciona un conjunto completo de funciones de almacenamiento de clase e
 
 
 
+[[san-protocol-features]]
 === Características del protocolo SAN
 
 * Extienda los clústeres a través de dominios de falla con la sincronización activa de SnapMirror (siempre verifique la https://mysupport.netapp.com/matrix/#welcome["Herramienta de matriz de interoperabilidad"] (para configuraciones compatibles)

@@ -23,6 +23,7 @@ NOTE: Las contraseñas se guardan en archivos de texto en claro y son accesibles
 
 
 
+[[storage-administrator-tasks]]
 == Tareas del administrador de almacenamiento
 
 Si es nuevo en ONTAP, utilice la Interfaz del Administrador del sistema para completar estas tareas.
@@ -65,6 +66,7 @@ image:opennebula-ontap-smb-004.png["Información sobre acciones de SMB"]
 
 
 
+[[virtualization-administrator-tasks]]
 == Tareas del administrador de virtualización
 
 Completa estas tareas para añadir el recurso compartido SMB como Datastore en OpenNebula y habilitar multichannel para mejorar el rendimiento y la tolerancia a fallos.

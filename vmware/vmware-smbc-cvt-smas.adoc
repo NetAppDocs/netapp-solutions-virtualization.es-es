@@ -18,6 +18,7 @@ Este artículo detalla cómo convertir la sincronización activa de SnapMirror d
 
 
 
+[[overview]]
 == Descripción general
 
 link:https://docs.netapp.com/us-en/ontap/snapmirror-active-sync/["Sincronización activa de NetApp Snapmirror (sincronización activa de SM)"]es una solución robusta para lograr un Objetivo de tiempo de recuperación (RTO) cero y un Objetivo de punto de recuperación (RPO) cero en un entorno virtualizado.
@@ -32,6 +33,7 @@ Este documento le muestra los pasos para convertir una sincronización activa as
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 * Sistemas de almacenamiento NetApp : asegúrese de tener dos clústeres de almacenamiento NetApp (origen y destino) con licencias de Snapmirror.
@@ -47,6 +49,7 @@ Este documento le muestra los pasos para convertir una sincronización activa as
 
 
 
+[[steps-to-convert-from-asymmetric-to-symmetric-sm-active-sync]]
 == Pasos para convertir de sincronización activa SM asimétrica a simétrica
 
 En el siguiente ejemplo, selectrz1 es el sitio principal y selectrz2 es el sitio secundario.

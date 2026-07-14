@@ -20,6 +20,7 @@ El Shift Toolkit permite la migración de máquinas virtuales entre plataformas 
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 Verifique que se cumplan los siguientes requisitos previos antes de iniciar la migración.
@@ -57,6 +58,7 @@ NOTE: SCVMM no es un punto de conexión compatible para la migración en la vers
 
 
 
+[[step-1-add-the-destination-site-hyper-v]]
 == Paso 1: Agregar el sitio de destino (Hyper-V)
 
 Agregue el entorno Hyper-V de destino al Shift Toolkit.
@@ -117,6 +119,7 @@ NOTE: El sistema de almacenamiento de origen y destino debe ser el mismo, ya que
 
 
 
+[[step-2-create-resource-groups]]
 == Paso 2: Crear grupos de recursos
 
 Organice las máquinas virtuales en grupos de recursos para preservar el orden de arranque y las configuraciones de retardo de arranque.
@@ -223,6 +226,7 @@ El grupo de recursos está creado y listo para la configuración del plano.
 
 
 
+[[step-3-create-a-migration-blueprint]]
 == Paso 3: Crear un plan de migración
 
 Cree un plan maestro para definir el plan de migración, incluyendo la asignación de plataformas, la configuración de red y la configuración de las máquinas virtuales.
@@ -397,6 +401,7 @@ image::shift-toolkit-332.png[plano activo]
 ====
 
 
+[[step-4-execute-the-migration]]
 == Paso 4: Ejecutar la migración
 
 Inicie el flujo de trabajo de migración para convertir las máquinas virtuales de VMware ESXi a Microsoft Hyper-V.
@@ -494,6 +499,7 @@ NOTE: Shift Toolkit utiliza tareas cron que se ejecutan al arrancar el sistema e
 
 
 
+[[video-demonstration]]
 == Demostración en vídeo
 
 El siguiente vídeo muestra el proceso descrito en esta solución.

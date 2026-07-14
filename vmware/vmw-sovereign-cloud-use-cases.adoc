@@ -23,6 +23,8 @@ NetApp proporciona soporte para los conceptos de VMware Sovereign Cloud a travé
 
 
 
+[[netapp-storagegrid-as-an-object-store-extension]]
+[[storageGRID]]
 == NetApp StorageGRID como extensión del almacén de objetos
 
 NetApp ha colaborado con VMware para integrar NetApp StorageGRID en VMware Cloud Director en apoyo de VMware Sovereign Cloud.  Este complemento para VMware Cloud Director permite a los proveedores de servicios utilizar StorageGRID como su oferta de almacenamiento de objetos (independientemente del caso de uso) y permite la administración de StorageGRID a través de la misma solución multiinquilino de VMware (VMware Cloud Director) que utilizan los proveedores de servicios para administrar otras partes de su catálogo de ofertas.

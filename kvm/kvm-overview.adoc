@@ -18,6 +18,7 @@ Obtenga información sobre la virtualización KVM y cómo funciona con QEMU y Li
 
 
 
+[[overview-of-components]]
 == Descripción general de los componentes
 
 . KVM (máquina virtual basada en kernel):
@@ -69,6 +70,7 @@ https://galaxy.ansible.com/ui/repo/published/community/libvirt/["El módulo Ansi
 
 
 
+[[cluster-management]]
 == Gestión de clústeres
 
 Normalmente, Virtualization Manager o la herramienta CLI de virsh administran un solo host a la vez.  Para administrar varios hosts en un clúster, a menudo se utilizan aplicaciones de nivel superior como oVirt, CloudStack o OpenStack.  Estas herramientas ayudarán a colocar las máquinas virtuales y a distribuir la carga.  Si busca alta disponibilidad de ciertas máquinas virtuales en un entorno de clúster de tamaño pequeño, se utiliza Pacemaker junto con Corosync o verifique su opción de pila de administración.
@@ -77,6 +79,7 @@ image:kvm-overview-001.png["Pila Libvirt con componentes de gestión"]
 
 
 
+[[compute]]
 == Calcular
 
 Libvirt proporciona un marco integral para administrar los recursos y la funcionalidad de las máquinas virtuales.  Esto incluye tareas relacionadas con:
@@ -128,6 +131,7 @@ En resumen, libvirt proporciona una capa de gestión integral para los aspectos 
 
 
 
+[[storage]]
 == Almacenamiento
 
 Los discos de VM se pueden aprovisionar de forma dinámica en el grupo de almacenamiento o el administrador de almacenamiento puede aprovisionarlos previamente para la VM.  Hay varios tipos de grupos admitidos por libvirt.  Aquí está la lista de tipos de pool aplicables junto con el protocolo de almacenamiento compatible.  La opción más común es dir. Luego, netfs y logical. iscsi e iscsi-direct utilizan un solo destino y no ofrecen tolerancia a fallos. mpath ofrece multitrayecto, pero no asignación dinámica.  Se utiliza más como mapeo de dispositivos sin procesar en vSphere.  Para los protocolos de archivos (NFS/SMB/CIFS), las opciones de montaje se pueden especificar en https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_file_systems/mounting-file-systems-on-demand#the-autofs-service["montador automático"] o se utiliza el tipo fstab y dir pool.  En el caso de protocolos de bloque (iSCSI, FC, NVMe-oF), se utiliza un sistema de archivos compartido como ocfs2 o gfs2.
@@ -180,6 +184,7 @@ Para importar datos de máquinas virtuales desde un entorno de vSphere, consulte
 
 
 
+[[network]]
 == Red
 
 Libvirt proporciona sólidas capacidades de red virtual para administrar máquinas virtuales y contenedores.  Esto se logra mediante el concepto de un conmutador o puente de red virtual.
@@ -219,6 +224,7 @@ Al aprovechar estas características, libvirt proporciona un marco flexible y po
 
 
 
+[[monitoring]]
 == Escucha
 
 NetApp Data Infrastructure Insights (anteriormente Cloud Insights) es una plataforma de análisis y monitoreo de infraestructura basada en la nube que brinda visibilidad integral de su infraestructura de TI, incluidas las máquinas virtuales.
@@ -253,6 +259,7 @@ En resumen, si bien Data Infrastructure Insights tiene un fuerte soporte para VM
 
 
 
+[[data-protection]]
 == Protección de datos
 
 La protección de datos de máquinas virtuales basadas en Libvirt con NetApp ONTAP se puede lograr a través de varios métodos, a menudo aprovechando las funciones de protección de datos integradas de ONTAP.  A continuación se presenta un desglose de las estrategias más comunes:

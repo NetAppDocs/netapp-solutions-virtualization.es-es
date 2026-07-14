@@ -18,6 +18,7 @@ NetApp ONTAP es una solución de almacenamiento líder para VMware vSphere, que 
 
 
 
+[[introduction]]
 == Introducción
 
 NetApp continúa agregando capacidades innovadoras para simplificar la gestión del almacenamiento al mismo tiempo que reduce costos y aumenta la confianza en una infraestructura virtual consolidada basada en VMware y lista para la nube.  Esta colección de soluciones presenta las ofertas de ONTAP para VMware vSphere Foundation y VMware Cloud Foundation, incluida la información más reciente sobre productos y las mejores prácticas, para optimizar la implementación, reducir el riesgo y simplificar la administración.
@@ -26,6 +27,7 @@ Para obtener más información sobre el uso de ONTAP con VMware vSphere, consult
 
 
 
+[[why-ontap-for-vmware]]
 == ¿Por qué ONTAP para VMware?
 
 Hay muchas razones por las cuales decenas de miles de clientes han seleccionado ONTAP como su solución de almacenamiento para vSphere, como un sistema de almacenamiento unificado compatible con los protocolos SAN y NAS, capacidades de protección de datos robustas mediante instantáneas que ahorran espacio y una gran cantidad de herramientas para ayudarlo a administrar los datos de las aplicaciones.  El uso de un sistema de almacenamiento separado del hipervisor le permite descargar muchas funciones y maximizar su inversión en sistemas host vSphere.  Este enfoque no solo garantiza que los recursos del host se concentren en las cargas de trabajo de las aplicaciones, sino que también evita efectos aleatorios en el rendimiento de las aplicaciones debido a las operaciones de almacenamiento.

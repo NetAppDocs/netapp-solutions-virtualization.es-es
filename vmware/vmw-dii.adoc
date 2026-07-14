@@ -18,6 +18,7 @@ NetApp Data Infrastructure Insights (anteriormente Cloud Insights) es una plataf
 
 
 
+[[monitoring-on-premises-storage-with-data-infrastructure-insights]]
 == Supervisión del almacenamiento local con Data Infrastructure Insights
 
 Data Infrastructure Insights opera a través del software de la Unidad de Adquisición, que está configurado con recopiladores de datos para activos como los sistemas de almacenamiento VMware vSphere y NetApp ONTAP .  Estos recopiladores recopilan datos y los transmiten a Data Infrastructure Insights.  Luego, la plataforma utiliza una variedad de paneles, widgets y consultas métricas para organizar los datos en análisis reveladores que los usuarios pueden interpretar.
@@ -28,6 +29,7 @@ image:vmware-dii.png["Data Infrastructure Insights"]
 
 
 
+[[solution-deployment-overview]]
 == Descripción general de la implementación de la solución
 
 Esta solución proporciona una introducción al monitoreo de sistemas de almacenamiento locales de VMware vSphere y ONTAP mediante Data Infrastructure Insights.
@@ -45,6 +47,7 @@ Esta lista proporciona los pasos de alto nivel cubiertos en esta solución:
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 Esta solución utiliza los siguientes componentes:
@@ -57,10 +60,12 @@ Esta solución utiliza los siguientes componentes:
 
 
 
+[[solution-deployment]]
 == Implementación de la solución
 
 
 
+[[configure-data-collectors]]
 === Configurar recopiladores de datos
 
 Para configurar recopiladores de datos para sistemas de almacenamiento VMware vSphere y ONTAP , complete los siguientes pasos:
@@ -103,6 +108,7 @@ image:vmware-asa-034.png["Configurar recopilador"]
 ====
 
 
+[[add-annotations-to-assets]]
 === Agregar anotaciones a los activos
 
 Las anotaciones son un método útil para etiquetar activos para que puedan filtrarse e identificarse de otro modo en las distintas vistas y consultas de métricas disponibles en Cloud Insights.
@@ -129,6 +135,7 @@ image:vmware-asa-037.png["Ejecutar todas las reglas"]
 ====
 
 
+[[explore-and-correlate-assets]]
 === Explorar y correlacionar activos
 
 Cloud Insights extrae conclusiones lógicas sobre los activos que se ejecutan juntos en sus sistemas de almacenamiento y clústeres de vSphere.
@@ -167,6 +174,7 @@ image:vmware-asa-043.png["Métricas de rendimiento de VM"]
 ====
 
 
+[[use-cloud-insights-to-identify-noisy-neighbors]]
 === Utilice Cloud Insights para identificar vecinos ruidosos
 
 Cloud Insights cuenta con paneles que pueden aislar fácilmente las máquinas virtuales pares que afectan negativamente a otras máquinas virtuales que se ejecutan en el mismo volumen de almacenamiento.
@@ -195,6 +203,7 @@ image:vmware-asa-047.png["Contención de carga de trabajo"]
 ====
 
 
+[[view-over-and-under-utilized-resources-in-cloud-insights]]
 === Visualizar los recursos sobreutilizados y subutilizados en Cloud Insights
 
 Al adaptar los recursos de la máquina virtual a los requisitos de carga de trabajo reales, se puede optimizar la utilización de los recursos, lo que genera ahorros de costos en infraestructura y servicios en la nube.  Los datos en Cloud Insights se pueden personalizar para mostrar fácilmente las máquinas virtuales sobreutilizadas o subutilizadas.
@@ -223,6 +232,7 @@ image:vmware-asa-051.png["Máquinas virtuales apagadas"]
 ====
 
 
+[[use-queries-to-isolate-and-sort-metrics]]
 === Utilice consultas para aislar y ordenar métricas
 
 La cantidad de datos capturados por Cloud Insights es bastante amplia.  Las consultas métricas proporcionan una forma poderosa de ordenar y organizar grandes cantidades de datos de maneras útiles.
@@ -243,12 +253,14 @@ image:vmware-asa-053.png["ONTAP Essential - VMware"]
 ====
 
 
+[[conclusion]]
 == Conclusión
 
 Esta solución fue diseñada como una introducción para aprender cómo comenzar a utilizar NetApp Cloud Insights y mostrar algunas de las poderosas capacidades que esta solución de observabilidad puede proporcionar.  Hay cientos de paneles y consultas de métricas integrados en el producto, lo que hace que sea fácil comenzar a usarlo de inmediato.  La versión completa de Cloud Insights está disponible como prueba de 30 días y la versión básica está disponible de forma gratuita para los clientes de NetApp .
 
 
 
+[[additional-information]]
 == Información adicional
 
 Para conocer más sobre las tecnologías presentadas en esta solución consulte la siguiente información adicional.

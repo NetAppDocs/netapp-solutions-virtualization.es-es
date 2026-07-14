@@ -18,12 +18,14 @@ NetApp ofrece plataformas adaptadas a entornos VMware, que incluyen FAS para alm
 
 
 
+[[introduction]]
 == Introducción
 
 Estas ofertas mejoran el rendimiento, la escalabilidad y la gestión de datos para el administrador de VMware.  Además, ONTAP se utiliza en todas estas plataformas, ofreciendo una solución de gestión de datos unificada, escalable y eficiente que admite diversos protocolos de almacenamiento, mejora la protección de datos y optimiza el rendimiento para diversas cargas de trabajo.
 
 
 
+[[common-benefits-across-netapp-platforms]]
 == Beneficios comunes en las plataformas NetApp
 
 * *Integración con VMware:* Todas las plataformas NetApp ofrecen integraciones profundas con VMware, lo que mejora la eficiencia del entorno de almacenamiento.  Las soluciones locales pueden aprovechar complementos, API, VAAI y VASA para mejorar la gestión general de datos y, al mismo tiempo, mejorar la versatilidad de la infraestructura.
@@ -42,6 +44,7 @@ Nota: Las soluciones en la nube de NetApp pueden tener características limitada
 
 
 
+[[netapp-asa-all-san-array-benefits]]
 == Beneficios de NetApp ASA (matriz All SAN)
 
 * *Optimizado para SAN:* Diseñado específicamente para cargas de trabajo SAN, proporciona alto rendimiento y baja latencia para entornos VMware que dependen del almacenamiento en bloque.
@@ -60,6 +63,7 @@ image:vmware-asa-002.png["ancho=800"]
 
 
 
+[[storage-protocol-support]]
 === Compatibilidad con protocolos de almacenamiento
 
 El ASA admite todos los protocolos SAN estándar, incluidos iSCSI, Fibre Channel (FC), Fibre Channel over Ethernet (FCoE) y NVME over fabrics.
@@ -78,6 +82,7 @@ Para obtener orientación sobre el diseño de NVMe, consulte https://docs.netapp
 
 
 
+[[active-active-technology]]
 === Tecnología activa-activa
 
 Las matrices SAN All-Flash de NetApp permiten rutas activas-activas a través de ambos controladores, lo que elimina la necesidad de que el sistema operativo host espere a que falle una ruta activa antes de activar la ruta alternativa.  Esto significa que el host puede utilizar todas las rutas disponibles en todos los controladores, lo que garantiza que las rutas activas siempre estén presentes independientemente de si el sistema está en un estado estable o atravesando una operación de conmutación por error del controlador.
@@ -92,6 +97,7 @@ Para obtener información detallada, consulte la https://www.netapp.com/asa/["P�
 
 
 
+[[netapp-aff-all-flash-fas-benefits]]
 == Beneficios de NetApp AFF (All Flash FAS)
 
 * *Rendimiento extremo:* utiliza almacenamiento totalmente flash para ofrecer una latencia de submilisegundos y un alto IOPS, ideal para cargas de trabajo de VMware sensibles al rendimiento.
@@ -106,6 +112,7 @@ Para obtener más información sobre las matrices de almacenamiento NetApp C-Ser
 
 
 
+[[netapp-fas-fabric-attached-storage-benefits]]
 == Beneficios de NetApp FAS (almacenamiento conectado a la red)
 
 * *Arquitectura de almacenamiento unificada:* Admite protocolos SAN (nivel de bloque) y NAS (nivel de archivo), lo que lo hace versátil para diversas cargas de trabajo de VMware.
@@ -114,6 +121,7 @@ Para obtener más información sobre las matrices de almacenamiento NetApp C-Ser
 
 
 
+[[cloud-solutions-benefits]]
 == Beneficios de las soluciones en la nube
 
 * *Administración de datos nativa de la nube:* utiliza ofertas nativas de la nube para mejorar la movilidad de los datos, la copia de seguridad y la recuperación ante desastres para las cargas de trabajo de VMware.  La compatibilidad con almacenes de datos NFS nativos para cargas de trabajo en la nube de VMware es la siguiente:
@@ -128,6 +136,7 @@ Para obtener más información sobre las matrices de almacenamiento NetApp C-Ser
 
 
 
+[[summary]]
 == Resumen
 
 En resumen, las plataformas ONTAP y NetApp ofrecen un conjunto integral de beneficios para las cargas de trabajo de VMware, mejorando el rendimiento, la escalabilidad y la gestión de datos.  Si bien las características comunes proporcionan una base sólida, cada plataforma ofrece beneficios diferenciados adaptados a necesidades específicas, ya sea almacenamiento rentable con FAS, alto rendimiento con AFF, rendimiento SAN optimizado con ASA o flexibilidad de nube híbrida con ofertas de nube de NetApp .

@@ -18,6 +18,7 @@ Explore las opciones para migrar máquinas virtuales a Amazon EC2 mediante Amazo
 
 
 
+[[other-possibilities]]
 == Otras posibilidades
 
 El mismo enfoque se puede extender para migrar máquinas virtuales mediante almacenamiento invitado en máquinas virtuales locales.  El VMDK del sistema operativo se puede migrar mediante CMC y los LUN iSCSI invitados se pueden replicar mediante SnapMirror.  El proceso requiere romper el espejo y adjuntar el LUN a la instancia de Amazon EC2 recién migrada, como se muestra en el diagrama a continuación.
@@ -26,6 +27,7 @@ image:migrate-ec2-fsxn-013.png["Imagen que muestra una posibilidad adicional par
 
 
 
+[[conclusion]]
 == Conclusión
 
 Este documento ha proporcionado un tutorial completo sobre el uso de la función MigrateOps de CMC para migrar datos almacenados en repositorios locales de VMware a AWS mediante instancias de Amazon EC2 y FSx ONTAP.

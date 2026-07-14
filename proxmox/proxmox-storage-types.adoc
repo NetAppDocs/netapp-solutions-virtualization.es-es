@@ -15,18 +15,21 @@ Proxmox Virtual Environment (VE) admite múltiples protocolos de almacenamiento 
 
 
 
+[[nas-protocol-support]]
 == Compatibilidad con el protocolo NAS
 
 Los protocolos NAS (NFS y SMB) admiten todos los tipos de contenido de Proxmox VE y normalmente se configuran una sola vez en el nivel del centro de datos. Las máquinas virtuales invitadas pueden usar formatos de disco raw, qcow2 o VMDK en el almacenamiento NAS. Las instantáneas de ONTAP se pueden hacer visibles para los clientes para acceder a copias de datos en un momento determinado.
 
 
 
+[[san-protocol-support]]
 == Compatibilidad con el protocolo SAN
 
 Los protocolos SAN (FC, iSCSI y NVMe-oF) generalmente se configuran por host y admiten tipos de contenido de imágenes de contenedores y discos de VM en Proxmox VE. Las máquinas virtuales invitadas pueden usar formatos de disco raw, VMDK o qcow2 en el almacenamiento en bloque.
 
 
 
+[[storage-type-compatibility-matrix]]
 == Matriz de compatibilidad de tipos de almacenamiento
 
 [cols="25% 15% 15% 15% 15% 15%"]

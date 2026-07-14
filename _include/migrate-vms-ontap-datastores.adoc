@@ -17,6 +17,7 @@ NOTE: Algunas máquinas virtuales que se implementan con herramientas de adminis
 
 
 
+[[network-requirements]]
 == Requisitos de red
 
 .Migración de máquinas virtuales con vMotion
@@ -38,6 +39,7 @@ TIP: Asegúrese de que haya al menos dos NIC de enlace ascendente activas de alt
 ====
 
 
+[[vm-migration-scenarios]]
 == Escenarios de migración de máquinas virtuales
 
 vMotion se utiliza a menudo para migrar las máquinas virtuales independientemente de su estado de energía.  A continuación se encuentran disponibles consideraciones adicionales y procedimientos de migración para escenarios específicos.
@@ -412,6 +414,7 @@ TIP: Cuando la VM de origen reside en un almacén de datos de bloques vVol, se p
 ====
 
 
+[[vm-template-migration-scenarios]]
 == Escenarios de migración de plantillas de VM
 
 Las plantillas de VM pueden ser administradas por vCenter Server o por una biblioteca de contenido.  La distribución de plantillas VM, plantillas OVF y OVA y otros tipos de archivos se manejan publicándolos en la biblioteca de contenido local y las bibliotecas de contenido remotas pueden suscribirse a ellos.
@@ -494,6 +497,7 @@ NOTE: Para obtener detalles adicionales sobre las plantillas de VM en la bibliot
 ====
 
 
+[[use-cases]]
 == Casos de uso
 
 .Migración de sistemas de almacenamiento de terceros (incluido vSAN) a almacenes de datos ONTAP .
@@ -527,6 +531,7 @@ NOTE: Para permitir la comunicación de red con máquinas virtuales existentes e
 ====
 
 
+[[additional-resources]]
 == Recursos adicionales
 
 * https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management.html["Migración de máquinas virtuales de vSphere"]

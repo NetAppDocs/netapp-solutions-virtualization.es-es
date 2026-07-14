@@ -17,6 +17,7 @@ Implementa manualmente el toolkit de NetApp Shift como un servicio en contenedor
 
 
 
+[[architecture-components]]
 == Componentes arquitectónicos
 
 Entiende cómo NetApp Shift toolkit, Trident CSI y Migration Toolkit for Virtualization trabajan juntos para habilitar el aprovisionamiento automatizado de almacenamiento y la migración de discos de máquinas virtuales en tu entorno de OpenShift.
@@ -46,6 +47,7 @@ image::shift_operator_architecture.png[Diagrama de la arquitectura del operador 
 
 
 
+[[before-you-begin]]
 == Antes de empezar
 
 Comprueba que tu entorno de OpenShift tenga instalados y configurados los componentes necesarios antes de implementar el operador Shift.
@@ -53,19 +55,26 @@ Comprueba que tu entorno de OpenShift tenga instalados y configurados los compon
 * Migration Toolkit for Virtualization Operator se está ejecutando en la versión 2.12 o posterior
 * Trident se instala a través de OpenShift OperatorHub - link:https://docs.netapp.com/us-en/trident/trident-install/openshift-operator-deploy.html["Guía de instalación de Trident"]
 * NetApp Shift se implementa como un contenedor con el punto final de Shift accesible para NetApp Trident
-* Se crea una Storage Class y se le asigna una etiqueta específica para su uso con Shift toolkit
-* La etiqueta identifica el kit de herramientas Shift como el gestor previsto
+* Se crea una clase de almacenamiento y se le añade una anotación específicamente para su uso con Shift toolkit
+* Las anotaciones identifican el kit de herramientas Shift como el gestor previsto y especifican el backend Trident de destino
 * MTV incluye la siguiente anotación en las PVC: `forklift.konveyor.io/netapp-shift: "true"`
 
 
 
 
+[[step-1-download-and-extract-the-shift-installer]]
 == Paso 1: Descarga y descomprime el instalador de Shift
 
 El paquete de instalación de Shift contiene todo lo necesario para implementar el operador de Shift e instalar Shift.
 
+
+NOTE: Si tu clúster no tiene acceso a quay.io, omite este paso y sigue el procedimiento de <<Instalación sin conexión (clústeres air-gapped)>> en su lugar. Vuelve al paso 2 una vez que hayas completado la importación de la imagen sin conexión.
+
 .Pasos
 . Descarga la última versión del instalador de Shift desde link:https://mysupport.netapp.com/site/tools/tool-eula/netapp-shift-toolkit["Caja de herramientas del sitio de soporte de NetApp"].
++
+image::shift_operator_download-installer.png[Página de descarga del instalador de Shift]
+
 . Descomprime el paquete de instalación:
 +
 [source, bash]
@@ -82,6 +91,7 @@ cd shift-installer
 
 
 
+[[step-2-create-the-shift-namespace-and-api-credentials]]
 == Paso 2: crea el espacio de nombres de Shift y las credenciales de la API
 
 Configura un espacio de nombres dedicado para el operador Shift y crea las credenciales necesarias para el acceso seguro a la API.
@@ -93,7 +103,7 @@ Configura un espacio de nombres dedicado para el operador Shift y crea las crede
 ----
 oc create ns shift
 ----
-. Crea el secreto para el acceso a la API de Shift dentro del espacio de nombres de Shift:
+. Crea la clave secreta para acceder a la API de Shift dentro del espacio de nombres de Shift. Sustituye los valores de ejemplo por un nombre de usuario único y una contraseña segura para tu entorno:
 +
 [source, bash]
 ----
@@ -104,8 +114,89 @@ oc create secret generic shift-credentials -n shift \
 
 
 
+NOTE: Sustituye la contraseña por la que prefieras.
 
-== Paso 3: Implementa el operador Shift
+
+
+[[step-3-create-tls-certificate-configmaps]]
+== Paso 3: Crea el certificado TLS ConfigMaps
+
+Crea los ConfigMaps que proporcionan el certificado TLS y la clave privada que usa el servicio Shift para servir tráfico HTTPS.
+
+El certificado debe emitirse con el CN/SAN establecido en `shift-toolkit-service.shift.svc.cluster.local`. Los archivos del certificado y de la clave deben denominarse `server.cert` y `server.key`, respectivamente.
+
+.Pasos
+. Crea el ConfigMap para el certificado TLS:
++
+[source, bash]
+----
+oc create configmap shift-toolkit-service-server-crt -n shift \
+  --from-file=server.cert=server.cert
+----
+. Crea el ConfigMap para la clave privada TLS:
++
+[source, bash]
+----
+oc create configmap shift-toolkit-service-server-key -n shift \
+  --from-file=server.key=server.key
+----
+
+
+
+NOTE: Si no se utiliza HTTPS, configura  `INSECURE_TLS=true` en  `bundle.yaml`. Los ConfigMaps necesarios deben crearse como se describió arriba, incluso cuando HTTPS esté desactivado y los certificados TLS no se usen activamente.
+
+
+
+[[step-4-create-the-ca-bundle-configmap]]
+== Paso 4: Crea el paquete de CA ConfigMap
+
+Crea el ConfigMap que proporciona el paquete de certificados de la autoridad de certificación (CA) que utiliza el listener del PVC para verificar el certificado TLS del servicio Shift.
+
+.Pasos
+. Dirige `--from-file` al archivo `server.cert` PEM.
++
+La clave en el ConfigMap debe ser `ca.crt`. Con este ConfigMap en su lugar, el listener se ejecuta con `INSECURE_TLS=false` y verifica el certificado de Shift contra este paquete usando `SHIFT_CA_CERT_FILE`.
+
+. Crea el ConfigMap para el paquete de CA:
++
+[source, bash]
+----
+oc create configmap shift-toolkit-service-ca -n shift \
+  --from-file=ca.crt=ca.cert
+----
+
+
+
+
+[[step-5-create-persistent-volume-claims]]
+== Paso 5: Crear reclamaciones de volumen persistente
+
+Crea los PVC necesarios para la base de datos Shift filedb y los registros antes de implementar el paquete.
+
+.Pasos
+. Antes de aplicar las definiciones de PVC, actualiza `deploy/filedb-pvc.yaml` y `deploy/logs-pvc.yaml` para especificar el `storageClassName` adecuado para tu clúster (por ejemplo, `ontap-storageclass`).
++
+
+NOTE: Estos PVC deben crearse y estar disponibles antes de que se implemente el paquete en el paso 6: implementar el operador Shift.
+
+. Aplica el manifiesto de PVC de filedb:
++
+[source, bash]
+----
+oc apply -f deploy/filedb-pvc.yaml
+----
+. Aplica el manifiesto de PVC de los logs:
++
+[source, bash]
+----
+oc apply -f deploy/logs-pvc.yaml
+----
+
+
+
+
+[[step-6-deploy-the-shift-operator]]
+== Paso 6: Implementa el operador Shift
 
 Aplica la configuración del operador Shift a tu clúster de OpenShift y verifica que los pods necesarios estén ejecutándose correctamente.
 
@@ -135,8 +226,12 @@ shift-pvc-listener-57d546f6b8-r9mgc      1/1     Running   0          18s
 
 
 
+NOTE: Para desimplementar, ejecuta  `oc delete -f deploy/bundle.yaml --ignore-not-found`. Este comando elimina los recursos implementados por  `bundle.yaml` mientras conserva el espacio de nombres y el secreto.
 
-== Paso 4: Configura la clase de almacenamiento para la integración con Shift
+
+
+[[step-7-configure-the-storage-class-for-shift-integration]]
+== Paso 7: Configura la clase de almacenamiento para la integración con Shift
 
 Crea una nueva Storage Class o actualiza una Storage Class existente con las anotaciones necesarias para la integración con Shift.
 
@@ -148,20 +243,6 @@ La clase de almacenamiento debe incluir las siguientes anotaciones:
 
 
 .Pasos
-. Comprueba las clases de almacenamiento existentes:
-+
-[source, bash]
-----
-oc get sc
-----
-+
-Ejemplo de salida:
-
-+
-[source, console]
-----
-nimnas1172 (default)   csi.trident.netapp.io   Delete          Immediate         true
-----
 . Actualiza la clase de almacenamiento con las anotaciones requeridas:
 +
 [source, bash]
@@ -189,12 +270,127 @@ storageclass.storage.k8s.io/nimnas1172 patched
 
 NOTE: El UUID del backend se puede obtener ejecutando `oc get tbc -n trident`
 
+. Comprueba las clases de almacenamiento existentes:
++
+[source, bash]
+----
+oc get sc
+----
++
+Ejemplo de salida:
+
++
+[source, console]
+----
+nimnas1172 (default)   csi.trident.netapp.io   Delete          Immediate         true
+----
 
 
 
 
-== Qué sigue
+[[step-8-create-and-trigger-the-mtv-plan]]
+== Paso 8: crea y pon en marcha el plan MTV
 
 Después de completar la implementación del operador Shift y la configuración de la clase de almacenamiento, puedes crear y activar el plan MTV.
 
+image::shift_mtv_plan_overview.png[Plan de migración de MTV]
+
 Para obtener información detallada sobre cómo crear el plan MTV, consulta la link:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.3/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-vms-web-console["Documentación del Migration Toolkit for Virtualization"].
+
+La siguiente captura de pantalla muestra la secuencia de pasos que se ejecutan cuando se activa el plan de migración.
+
+image::shift_migration_plan_steps.png[Pasos para la ejecución del plan de migración]
+
+La siguiente captura de pantalla muestra los PVC convertidos con el kit de herramientas Shift y posteriormente importados por NetApp Trident.
+
+image::shift_pvcs_trident_imported.png[PVCs importados por NetApp Trident]
+
+image::shift_migration_completed.png[Plan de migración completado con éxito]
+
+*Plan de migración completado con éxito* — 5 máquinas virtuales y aproximadamente 5 TB de datos migrados en unos 6 minutos.
+
+.Qué sigue
+Una vez completada la migración, hay que desconectar cada volumen clonado. El método de desconexión depende de la versión de ONTAP: usa división de clones para ONTAP 9.17.1 y versiones posteriores, o vol move para versiones anteriores.
+
+Tanto la división de clones como el traslado de volúmenes son operaciones en segundo plano y no afectan a las cargas de trabajo de producción mientras se están ejecutando. Hay un script disponible para iniciar el proceso de desvinculación en el widget *Post Migrate Detach* dentro del Catálogo de Automatización de la NetApp Console.
+
+
+
+[[offline-installation-air-gapped-clusters]]
+== Instalación sin conexión (clústeres air-gapped)
+
+En esta sección se describe una *ruta de instalación alternativa* para los clústeres que no tienen acceso a quay.io. Si tu clúster puede acceder a quay.io, sigue los pasos 1–8.
+
+Para los clústeres que no tengan acceso a quay.io, importa los archivos tar de las imágenes en el registro interno de OpenShift antes de implementar el paquete.
+
+No se requiere ninguna ruta de registro externa. Tanto las operaciones de envío de imágenes como las referencias a imágenes agrupadas usan `image-registry.openshift-image-registry.svc:5000`, que es accesible a través de la red del clúster y está protegida por la CA del clúster.
+
+.Antes de empezar
+* `oc` CLI con sesión iniciada con privilegios de cluster-admin
+* `skopeo` instalado
+* Archivos tar de imágenes disponibles en el host:
++
+** `shift-toolkit-1.0.0-image.tar`
+** `shift-toolkit-listener-1.0.0-image.tar`
+
+
+
+
+.Pasos
+. Activa el registro interno (paso que solo hay que realizar una vez; omítelo si ya está configurado):
++
+[source, bash]
+----
+oc patch configs.imageregistry.operator.openshift.io cluster \
+  --type=merge -p '{"spec":{"defaultRoute":true}}'
+oc get route default-route -n openshift-image-registry
+----
+. Genera credenciales de registro utilizando la sesión activa de `oc`:
++
+No utilices un token de cuenta de servicio sin procesar, ya que puede fallar durante la carga de blobs. Utiliza `oc registry login` para crear un archivo de autenticación compatible con el flujo de redireccionamiento del registro.
+
++
+[source, bash]
+----
+REGISTRY=image-registry.openshift-image-registry.svc:5000
+oc registry login --skip-check \
+  --registry=$REGISTRY \
+  --to=/tmp/registry-auth.json
+----
+. Sube la imagen del kit de herramientas Shift toolkit al registro interno:
++
+[source, bash]
+----
+skopeo copy \
+  docker-archive:shift-toolkit-1.0.0-image.tar \
+  docker://$REGISTRY/shift/shift-toolkit:1.0.0 \
+  --dest-tls-verify=false \
+  --dest-authfile=/tmp/registry-auth.json
+----
+. Sube la imagen del listener del toolkit de Shift al registro interno:
++
+[source, bash]
+----
+skopeo copy \
+  docker-archive:shift-toolkit-listener-1.0.0-image.tar \
+  docker://$REGISTRY/shift/shift-toolkit-listener:1.0.0 \
+  --dest-tls-verify=false \
+  --dest-authfile=/tmp/registry-auth.json
+----
+. Actualiza las referencias a las imágenes en  `deploy/bundle.yaml` para usar el registro interno:
++
+[source, bash]
+----
+sed -i \
+  -e "s|quay.io/netapp/shift-toolkit:1.0.0|$REGISTRY/shift/shift-toolkit:1.0.0|g" \
+  -e "s|quay.io/netapp/shift-toolkit-listener:1.0.0|$REGISTRY/shift/shift-toolkit-listener:1.0.0|g" \
+  -e "s|imagePullPolicy: Always|imagePullPolicy: IfNotPresent|g" \
+  deploy/bundle.yaml
+----
+. Implementa el paquete:
++
+[source, bash]
+----
+oc apply -f deploy/bundle.yaml
+----
+

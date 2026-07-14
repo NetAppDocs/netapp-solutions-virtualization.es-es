@@ -18,6 +18,7 @@ En este escenario, demostraremos cómo implementar un almacén de datos VMFS con
 
 
 
+[[benefits-of-fibre-channel]]
 == Beneficios del canal de fibra
 
 *Alto rendimiento:* FC proporciona velocidades de transferencia de datos de alta velocidad, lo que lo hace ideal para aplicaciones que requieren acceso rápido y confiable a grandes cantidades de datos.
@@ -32,6 +33,7 @@ Para obtener más información sobre el uso de Fibre Channel con sistemas de alm
 
 
 
+[[scenario-overview]]
 == Descripción general del escenario
 
 El almacén de datos complementario VCF se aprovisiona como parte de las operaciones del día 2 mediante vCenter.  Este escenario cubre los siguientes pasos de alto nivel:
@@ -44,6 +46,7 @@ El almacén de datos complementario VCF se aprovisiona como parte de las operaci
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 Este escenario requiere los siguientes componentes y configuraciones:
@@ -66,6 +69,7 @@ Para obtener más información sobre el uso de VMFS con sistemas de almacenamien
 
 
 
+[[deployment-steps-for-management-domain]]
 == Pasos de implementación para el dominio de administración
 
 Para implementar ONTAP Tools y usarlo para crear un almacén de datos VMFS en el dominio de administración de VCF, complete los siguientes pasos:
@@ -77,6 +81,7 @@ Para implementar ONTAP Tools y usarlo para crear un almacén de datos VMFS en el
 
 
 
+[[deployment-steps-for-vi-workload-domain]]
 == Pasos de implementación para el dominio de carga de trabajo VI
 
 Para implementar ONTAP Tools y usarlo para crear un almacén de datos VMFS en el dominio de carga de trabajo VCF VI, complete los siguientes pasos:
@@ -88,6 +93,7 @@ Para implementar ONTAP Tools y usarlo para crear un almacén de datos VMFS en el
 
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
@@ -96,6 +102,7 @@ Para obtener información sobre la configuración de VCF, consultelink:https://t
 
 
 
+[[video-demo-for-this-solution]]
 == Demostración en vídeo de esta solución
 
 .Almacén de datos VMFS(FC) como almacenamiento complementario para el dominio de administración de VCF

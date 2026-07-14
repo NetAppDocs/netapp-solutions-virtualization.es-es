@@ -42,6 +42,7 @@ image::vmw-vcf-dr-nfs-001.png[Diagrama de la arquitectura de NetApp Disaster Rec
 
 
 
+[[getting-started]]
 == Empezando
 
 Para comenzar a utilizar NetApp Disaster Recovery, utilice la NetApp Console y luego acceda al servicio.
@@ -75,6 +76,7 @@ image::vmw-vcf-dr-nfs-003.png[Panel detallado de NetApp Disaster Recovery]
 
 
 
+[[netapp-disaster-recovery-configuration]]
 == Configuración de NetApp Disaster Recovery
 
 El primer paso para prepararse para la recuperación ante desastres es descubrir y agregar el vCenter de origen y los recursos de almacenamiento a NetApp Disaster Recovery.
@@ -93,6 +95,7 @@ Una vez que se agregan los vCenters, se activa el descubrimiento automático.
 
 
 
+[[configuring-storage-replication-between-source-site-array-and-destination-site-array]]
 == Configuración de la replicación de almacenamiento entre la matriz del sitio de origen y la matriz del sitio de destino
 
 SnapMirror proporciona replicación de datos en un entorno NetApp . Basada en la tecnología NetApp Snapshot®, la replicación de SnapMirror es extremadamente eficiente porque replica solo los bloques que se han modificado o agregado desde la actualización anterior. SnapMirror se configura fácilmente mediante NetApp OnCommand® System Manager o la CLI de ONTAP . NetApp Disaster Recovery también crea la relación SnapMirror siempre que el emparejamiento de clúster y SVM esté configurado de antemano.
@@ -104,6 +107,7 @@ NOTE: Si la relación SnapMirror ya está configurada para el volumen a través 
 
 
 
+[[how-to-setup-replication-relationships-for-netapp-disaster-recovery]]
 == Cómo configurar relaciones de replicación para NetApp Disaster Recovery
 
 El proceso subyacente para crear la replicación de SnapMirror sigue siendo el mismo para cualquier aplicación.  La forma más sencilla es aprovechar NetApp Disaster Recovery , que automatizará el flujo de trabajo de replicación siempre que se cumplan los dos criterios siguientes: El proceso puede ser manual o automatizado. La forma más sencilla es aprovechar NetApp Disaster Recovery, que automatizará el flujo de trabajo de replicación siempre que se cumplan los dos criterios siguientes:
@@ -116,6 +120,7 @@ NetApp Console también proporciona una opción alternativa para configurar la r
 
 
 
+[[what-can-netapp-disaster-recovery-do-for-you]]
 == ¿Qué puede hacer NetApp Disaster Recovery por usted?
 
 Una vez agregados los sitios de origen y destino, NetApp Disaster Recovery realiza un descubrimiento profundo automático y muestra las máquinas virtuales junto con los metadatos asociados. NetApp Disaster Recovery también detecta automáticamente las redes y los grupos de puertos utilizados por las máquinas virtuales y los completa.
@@ -173,6 +178,7 @@ image::vmw-vcf-dr-nfs-012.png[Acciones del plan de replicación de NetApp Disast
 
 
 
+[[test-failover]]
 == Prueba de conmutación por error
 
 La conmutación por error de prueba en NetApp Disaster Recovery es un procedimiento operativo que permite a los administradores de VMware validar completamente sus planes de recuperación sin interrumpir sus entornos de producción.
@@ -198,6 +204,7 @@ image::vmw-vcf-dr-nfs-015.png[Resultado de la conmutación por error de la prueb
 
 
 
+[[cleanup-failover-test-operation]]
 == Operación de prueba de conmutación por error de limpieza
 
 La operación de prueba de conmutación por error de limpieza se produce después de que se haya completado la prueba del plan de replicación y el administrador de VMware responda al mensaje de limpieza.
@@ -212,6 +219,7 @@ Esta acción restablecerá las máquinas virtuales (VM) y el estado del plan de 
 
 
 
+[[planned-migration-and-fail-over]]
 == Migración planificada y conmutación por error
 
 NetApp Disaster Recovery tiene dos métodos para realizar una conmutación por error real: migración planificada y conmutación por error. El primer método, la migración planificada, incorpora el apagado de la máquina virtual y la sincronización de la replicación del almacenamiento en el proceso para recuperar o mover eficazmente las máquinas virtuales al sitio de destino. La migración planificada requiere acceso al sitio de origen. El segundo método, conmutación por error, es una conmutación por error planificada/no planificada en la que las máquinas virtuales se recuperan en el sitio de destino desde el último intervalo de replicación de almacenamiento que pudo completarse. Dependiendo del RPO que se diseñó en la solución, se puede esperar cierta cantidad de pérdida de datos en el escenario de recuperación ante desastres.
@@ -234,6 +242,7 @@ image::vmw-vcf-dr-nfs-019.png[vSphere Client: máquinas virtuales encendidas]
 
 
 
+[[failback]]
 == Recuperación por recuperación
 
 Una conmutación por recuperación es un procedimiento opcional que restaura la configuración original de los sitios de origen y destino después de una recuperación.
@@ -263,6 +272,7 @@ Para obtener más detalles sobre cómo acceder y configurar NetApp Disaster Reco
 
 
 
+[[monitoring-and-dashboard]]
 == Monitoreo y tablero de control
 
 Desde NetApp Disaster Recovery o la CLI de ONTAP , puede supervisar el estado de salud de la replicación para los volúmenes de almacén de datos adecuados, y el estado de una conmutación por error o de una conmutación por error de prueba se puede rastrear a través de la Supervisión de trabajos.

@@ -18,6 +18,7 @@ Configure Shift Toolkit para automatizar la migración o conversión de máquina
 
 
 
+[[run-shift-toolkit]]
 == Kit de herramientas Run Shift
 
 * Utilizando el navegador, acceda a la interfaz de usuario del kit de herramientas Shift introduciendo el `http://<IP address specified during installation>:3001`
@@ -50,12 +51,14 @@ image::shift-toolkit-052.png[Captura de pantalla del Acuerdo de Licencia de Usua
 
 
 
+[[shift-toolkit-configuration]]
 == Configuración del kit de herramientas Shift
 
 Una vez configurados correctamente el almacenamiento y la conectividad con los hipervisores de origen y destino, comience a configurar el kit de herramientas Shift para automatizar la migración o conversión de las máquinas virtuales al formato apropiado, aprovechando la funcionalidad FlexClone .
 
 
 
+[[add-sites]]
 === Agregar sitios
 
 El primer paso es descubrir y agregar los detalles del hipervisor de origen y luego del hipervisor de destino (tanto los hipervisores como el almacenamiento) al kit de herramientas Shift.  Abra el kit de herramientas de Shift en un navegador compatible, utilice el nombre de usuario y la contraseña predeterminados y haga clic en “Agregar sitios”.
@@ -175,6 +178,7 @@ El siguiente paso es agrupar las máquinas virtuales necesarias en sus grupos de
 
 
 
+[[resource-groupings]]
 === Agrupaciones de recursos
 
 Una vez agregadas las plataformas, agrupe las máquinas virtuales que desea migrar o convertir en grupos de recursos.  Los grupos de recursos del kit de herramientas Shift le permiten agrupar conjuntos de máquinas virtuales dependientes en grupos lógicos que contienen sus órdenes de arranque y retrasos de arranque.
@@ -256,6 +260,7 @@ NOTE: En caso de necesitar modificar el grupo de recursos para agregar o elimina
 
 
 
+[[blueprints]]
 === Planos
 
 Para migrar o convertir máquinas virtuales, es necesario un plan. Seleccione las plataformas de hipervisor de origen y destino del menú desplegable y elija los grupos de recursos que se incluirán en este plan, junto con la agrupación de cómo se deben encender las aplicaciones (es decir, controladores de dominio, luego nivel 1, luego nivel 2, etc.). A menudo, estos también se denominan planes de migración. Para definir el plano, vaya a la pestaña “Planos” y haga clic en “Crear nuevo plano”.

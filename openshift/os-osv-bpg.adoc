@@ -18,6 +18,7 @@ Conozca las mejores prácticas para implementar nuevas máquinas virtuales en Op
 
 
 
+[[vm-performance]]
 == Rendimiento de la máquina virtual
 
 Al crear una nueva VM en OpenShift Virtualization, debe tener en cuenta el patrón de acceso junto con los requisitos de rendimiento (IOP y rendimiento) de la carga de trabajo que se ejecutará en la VM.  Esto influirá en la cantidad de máquinas virtuales que necesitará ejecutar en la virtualización OpenShift en una plataforma de contenedores OpenShift y en el tipo de almacenamiento que necesita usar para los discos de las máquinas virtuales.
@@ -33,6 +34,7 @@ Consulte la sección Configuración de almacenamiento a continuación para obten
 
 
 
+[[high-availability-of-vm-workloads]]
 == Alta disponibilidad de cargas de trabajo de máquinas virtuales
 
 OpenShift Virtualization admite migraciones en vivo de una máquina virtual.  La migración en vivo permite que una instancia de máquina virtual (VMI) en ejecución se mueva a otro nodo sin interrumpir la carga de trabajo.  La migración puede ser útil para una transición sin problemas durante las actualizaciones del clúster o en cualquier momento en que sea necesario vaciar un nodo para realizar tareas de mantenimiento o cambios de configuración.  La migración en vivo requiere el uso de una solución de almacenamiento compartido que proporcione el modo de acceso ReadWriteMany (RWX).  Los discos de VM deben estar respaldados por una opción de almacenamiento que proporcione el modo de acceso RWX.  OpenShift Virtualization verificará que una VMI sea **migrable en vivo** y, de ser así, la **evictionStrategy** se establecerá en **LiveMigrate**. Verlink:https://docs.openshift.com/container-platform/latest/virt/live_migration/virt-about-live-migration.html["Acerca de la sección de migración en vivo en la documentación de Red Hat"] Para más detalles.
@@ -41,6 +43,7 @@ Es importante que utilice un controlador que admita el modo de acceso **RWX**.  
 
 
 
+[[storage-configuration]]
 == Configuración de almacenamiento
 
 El aprovisionador Trident CSI proporciona varios controladores (nas, nas-economy, nas-flexgroup, san y san-economy) para aprovisionar almacenamiento respaldado por las opciones de almacenamiento de NetApp .
@@ -77,16 +80,19 @@ La migración en vivo de máquinas virtuales de OpenShift Virtualization requier
 
 
 
+[[storage-configuration-best-practices]]
 == **Mejores prácticas de configuración de almacenamiento**
 
 
 
+[[dedicated-storage-virtual-machines-svms]]
 === **Máquinas virtuales de almacenamiento dedicado (SVM)**
 
 Las máquinas virtuales de almacenamiento (SVM) proporcionan aislamiento y separación administrativa entre inquilinos en un sistema ONTAP .  Al dedicar una SVM a los contenedores OpenShift y a las máquinas virtuales de virtualización OpenShift se permite la delegación de privilegios y se pueden aplicar las mejores prácticas para limitar el consumo de recursos.
 
 
 
+[[limit-the-maximum-volume-count-on-the-svm]]
 === **Limite el recuento máximo de volumen en el SVM**
 
 Para evitar que Trident consuma todos los volúmenes disponibles en el sistema de almacenamiento, debe establecer un límite en la SVM.  Puedes hacer esto desde la línea de comando:
@@ -99,6 +105,7 @@ El valor de volúmenes máximos es el total de volúmenes aprovisionados en todo
 
 
 
+[[limit-the-maximum-size-of-volumes-created-by-trident]]
 === **Limita el tamaño máximo de los volúmenes creados por Trident**
 
 Puede establecer un límite de tamaño de volumen máximo por SVM en ONTAP:
@@ -129,6 +136,7 @@ Además de controlar el tamaño del volumen en la matriz de almacenamiento, tamb
 
 
 
+[[use-svm-qos-policy]]
 === **Utilizar la política QOS de SVM**
 
 Aplique la política de calidad de servicio (QoS) a la SVM para limitar la cantidad de IOPS que pueden consumir los volúmenes aprovisionados por Trident .  Esto ayuda a evitar que las cargas de trabajo que utilizan almacenamiento aprovisionado Trident afecten las cargas de trabajo fuera de Trident SVM.
@@ -137,6 +145,7 @@ Los grupos de políticas de QoS de ONTAP proporcionan opciones de QoS para volú
 
 
 
+[[limit-storage-resource-access-to-kubernetes-cluster-members]]
 === **Limita el acceso a los recursos de almacenamiento a los miembros del clúster de Kubernetes**
 
 **Usar espacios de nombres** Limitar el acceso a los volúmenes NFS y LUN iSCSI creados por Trident es un componente fundamental de la postura de seguridad para su implementación de Kubernetes.  Al hacerlo, se evita que los hosts que no forman parte del clúster de Kubernetes accedan a los volúmenes y potencialmente modifiquen los datos de forma inesperada.
@@ -162,6 +171,7 @@ NOTE: Para obtener detalles adicionales sobre las mejores prácticas para la con
 
 
 
+[[openshift-virtualization-tuning-scaling-guide]]
 == **Virtualización OpenShift: Guía de ajuste y escalado**
 
 Red Hat ha documentadolink:https://docs.openshift.com/container-platform/latest/scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.html["Recomendaciones y limitaciones de escalamiento de clústeres de OpenShift"] .
@@ -195,6 +205,7 @@ Los límites admitidos documentan los máximos de objetos probados al ejecutar m
 
 
 
+[[migrating-vms-from-vmware-environment]]
 === **Migración de máquinas virtuales desde el entorno VMware**
 
 Migration ToolKit for OpenShift Virtualization es un operador proporcionado por Red Hat disponible en OperatorHub de OpenShift Container Platform.  Esta herramienta se puede utilizar para migrar máquinas virtuales de vSphere, Red Hat Virtualization, OpenStack y OpenShift Virtualization.

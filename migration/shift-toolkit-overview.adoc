@@ -18,6 +18,7 @@ NetApp Shift Toolkit es un producto independiente diseñado para simplificar y a
 
 
 
+[[use-case]]
 == Caso de uso
 
 Ahora todas las organizaciones ven el beneficio de tener un entorno de múltiples hipervisores.  Con los recientes cambios en el mercado, cada organización está decidiendo la mejor estrategia sopesando los riesgos técnicos y comerciales, incluyendo la migración de máquinas virtuales de carga de trabajo a hipervisores alternativos, y centrándose en alcanzar los objetivos definidos por el negocio y controlando la dependencia de un proveedor. Esto les permite operar de forma optimizada en cuanto a costos de licencias y extender el presupuesto de TI a las áreas adecuadas en lugar de invertir en los núcleos no utilizados en un hipervisor específico.  Sin embargo, el desafío siempre ha sido el tiempo de migración y el tiempo de inactividad asociado.
@@ -26,6 +27,7 @@ Con el kit de herramientas NetApp Shift, migrar máquinas virtuales (VM) ya no e
 
 
 
+[[toolkit-overview]]
 == Descripción general del kit de herramientas
 
 El kit de herramientas NetApp Shift es una solución de interfaz gráfica de usuario (GUI) fácil de usar que permite migrar máquinas virtuales (VM) entre diferentes hipervisores y convertir formatos de discos virtuales. Utiliza la tecnología NetApp FlexClone para convertir rápidamente los discos duros de las máquinas virtuales. Además, el kit de herramientas administra la creación y configuración de las máquinas virtuales de destino.
@@ -54,6 +56,7 @@ El kit de herramientas Shift se puede descargar.link:https://mysupport.netapp.co
 
 
 
+[[benefits-of-vm-portability]]
 == Beneficios de la portabilidad de VM
 
 ONTAP es ideal para cualquier hipervisor y en cualquier hiperescalar.  Con tecnología FlexClone .  La portabilidad de las máquinas virtuales en minutos es una realidad en lugar de esperar tiempos de inactividad más prolongados o conformarse con opciones de transferencia directa.
@@ -68,6 +71,7 @@ Kit de herramientas de cambio:
 
 
 
+[[how-shift-toolkit-works]]
 == Cómo funciona el kit de herramientas Shift
 
 En el momento de la conversión, el kit de herramientas Shift se conecta a los hosts VMware ESXi y Microsoft Hyper-V y al almacenamiento compartido de NetApp .  El kit de herramientas Shift aprovecha FlexClone para convertir discos duros de máquinas virtuales de un hipervisor a otro mediante tres tecnologías clave de NetApp :
@@ -81,6 +85,7 @@ image::shift-toolkit-002.png[Diagrama del funcionamiento del NetApp Shift Toolki
 
 
 
+[[protocols-and-communication-methods]]
 === Protocolos y métodos de comunicación
 
 El kit de herramientas Shift utiliza los siguientes protocolos durante las operaciones de conversión o migración.

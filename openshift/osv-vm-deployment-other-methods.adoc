@@ -1,0 +1,221 @@
+---
+sidebar: sidebar 
+permalink: openshift/osv-vm-deployment-other-methods.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, OpenShift Virtualization, CNV, Container Native Virtualization, Red Hat OpenShift Virtualization 
+summary: Virtualización de Red Hat OpenShift con NetApp ONTAP 
+---
+= Crea una máquina virtual con Red Hat OpenShift Virtualization usando almacenamiento ONTAP mediante métodos alternativos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Además del método para crear una máquina virtual mediante la interfaz de usuario de OpenShift Virtualization, existen otros métodos para crear máquinas virtuales en OpenShift Virtualization. Esta sección ofrece una descripción general de algunos de esos métodos.
+
+
+
+[[create-a-vm-from-a-yaml-file-with-red-hat-openshift-virtualization]]
+== Crear una máquina virtual a partir de un archivo YAML con Red Hat OpenShift Virtualization
+
+También puedes crear una máquina virtual aplicando un archivo YAML con el comando  `oc apply`. Este método es útil para los usuarios que prefieren usar la CLI o quieren automatizar la creación de máquinas virtuales usando scripts. Para crear una máquina virtual con este método, puedes crear un archivo YAML que defina la máquina virtual y sus recursos asociados, como los PVC para los discos de la máquina virtual. Luego, puedes aplicar el archivo YAML usando el comando  `oc apply -f <yaml-file>` para crear la máquina virtual en el clúster OpenShift.
+
+.Mostrar ejemplo
+[%collapsible]
+====
+[source, yaml]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: test-vms-vm
+  namespace: test-5vms
+  labels:
+    app: test-vms-vm
+    vm.kubevirt.io/template: centos-stream9-server-small
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: test-vms-vm-rootdisk
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: centos-stream9
+          namespace: openshift-virtualization-os-images
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: test-vms-vm
+    spec:
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
+        resources:
+          requests:
+            memory: 2Gi
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: test-vms-vm-rootdisk
+          name: rootdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              user: admin
+              password: <replace with your password>
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+----
+====
+
+
+[[create-a-vm-from-a-snapshot-copy-with-red-hat-openshift-virtualization]]
+== Cree una máquina virtual a partir de una copia instantánea con Red Hat OpenShift Virtualization
+
+Puedes crear una máquina virtual a partir de una instantánea con OpenShift Virtualization. Este procedimiento incluye crear una VolumeSnapshotClass, tomar una instantánea de la reclamación de volumen persistente (PVC) de la máquina virtual, restaurar la instantánea en una nueva PVC y desplegar una nueva máquina virtual que use la PVC restaurada como disco raíz.
+
+Con Trident y Red Hat OpenShift, los usuarios pueden tomar una instantánea de un volumen persistente en las clases de almacenamiento aprovisionadas por él.  Con esta función, los usuarios pueden tomar una copia de un punto en el tiempo de un volumen y usarla para crear un nuevo volumen o restaurar el mismo volumen a un estado anterior.  Esto habilita o respalda una variedad de casos de uso, desde reversión hasta clones y restauración de datos.
+
+Para las operaciones de instantáneas en OpenShift, se deben definir los recursos VolumeSnapshotClass, VolumeSnapshot y VolumeSnapshotContent.
+
+* Un VolumeSnapshotContent es la instantánea real tomada de un volumen en el clúster.  Es un recurso de todo el clúster análogo a PersistentVolume para el almacenamiento.
+* Una VolumeSnapshot es una solicitud para crear la instantánea de un volumen.  Es análogo a un PersistentVolumeClaim.
+* VolumeSnapshotClass permite al administrador especificar diferentes atributos para un VolumeSnapshot.  Le permite tener diferentes atributos para diferentes instantáneas tomadas del mismo volumen.
+
+
+image:redhat-openshift-060.png["VM de arquitectura Snapshot"]
+
+.Mostrar ejemplo
+[%collapsible]
+====
+**Requisito previo**
+
+Debes tener una máquina virtual existente con un PVC adjunto que esté aprovisionado en una Trident Storage Class, y la máquina virtual debe estar en estado de ejecución antes de que puedas tomar una instantánea del PVC. Debes tener un VolumeSnapshotClass creado que luego se pueda usar para crear un VolumeSnapshot. Esto se habría creado como parte de los requisitos previos para instalar OpenShift Virtualization. Puedes consultar el link:osv-trident-install.html["Paso 3 para crear una configuración de VolumeSnapshotClass"] para más detalles.
+
+**Para crear una instantánea de una máquina virtual, sigue estos pasos:**
+
+. Identifique el PVC que está conectado a la máquina virtual de origen y luego cree una instantánea de ese PVC.  Navegar a `Storage > VolumeSnapshots` y haga clic en Crear instantáneas de volumen.
+. Seleccione el PVC para el cual desea crear la instantánea, ingrese el nombre de la instantánea o acepte el valor predeterminado y seleccione la VolumeSnapshotClass adecuada.  Luego haga clic en Crear.
+. Esto crea la instantánea del PVC en ese momento.
+
+
+image:redhat-openshift-062.png["Crear instantánea"]
+
+**Crear una nueva máquina virtual a partir de la instantánea**
+
+. Primero, restaure la instantánea en un nuevo PVC.  Vaya a Almacenamiento > Instantáneas de volumen, haga clic en los puntos suspensivos junto a la instantánea que desea restaurar y haga clic en Restaurar como nueva PVC.
+. Ingrese los detalles del nuevo PVC y haga clic en Restaurar.  Esto crea un nuevo PVC.
+
+
+image:redhat-openshift-063.png["Restaurar instantánea a un nuevo PVC"]
+
+. A continuación, cree una nueva VM a partir de esta PVC.  Vaya a Virtualización > Máquinas virtuales y haga clic en Crear > Con YAML.
+. En la sección especificación > plantilla > especificación > volúmenes, especifique el nuevo PVC creado a partir de una instantánea en lugar de desde el disco contenedor.  Proporcione todos los demás detalles para la nueva máquina virtual según sus requisitos.
+
+
+[source, yaml]
+----
+- name: rootdisk
+  persistentVolumeClaim:
+    claimName: rhel8-short-frog-rootdisk-28dvb-snapshot-restore
+----
+. Haga clic en Crear para crear la nueva máquina virtual.
+. Una vez creada correctamente la VM, acceda y verifique que la nueva VM tenga el mismo estado que la VM cuyo PVC se utilizó para crear la instantánea en el momento en que se creó esta.
+
+
+====
+
+
+[[clone-a-vm-in-openshift-virtualization-using-trident]]
+== Clona una máquina virtual en OpenShift Virtualization usando Trident
+
+Este procedimiento incluye el uso de la clonación de volúmenes de Trident CSI, lo que te permite crear una nueva máquina virtual apagando la máquina virtual de origen o dejándola en funcionamiento.
+
+.Mostrar ejemplo
+[%collapsible]
+====
+**Clonación de máquinas virtuales**
+
+La clonación de una máquina virtual existente en OpenShift se logra con el soporte de la función de clonación Volume CSI de Trident.  La clonación de volumen CSI permite la creación de un nuevo PVC utilizando un PVC existente como fuente de datos mediante la duplicación de su PV.  Una vez creado el nuevo PVC, funciona como una entidad separada y sin ningún vínculo o dependencia del PVC de origen.
+
+image:redhat-openshift-057.png["Arquitectura de clonación de máquinas virtuales"]
+
+Existen ciertas restricciones a tener en cuenta con la clonación de volúmenes CSI:
+
+. El PVC de origen y el PVC de destino deben estar en el mismo proyecto.
+. Se admite la clonación dentro de la misma clase de almacenamiento.
+. La clonación solo se puede realizar cuando los volúmenes de origen y destino usan la misma configuración VolumeMode; por ejemplo, un volumen de bloque solo se puede clonar en otro volumen de bloque.
+
+
+Las máquinas virtuales en un clúster OpenShift se pueden clonar de dos maneras:
+
+. Apagando la máquina virtual de origen
+. Manteniendo activa la máquina virtual de origen
+
+
+**Al apagar la máquina virtual de origen**
+
+Clonar una máquina virtual existente apagándola es una función nativa de OpenShift que se implementa con el soporte de Trident.  Complete los siguientes pasos para clonar una máquina virtual.
+
+. Vaya a Cargas de trabajo > Virtualización > Máquinas virtuales y haga clic en los puntos suspensivos junto a la máquina virtual que desea clonar.
+. Haga clic en Clonar máquina virtual y proporcione los detalles de la nueva máquina virtual.
++
+image:redhat-openshift-058.png["clonar máquina virtual"]
+
+. Haga clic en Clonar máquina virtual; esto apaga la máquina virtual de origen e inicia la creación de la máquina virtual clonada.
+. Una vez completado este paso, podrá acceder y verificar el contenido de la máquina virtual clonada.
+
+
+**Al mantener activa la máquina virtual de origen**
+
+También se puede clonar una VM existente clonando el PVC existente de la VM de origen y luego creando una nueva VM usando el PVC clonado.  Este método no requiere que apague la máquina virtual de origen.  Complete los siguientes pasos para clonar una máquina virtual sin apagarla.
+
+. Vaya a Almacenamiento > PersistentVolumeClaims y haga clic en los puntos suspensivos junto a la PVC que está conectada a la máquina virtual de origen.
+. Haga clic en Clonar PVC y proporcione los detalles del nuevo PVC.
++
+image:redhat-openshift-059.png["clon de PVC"]
+
+. Luego haga clic en Clonar.  Esto crea una PVC para la nueva VM.
+. Vaya a Cargas de trabajo > Virtualización > Máquinas virtuales y haga clic en Crear > Con YAML.
+. En la sección especificación > plantilla > especificación > volúmenes, adjunte el PVC clonado en lugar del disco contenedor.  Proporcione todos los demás detalles para la nueva máquina virtual según sus requisitos.
+
+
+[listing]
+----
+- name: rootdisk
+  persistentVolumeClaim:
+    claimName: rhel8-short-frog-rootdisk-28dvb-clone
+----
+. Haga clic en Crear para crear la nueva máquina virtual.
+. Una vez creada correctamente la máquina virtual, acceda y verifique que la nueva máquina virtual sea un clon de la máquina virtual de origen.
+
+
+====

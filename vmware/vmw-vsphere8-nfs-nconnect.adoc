@@ -23,6 +23,7 @@ NOTE: La función generalmente está disponible para NFS v3 con 8.0 U2. Consulte
 
 
 
+[[use-cases]]
 == Casos de uso
 
 * Aloje más máquinas virtuales por almacén de datos NFS en el mismo host.
@@ -32,12 +33,14 @@ NOTE: La función generalmente está disponible para NFS v3 con 8.0 U2. Consulte
 
 
 
+[[technical-details]]
 == Detalles técnicos
 
 El propósito de nconnect es proporcionar múltiples conexiones TCP por almacén de datos NFS en un host vSphere.  Esto ayuda a aumentar el paralelismo y el rendimiento de los almacenes de datos NFS.  En ONTAP, cuando se establece un montaje NFS, se crea un ID de conexión (CID).  Ese CID permite hasta 128 operaciones simultáneas en vuelo.  Cuando el cliente supera ese número, ONTAP implementa una forma de control de flujo hasta que pueda liberar algunos recursos disponibles a medida que se completan otras operaciones.  Estas pausas generalmente duran solo unos pocos microsegundos, pero a lo largo de millones de operaciones pueden acumularse y generar problemas de rendimiento.  Nconnect puede tomar el límite de 128 y multiplicarlo por la cantidad de sesiones nconnect en el cliente, lo que proporciona más operaciones simultáneas por CID y puede potencialmente agregar beneficios de rendimiento.  Para obtener más detalles, consultelink:https://www.netapp.com/media/10720-tr-4067.pdf["Guía de implementación y mejores prácticas de NFS"]
 
 
 
+[[default-nfs-datastore]]
 === Almacén de datos NFS predeterminado
 
 Para abordar las limitaciones de rendimiento de una única conexión de almacén de datos NFS, se montan almacenes de datos adicionales o se agregan hosts adicionales para aumentar la conexión.
@@ -46,6 +49,7 @@ image:vmware-vsphere8-nfs-wo-nconnect.png["Almacén de datos NFS sin función nc
 
 
 
+[[with-nconnect-nfs-datastore]]
 === Con nConnect NFS Datastore
 
 Una vez creado el almacén de datos NFS utilizando las herramientas ONTAP o con otras opciones, la cantidad de conexiones por almacén de datos NFS se puede modificar utilizando vSphere CLI, PowerCLI, la herramienta govc u otras opciones de API.  Para evitar problemas de rendimiento junto con vMotion, mantenga la misma cantidad de conexiones para el almacén de datos NFS en todos los hosts de vSphere que forman parte del clúster de vSphere.
@@ -54,6 +58,7 @@ image:vmware-vsphere8-nfs-nconnect.png["Almacén de datos NFS con función nconn
 
 
 
+[[pre-requisite]]
 == Requisito previo
 
 Para utilizar la función nconnect, se deben cumplir las siguientes dependencias.
@@ -75,6 +80,7 @@ Para utilizar la función nconnect, se deben cumplir las siguientes dependencias
 |===
 
 
+[[update-number-of-connection-to-nfs-datastore]]
 == Actualizar el número de conexión al almacén de datos NFS
 
 Se utiliza una única conexión TCP cuando se crea un almacén de datos NFS con ONTAP Tools o con vCenter.  Para aumentar la cantidad de conexiones, se puede utilizar vSphere CLI.  El comando de referencia se muestra a continuación.
@@ -135,6 +141,7 @@ Referirselink:https://kb.vmware.com/s/article/91497["Artículo 91497 de la base 
 
 
 
+[[design-considerations]]
 == Consideraciones de diseño
 
 La cantidad máxima de conexiones admitidas en ONTAP depende del modelo de la plataforma de almacenamiento.  Busque exec_ctx enlink:https://www.netapp.com/media/10720-tr-4067.pdf["Guía de implementación y mejores prácticas de NFS"] Para más información.

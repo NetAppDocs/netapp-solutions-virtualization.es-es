@@ -20,6 +20,7 @@ Para obtener información sobre los tipos de almacenamiento admitidos y la compa
 
 
 
+[[network-configuration-guidelines]]
 == Pautas de configuración de red
 
 Siga estas pautas para optimizar el rendimiento y la confiabilidad de la red:
@@ -34,6 +35,7 @@ Siga estas pautas para optimizar el rendimiento y la confiabilidad de la red:
 
 
 
+[[storage-configuration-best-practices]]
 == Prácticas recomendadas para la configuración del almacenamiento
 
 Siga estas prácticas recomendadas para optimizar el rendimiento y la escalabilidad del almacenamiento:
@@ -52,6 +54,7 @@ Siga estas prácticas recomendadas para optimizar el rendimiento y la escalabili
 
 
 
+[[proxmox-ve-configuration-guidelines]]
 == Pautas de configuración de Proxmox VE
 
 Siga estas pautas para optimizar Proxmox VE con el almacenamiento NetApp ONTAP :

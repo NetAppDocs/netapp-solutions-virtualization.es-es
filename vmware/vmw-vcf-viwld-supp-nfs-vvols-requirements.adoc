@@ -13,6 +13,7 @@ Revise los requisitos de infraestructura y diseño de red recomendados para impl
 
 
 
+[[infrastructure-requirements]]
 == Requisitos de infraestructura
 
 Asegúrese de que los siguientes componentes y configuraciones estén en su lugar.
@@ -24,6 +25,7 @@ Asegúrese de que los siguientes componentes y configuraciones estén en su luga
 
 
 
+[[recommended-nfs-network-design]]
 == Diseño de red NFS recomendado
 
 Configure diseños de red redundantes para NFS para proporcionar tolerancia a fallas para sistemas de almacenamiento, conmutadores, adaptadores de red y sistemas host.  Es común implementar NFS con una sola subred o múltiples subredes según los requisitos arquitectónicos.
@@ -32,6 +34,7 @@ Configure diseños de red redundantes para NFS para proporcionar tolerancia a fa
 
 
 
+[[additional-information]]
 == Información adicional
 
 * Para obtener información detallada específica de VMware vSphere, consulte https://www.vmware.com/docs/vmw-best-practices-running-nfs-vmware-vsphere["Mejores prácticas para ejecutar NFS con VMware vSphere"] .
@@ -44,6 +47,7 @@ Esta documentación demuestra el proceso de creación de una nueva SVM y la espe
 
 
 
+[[whats-next]]
 == ¿Que sigue?
 
 Después de revisar los requisitos,link:vmw-vcf-viwld-supp-nfs-vvols-svm-lifs.html["crear el SVM y los LIF"] .

@@ -18,6 +18,7 @@ En este caso de uso, describimos el procedimiento para configurar un almacén de
 
 
 
+[[benefits-of-nfs]]
 == Beneficios de NFS
 
 *Simplicidad y facilidad de uso:* NFS es fácil de configurar y administrar, lo que lo convierte en una excelente opción para entornos que requieren compartir archivos de manera rápida y sencilla.
@@ -32,6 +33,7 @@ Para obtener más información sobre el uso de Fibre Channel con sistemas de alm
 
 
 
+[[scenario-overview]]
 == Descripción general del escenario
 
 Este escenario cubre los siguientes pasos de alto nivel:
@@ -51,6 +53,7 @@ NOTE: Esta solución es aplicable a las plataformas ONTAP compatibles con almace
 
 
 
+[[prerequisites]]
 == Prerrequisitos
 
 En este escenario se utilizan los siguientes componentes y configuraciones:
@@ -75,6 +78,7 @@ Para obtener más información sobre el uso de NFS con clústeres de vSphere, co
 
 
 
+[[deployment-steps]]
 == Pasos de implementación
 
 Para implementar un dominio de carga de trabajo VI con un almacén de datos NFS como almacenamiento principal, complete los siguientes pasos:
@@ -294,12 +298,14 @@ Para obtener instrucciones paso a paso sobre cómo implementar el complemento NF
 ====
 
 
+[[video-demo-for-this-solution]]
 == Demostración en vídeo de esta solución
 
 .Almacenes de datos NFS como almacenamiento principal para dominios de carga de trabajo VCF
 video::9b66ac8d-d2b1-4ac4-a33c-b16900f67df6[panopto,width=360]
 
 
+[[additional-information]]
 == Información adicional
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
