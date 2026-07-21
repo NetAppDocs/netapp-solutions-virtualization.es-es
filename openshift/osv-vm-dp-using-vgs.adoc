@@ -40,7 +40,7 @@ NOTE: Trident admite instantáneas de grupos de volúmenes solo para el protocol
 Instalar el clúster OpenShift 4.19 con Kubernetes versión 1.32.  Esta versión eleva la función Instantánea de grupo de volúmenes al estado Beta.  Las versiones posteriores de OpenShift pueden incluir versiones de Kubernetes posteriores a la v1.32, que también admiten esta función.
 
 .Pasos
-. Instale OpenShift Cluster versión 4.19 siguiendo las instrucciones de la documentación de Red Hat: https://docs.openshift.com/container-platform/4.19/installing/index.html["Instalación de OpenShift Container Platform"] .
+. Instala OpenShift Cluster versión 4.19 siguiendo las instrucciones en la documentación de Red Hat: https://docs.redhat.com/en/documentation/openshift_container_platform/4.19#Install["Instalación de OpenShift Container Platform"].
 . Verifique la versión de Kubernetes en el clúster OpenShift.
 +
 La siguiente imagen muestra OpenShift Cluster v4.19 instalado con Kubernetes v1.32.

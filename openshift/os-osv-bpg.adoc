@@ -174,9 +174,9 @@ NOTE: Para obtener detalles adicionales sobre las mejores prácticas para la con
 [[openshift-virtualization-tuning-scaling-guide]]
 == **Virtualización OpenShift: Guía de ajuste y escalado**
 
-Red Hat ha documentadolink:https://docs.openshift.com/container-platform/latest/scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.html["Recomendaciones y limitaciones de escalamiento de clústeres de OpenShift"] .
+Red Hat ha documentado link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/scalability_and_performance/recommended-performance-and-scalability-practices-2["Recomendaciones y limitaciones de escalamiento de clústeres de OpenShift"].
 
-Además, también han documentadolink:https://access.redhat.com/articles/6994974]["Guía de ajuste de virtualización de OpenShift"] ylink:https://access.redhat.com/articles/6571671["Límites admitidos para OpenShift Virtualization 4.x"] .
+Además, también han documentado link:https://access.redhat.com/articles/6994974["Guía de ajuste de virtualización de OpenShift"] y link:https://access.redhat.com/articles/6571671["Límites admitidos para OpenShift Virtualization 4.x"].
 
 
 NOTE: Se requiere una suscripción activa a Red Hat para acceder al contenido mencionado anteriormente.
@@ -185,7 +185,7 @@ La guía de ajuste contiene información sobre muchos parámetros de ajuste, inc
 
 * Ajuste de parámetros para crear muchas máquinas virtuales a la vez o en lotes grandes
 * Migración en vivo de máquinas virtuales
-* link:https://docs.openshift.com/container-platform/latest/virt/vm_networking/virt-dedicated-network-live-migration.html["Configuración de una red dedicada para la migración en vivo"]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/live-migration#virt-configuring-secondary-network-vm-live-migration_virt-configuring-cross-cluster-live-migration-network["Configuración de una red dedicada para la migración en vivo"]
 * Personalizar una plantilla de VM incluyendo un tipo de carga de trabajo
 
 

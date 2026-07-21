@@ -29,6 +29,8 @@ entries:
 - title: Protección de datos
   pdf-filename: Protección de datos de virtualización de Red Hat OpenShift
   entries:
+  - title: Copia de seguridad y restauración usando NetApp Console
+    url: "/openshift/osv-data-protection-console-br.html"
   - title: Copia de seguridad y restauración con Trident Protect
     url: "/openshift/osv-vm-dp-using-tp.html"
   - title: Proteger las máquinas virtuales mediante instantáneas de grupos de volúmenes
