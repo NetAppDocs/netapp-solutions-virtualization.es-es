@@ -2,26 +2,26 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-viwld-supp-iscsi-vvols-storage.html 
 keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
-summary: Configure el almacenamiento de vVols iSCSI en un dominio de carga de trabajo VI mediante herramientas ONTAP .  Implementará ONTAP tools for VMware vSphere, registrará un sistema de almacenamiento, creará un perfil de capacidad de almacenamiento y aprovisionará un almacén de datos vVols en el cliente vSphere. 
+summary: Configura el almacenamiento iSCSI vVols en un dominio de carga de trabajo usando ONTAP tools. Vas a implementar ONTAP tools for VMware vSphere, registrar un sistema de almacenamiento, crear un perfil de capacidad de almacenamiento y aprovisionar un datastore vVols en el cliente vSphere. 
 ---
-= Configurar el almacenamiento de vVols iSCSI en un dominio de carga de trabajo VCF VI mediante herramientas ONTAP
-:hardbreaks:
+= Configura el almacenamiento iSCSI vVols en un dominio de carga de trabajo de VCF usando ONTAP tools
 :allow-uri-read: 
-:nofooter: 
-:icons: font
-:linkattrs: 
-:imagesdir: ../media/
 
+
+
+
+[[configure-iscsi-vvols-storage-in-a-vcf-workload-domain-using-ontap-tools]]
+== Configura el almacenamiento iSCSI vVols en un dominio de carga de trabajo de VCF usando ONTAP tools
 
 [role="lead"]
-Configure el almacenamiento de vVols iSCSI en un dominio de carga de trabajo VI mediante herramientas ONTAP .  Implementará ONTAP tools for VMware vSphere, registrará un sistema de almacenamiento, creará un perfil de capacidad de almacenamiento y aprovisionará un almacén de datos vVols en el cliente vSphere.
+Configura el almacenamiento iSCSI vVols en un dominio de carga de trabajo usando ONTAP tools. Vas a implementar ONTAP tools for VMware vSphere, registrar un sistema de almacenamiento, crear un perfil de capacidad de almacenamiento y aprovisionar un datastore vVols en el cliente vSphere.
 
 
 
 [[step-1-deploy-ontap-tools-for-vmware-vsphere]]
-== Paso 1: Implementar ONTAP tools for VMware vSphere
+=== Paso 1: Implementar ONTAP tools for VMware vSphere
 
-Para los dominios de carga de trabajo VI, las herramientas ONTAP se instalan en el clúster de administración de VCF, pero se registran en el vCenter asociado con el dominio de carga de trabajo VI.
+Para los dominios de carga de trabajo, ONTAP tools se instala en el clúster de gestión de VCF pero se registra con el vCenter asociado al dominio de carga de trabajo.
 
 Las ONTAP tools for VMware vSphere se implementan como un dispositivo de VM y proporcionan una interfaz de usuario vCenter integrada para administrar el almacenamiento de ONTAP .
 
@@ -89,7 +89,7 @@ image:vmware-vcf-asa-035.png["Personalizar plantilla OTV 2"]
 
 
 [[step-2-add-a-storage-system]]
-== Paso 2: Agregar un sistema de almacenamiento
+=== Paso 2: Agregar un sistema de almacenamiento
 
 Realice los siguientes pasos para agregar un sistema de almacenamiento utilizando herramientas ONTAP .
 
@@ -134,7 +134,7 @@ image:vmware-vcf-asa-017.png["Autorizar certificado de clúster"]
 
 
 [[step-3-create-a-storage-capability-profile-in-ontap-tools]]
-== Paso 3: Crear un perfil de capacidad de almacenamiento en las herramientas de ONTAP
+=== Paso 3: Crear un perfil de capacidad de almacenamiento en las herramientas de ONTAP
 
 Los perfiles de capacidad de almacenamiento describen las características que ofrece una matriz de almacenamiento o un sistema de almacenamiento.  Incluyen definiciones de calidad de servicio y se utilizan para seleccionar sistemas de almacenamiento que cumplen los parámetros definidos en el perfil.  Se puede utilizar uno de los perfiles proporcionados o se pueden crear otros nuevos.
 
@@ -201,7 +201,7 @@ image:vmware-vcf-asa-040.png["Resumen para SCP"]
 
 
 [[step-4-create-a-vvols-datastore-in-ontap-tools]]
-== Paso 4: Crear un almacén de datos vVols en las herramientas de ONTAP
+=== Paso 4: Crear un almacén de datos vVols en las herramientas de ONTAP
 
 Para crear un almacén de datos vVols en las herramientas ONTAP , complete los siguientes pasos.
 

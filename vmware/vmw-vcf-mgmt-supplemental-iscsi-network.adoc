@@ -1,17 +1,17 @@
 ---
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-mgmt-supplemental-iscsi-network.html 
-keywords: netapp, vmware, cloud, foundation, vcf, iscsi, network, esxi 
-summary: Configure la red iSCSI en hosts ESXi en dominios de administración de VMware Cloud Foundation para habilitar la conectividad a los sistemas de almacenamiento ONTAP .  Creará grupos de puertos distribuidos con separación de VLAN, configurará equipos de enlace ascendente para redundancia y configurará adaptadores VMkernel en cada host ESXi para establecer rutas iSCSI dedicadas para capacidades de conmutación por error. 
+keywords: netapp, vmware, cloud, foundation, vcf, iscsi, network, vSphere 
+summary: Configura la red iSCSI en los hosts de vSphere en los dominios de gestión de VMware Cloud Foundation para habilitar la conectividad con los sistemas de almacenamiento ONTAP. Vas a crear grupos de puertos distribuidos con separación por VLAN, configurar el agrupamiento de enlaces ascendentes para redundancia y configurar adaptadores VMkernel en cada host de vSphere para establecer rutas iSCSI dedicadas para capacidades de conmutación por error. 
 ---
-= Configurar la red para iSCSI en hosts ESXi en un dominio de administración de VCF
+= Configura la red para iSCSI en hosts vSphere en un dominio de gestión de VCF
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-Configure la red iSCSI en hosts ESXi en dominios de administración de VMware Cloud Foundation para habilitar la conectividad a los sistemas de almacenamiento ONTAP .  Creará grupos de puertos distribuidos con separación de VLAN, configurará equipos de enlace ascendente para redundancia y configurará adaptadores VMkernel en cada host ESXi para establecer rutas iSCSI dedicadas para capacidades de conmutación por error.
+Configura la red iSCSI en los hosts de vSphere en los dominios de gestión de VMware Cloud Foundation para habilitar la conectividad con los sistemas de almacenamiento ONTAP. Vas a crear grupos de puertos distribuidos con separación por VLAN, configurar el agrupamiento de enlaces ascendentes para redundancia y configurar adaptadores VMkernel en cada host de vSphere para establecer rutas iSCSI dedicadas para capacidades de conmutación por error.
 
 Realice estos pasos en el clúster de dominio de administración de VCF mediante el cliente vSphere.
 
@@ -70,10 +70,10 @@ image:vmware-vcf-asa-026.png["mover uplink1 a no utilizado"]
 
 
 
-[[step-2-create-vmkernel-adapters-on-each-esxi-host]]
-== Paso 2: Crear adaptadores VMkernel en cada host ESXi
+[[step-2-create-vmkernel-adapters-on-each-vsphere-host]]
+== Paso 2: Crea adaptadores VMkernel en cada host vSphere
 
-Cree adaptadores VMkernel en cada host ESXi en el dominio de administración.
+Crea adaptadores VMkernel en cada host de vSphere en el dominio de gestión.
 
 .Pasos
 . Desde el cliente vSphere, navegue a uno de los hosts ESXi en el inventario del dominio de carga de trabajo. Desde la pestaña *Configurar*, seleccione *Adaptadores VMkernel* y haga clic en *Agregar red...* para comenzar.
@@ -132,4 +132,4 @@ image:vmware-vcf-asa-034.png["Revisar las selecciones de VMkernel"]
 [[whats-next]]
 == ¿Que sigue?
 
-Después de configurar la red para iSCSI en todos los hosts ESXi en el dominio de carga de trabajo,link:vmw-vcf-mgmt-supplemental-iscsi-storage.html["Configurar el almacenamiento para iSCSI en hosts ESXi"] .
+Después de que configures la red para iSCSI en todos los hosts de vSphere en el dominio de gestión, link:vmw-vcf-mgmt-supplemental-iscsi-storage.html["configura el almacenamiento para iSCSI en hosts vSphere"].

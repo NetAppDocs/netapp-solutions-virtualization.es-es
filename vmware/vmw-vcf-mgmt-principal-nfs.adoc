@@ -14,22 +14,22 @@ summary:
 
 
 [role="lead"]
-En este caso de uso, describimos el procedimiento para utilizar un almacén de datos NFS existente en ONTAP como almacenamiento principal para los dominios de administración de VMware Cloud Foundation (VCF).  Este procedimiento resume los componentes necesarios, los pasos de configuración y el proceso de implementación.
+En este caso de uso describimos el procedimiento para crear un almacén de datos NFS en ONTAP como almacenamiento principal para el dominio de gestión de VMware Cloud Foundation (VCF). Este procedimiento resume los componentes necesarios, los pasos de configuración y el proceso de implementación.
 
 
 
 [[introduction]]
 == Introducción
 
-Cuando sea apropiado, haremos referencia a la documentación externa para conocer los pasos que se deben realizar en el Administrador SDDC de VCF y haremos referencia a aquellos pasos que son específicos de la parte de configuración de almacenamiento.
+Cuando sea pertinente, nos remitiremos a la documentación externa para los pasos que deben seguirse en vCenter, y mencionaremos aquellos pasos que sean específicos de la parte relativa a la configuración del almacenamiento.
 
-Para obtener información sobre cómo convertir un entorno vSphere basado en NFS existente con ONTAP, consultelink:vmw-vcf-mgmt-nfs.html["Convertir el entorno de vSphere (almacén de datos NFS) en un dominio de administración de VCF"] .
-
-
-NOTE: La versión 5.2 de VCF introdujo la capacidad de convertir un entorno vSphere 8 existente en un dominio de administración de VCF o importarlo como dominios de carga de trabajo de VCF VI.  Antes de esta versión, VMware vSAN era la única opción de almacenamiento principal para el dominio de administración de VCF.
+Si necesitas usar un almacén de datos NFS 4.1 como almacenamiento principal o si vas a convertir un entorno existente basado en NFS con vSphere y ONTAP, consulta link:vmw-vcf-mgmt-nfs.html["Convertir el entorno vSphere (almacén de datos NFS) al dominio de gestión de VCF"].
 
 
-NOTE: Esta solución es aplicable a las plataformas ONTAP compatibles con almacenamiento NFS, incluidos NetApp AFF y FAS.
+NOTE: La versión 5.2 de VCF introdujo la capacidad de convertir un entorno existente de vSphere 8 en un dominio de gestión de VCF o importarlo como dominios de carga de trabajo VCF VI. Antes de esta versión, VMware vSAN era la única opción para el almacenamiento principal del dominio de gestión de VCF. Es mejor implementar las máquinas virtuales de controlador NSX en un datastore VMFS basado en FC o usar un switch de red dual para evitar un punto único de fallo. Si esas opciones no están disponibles, considera usar vSAN para alojar esas máquinas virtuales.
+
+
+NOTE: Esta solución es aplicable a las plataformas ONTAP compatibles con almacenamiento NFS, entre las que se incluyen NetApp AFF, AFX y FAS.
 
 
 
@@ -40,14 +40,20 @@ En este escenario se utilizan los siguientes componentes y configuraciones:
 
 * Sistema de almacenamiento NetApp con una máquina virtual de almacenamiento (SVM) configurada para permitir el tráfico NFS.
 * Se ha creado una interfaz lógica (LIF) en la red IP que transportará el tráfico NFS y está asociada con la SVM.
-* Un clúster vSphere 8 con 4 hosts ESXi y un dispositivo vCenter ubicado en el clúster.
-* Grupo de puertos distribuidos configurado para el tráfico de almacenamiento NFS y vMotion en las VLAN o segmentos de red establecidos para este propósito.
-* Descargue el software necesario para la conversión VCF.
+* Un clúster de vSphere con al menos 2 hosts de vSphere.
+* Almacén de datos NFS montado en uno de los hosts de vSphere con el mismo servidor NFS y la misma ruta de exportación que se usarán para el dominio de gestión.
+
+
+
+NOTE: Al implementar un dominio VCF, VCF comprueba la conectividad con el servidor NFS. Esto se lleva a cabo mediante el adaptador de gestión de los hosts vSphere antes de que se añada cualquier adaptador vmkernel adicional con la dirección IP del NFS. Por lo tanto, es necesario asegurarse de que 1) la red de gestión sea enrutable hacia el servidor NFS, o 2) se haya añadido un LIF para la red de gestión al SVM que aloja el volumen del almacén de datos NFS, para garantizar que la validación pueda continuar.
+
+* Asegúrate de que la herramienta ONTAP NFS VAAI esté instalada en uno de los hosts de vSphere que se pueda seleccionar como plantilla para la imagen del clúster.
+* Implementa la herramienta VCF Installer.
 
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
 
-Para obtener información sobre la configuración de VCF, consultelink:https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html["Documentación de VMware Cloud Foundation"] .
+Para obtener información sobre cómo configurar VCF, consulta link:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1.html["Documentación de VMware Cloud Foundation"].
 
 
 
@@ -59,21 +65,21 @@ Para obtener información sobre la configuración de VCF, consultelink:https://d
 [[management-domain-default-cluster]]
 === Dominio de administración - Clúster predeterminado
 
-El almacenamiento principal NFS en el clúster inicial solo es compatible con la herramienta de importación brownfield VCF.  Si VCF se implementa con la herramienta Cloud Builder (hasta la versión 5.2.x), solo se admite VSAN.
+La herramienta VCF Installer es compatible con VMFS en almacenes de datos FC, NFS v3 y vSAN para el dominio de gestión. Los siguientes pasos describen el procedimiento para implementar un dominio de gestión con un almacén de datos basado en NFSv3 en ONTAP como almacenamiento principal.
 
-Para obtener más información sobre el uso de un entorno vSphere existente, consulte https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/convert-or-import-a-vsphere-environment-into-vmware-cloud-foundation-admin.html["Conversión del entorno vSphere existente a un dominio de administración"] Para más información.
+
+NOTE: Valida o ajusta el valor de nConnect para el almacén de datos NFS después de la implementación.
+
+Para obtener más información sobre cómo utilizar un entorno existente de vSphere, consulta link:vmw-vcf-mgmt-nfs.html["Convertir el entorno vSphere (almacén de datos NFS) al dominio de gestión de VCF"].
 
 
 
 [[management-domain-additional-cluster]]
 === Dominio de administración - Clúster adicional
 
-El clúster vSphere adicional en el dominio de administración se puede implementar con las siguientes opciones:
+Para ampliar el dominio de gestión con un clúster adicional, consulta https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/building-your-private-cloud-infrastructure/working-with-workload-domains/expand-a-workload-domain/add-a-cluster-to-a-workload-domain-using-the-sddc-manager-ui.html["Agrega un clúster SDDC a un dominio VCF"].
 
-* Tenga un clúster adicional en el entorno de vSphere y utilice la herramienta de importación brownfield de VCF para convertir el entorno de vSphere en un dominio de administración. https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/create-datastore.html["ONTAP tools for VMware vSphere"] https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Administrador del sistema o API de ONTAP"] Se puede utilizar para implementar el almacén de datos NFS en el clúster vSphere.
-* Utilice la API de SDDC para implementar un clúster adicional.  Los hosts de vSphere deben tener el almacén de datos NFS configurado.  Usar https://docs.netapp.com/us-en/ontap/san-admin/provision-storage.html["Administrador del sistema o API de ONTAP"] para implementar LUN en hosts vSphere.
-* Utilice la interfaz de usuario de SDDC Manager para implementar un clúster adicional.  Pero esta opción solo crea un almacén de datos vSAN con versiones anteriores a 5.2.x.
-
+A grandes rasgos, los pasos para añadir un clúster adicional al dominio de gestión son los siguientes: * Asegúrate de que los hosts estén puestos en servicio y de que los grupos de red estén configurados en vCenter. * El volumen de datastore NFS está aprovisionado en el sistema de almacenamiento ONTAP y exportado a los hosts del clúster adicional. * Crea un nuevo SDDC Cluster en el dominio de gestión en vCenter y sigue el asistente para añadir el clúster adicional al dominio de gestión.
 
 
 
@@ -82,4 +88,4 @@ El clúster vSphere adicional en el dominio de administración se puede implemen
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
 
-Para obtener información sobre la configuración de VCF, consultelink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2.html["Documentación de VMware Cloud Foundation"] .
+Para obtener información sobre cómo configurar VCF, consulta link:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1.html["Documentación de VMware Cloud Foundation"].

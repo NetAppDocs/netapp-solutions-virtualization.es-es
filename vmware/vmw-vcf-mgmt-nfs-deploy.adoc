@@ -2,16 +2,16 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-mgmt-nfs-deploy.html 
 keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, array, ontap tools, otv, sddc, sddc manager, ontap tools, ontap tools 10 
-summary: Implemente ONTAP tools for VMware vSphere 10 y aprovisione un almacén de datos NFS para permitir una integración perfecta con VMware Cloud Foundation.  Implementarás herramientas ONTAP , configurarás backends de almacenamiento y crearás un almacén de datos NFS para respaldar la conversión de un clúster vSphere 8 a un dominio de administración VCF. 
+summary: Implementa ONTAP tools for VMware vSphere 10 y aprovisiona un almacén de datos NFS para permitir una integración perfecta con VMware Cloud Foundation. Vas a implementar ONTAP tools, configurar los backends de almacenamiento y crear un almacén de datos NFS para admitir la convergencia de un vCenter a un dominio de gestión de VCF. 
 ---
-= Implementar herramientas ONTAP y aprovisionar un almacén de datos NFS para la conversión de dominios de administración de VCF
+= Implementa ONTAP tools y aprovisiona un datastore NFS para el dominio de gestión de VCF
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-Implemente ONTAP tools for VMware vSphere 10 y aprovisione un almacén de datos NFS para permitir una integración perfecta con VMware Cloud Foundation.  Implementarás herramientas ONTAP , configurarás backends de almacenamiento y crearás un almacén de datos NFS para respaldar la conversión de un clúster vSphere 8 a un dominio de administración VCF.
+Implementa ONTAP tools for VMware vSphere 10 y aprovisiona un almacén de datos NFS para permitir una integración perfecta con VMware Cloud Foundation. Vas a implementar ONTAP tools, configurar los backends de almacenamiento y crear un almacén de datos NFS para admitir la convergencia de un vCenter a un dominio de gestión de VCF.
 
 
 
@@ -27,7 +27,7 @@ En este paso, las herramientas ONTAP se implementan en una configuración que no
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-001.png[Implementar plantilla OVF]
+image::vmw-vcf-mgmt-nfs-deploy-001.png[Implementar plantilla OVF]
 
 ====
 . En la *Plantilla OVF de implementación* complete los pasos para:
@@ -44,7 +44,7 @@ image::vmware-vcf-import-nfs-001.png[Implementar plantilla OVF]
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-002.png[configuración - tipo de implementación]
+image::vmw-vcf-mgmt-nfs-deploy-002.png[configuración - tipo de implementación]
 
 ====
 . En la página *Seleccionar almacenamiento*, elija el almacén de datos en el que desea instalar la máquina virtual y haga clic en *Siguiente*.
@@ -62,7 +62,7 @@ image::vmware-vcf-import-nfs-002.png[configuración - tipo de implementación]
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-003.png[Personalizar plantilla]
+image::vmw-vcf-mgmt-nfs-deploy-003.png[Personalizar plantilla]
 
 ====
 
@@ -84,7 +84,7 @@ Una vez instalada y encendida la máquina virtual de herramientas ONTAP , agregu
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-004.png[herramientas abiertas de ONTAP]
+image::vmw-vcf-mgmt-nfs-deploy-004.png[herramientas abiertas de ONTAP]
 
 ====
 . Vaya a *Backends de almacenamiento* en el menú de la izquierda y haga clic en *Agregar* para acceder a la ventana *Agregar backend de almacenamiento*.
@@ -93,7 +93,7 @@ image::vmware-vcf-import-nfs-004.png[herramientas abiertas de ONTAP]
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-005.png[Agregar backend de almacenamiento]
+image::vmw-vcf-mgmt-nfs-deploy-005.png[Agregar backend de almacenamiento]
 
 ====
 +
@@ -116,7 +116,7 @@ Las herramientas ONTAP integran funcionalidad en toda la interfaz de usuario del
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-006.png[Crear un almacén de datos]
+image::vmw-vcf-mgmt-nfs-deploy-006.png[Crear un almacén de datos]
 
 ====
 . En el asistente *Crear almacén de datos*, seleccione el tipo de almacén de datos que desea crear.  Las opciones son NFS o VMFS.
@@ -125,7 +125,7 @@ image::vmware-vcf-import-nfs-006.png[Crear un almacén de datos]
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-007.png[Nombre y protocolo]
+image::vmw-vcf-mgmt-nfs-deploy-007.png[Nombre y protocolo]
 
 ====
 . En la página *Almacenamiento*, seleccione la plataforma de almacenamiento ONTAP y la máquina virtual de almacenamiento (SVM). También puede seleccionar aquí cualquier política de exportación personalizada disponible. Haga clic en *Siguiente* para continuar.
@@ -133,19 +133,19 @@ image::vmware-vcf-import-nfs-007.png[Nombre y protocolo]
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-008.png[Página de almacenamiento]
+image::vmw-vcf-mgmt-nfs-deploy-008.png[Página de almacenamiento]
 
 ====
 . En la página *Atributos de almacenamiento*, seleccione el agregado de almacenamiento que se utilizará. Haga clic en *Siguiente* para continuar.
 . En la página *Resumen*, revise la información y haga clic en *Finalizar* para comenzar el proceso de aprovisionamiento.
 +
-Las herramientas ONTAP crean un volumen en el sistema de almacenamiento ONTAP y lo montan como un almacén de datos NFS en todos los hosts ESXi del clúster.
+ONTAP tools crea un volumen en el sistema de almacenamiento ONTAP y lo monta como un datastore NFS en todos los hosts vSphere del clúster.
 
 +
 .Mostrar ejemplo
 [%collapsible]
 ====
-image::vmware-vcf-import-nfs-009.png[Página de resumen]
+image::vmw-vcf-mgmt-nfs-deploy-009.png[Página de resumen]
 
 ====
 
@@ -155,4 +155,4 @@ image::vmware-vcf-import-nfs-009.png[Página de resumen]
 [[whats-next]]
 == ¿Que sigue?
 
-Después de haber implementado las herramientas ONTAP y aprovisionado el almacén de datos NFS,link:vmw-vcf-mgmt-nfs-conversion.html["convertir el clúster vSphere en un dominio de administración VCF"] .
+Una vez que hayas implementado las herramientas de ONTAP y hayas configurado el almacén de datos NFS, link:vmw-vcf-mgmt-nfs-converge.html["convierte el clúster vSphere al dominio de gestión de VCF"].

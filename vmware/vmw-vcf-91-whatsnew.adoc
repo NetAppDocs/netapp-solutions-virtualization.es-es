@@ -1,0 +1,49 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vcf-91-whatsnew.html 
+keywords: netapp, vmware, cloud, foundation, vcf, flexpod 
+summary: VCF 9.1 añade nuevas funciones y mejoras. 
+---
+= Novedades de VMware Cloud Foundation 9.1
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+VCF 9.1 incorpora varias funciones nuevas y mejoras que optimizan la funcionalidad y el rendimiento generales de tu entorno de nube privada. Conoce las últimas actualizaciones y cómo los productos de NetApp siguen aportando valor.
+
+Estas son algunas de las funciones clave y mejoras de VCF 9.1:
+
+* Aprovisionamiento sin intervención (ZTP) para clústeres de vSphere, lo que permite la implementación y configuración automatizadas de clústeres de vSphere.
++
+** Recuerda incluir el complemento NFS VAAI en la imagen si tienes previsto utilizar VAAI con los almacenes de datos NFS de ONTAP. https://mysupport.netapp.com/site/products/all/details/nfsplugin-vmware-vaai/about-tab["Complemento VAAI de NFS"] Se puede descargar desde el sitio de soporte de NetApp y añadirlo a la imagen utilizada para la implementación del clúster de vSphere.
+
+
+* Compatibilidad de UNMAP con los almacenes de datos NFS 4.1, lo que permite mejorar la eficiencia del almacenamiento y la reclamación de espacio.
+* Compatibilidad con NVMe sobre RDMA para mejorar el rendimiento del almacenamiento y reducir la latencia.
++
+** Ya están disponibles con el hipervisor las herramientas (pktcap-uw, rdmaperf-uw, rdmaperf) para el análisis de paquetes y la resolución de problemas en conexiones RoCEv2.
+
+
+* Detección automatizada, configuración y gestión de conexiones iSCSI mediante el protocolo Internet Storage Name Service (iSNS). Para más información consulta https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1/vsphere-storage/configuring-iscsi-and-iser-adapters-and-storage-with-esxi/using-isns-with-esx.html["Uso de iSNS con ESXi"].
+* La compatibilidad con la organización por niveles de memoria incluye compatibilidad con todos los tipos de máquinas virtuales y una implementación simplificada.
+* Compatibilidad ampliada con sistemas operativos invitados, incluyendo Ubuntu 26.04 LTS, Debian 13 y SUSE Linux Enterprise Server 16.
+* vSphere El cliente web del host se actualizó para ofrecer una experiencia similar a la del cliente web del servidor vCenter, con paridad total de funciones respecto a las versiones anteriores.
+* Clones vinculados de discos de primera clase (FCD) para un aprovisionamiento rápido de volúmenes de almacenamiento de contenedores en VMware Kubernetes Service (VKS).
+* Distributed Transit Gateway es compatible con VKS Supervisor y VCF Automation mediante Virtual Network Appliance (VNA). El soporte para equilibrador de carga de capa 4 también está disponible desde VNA.
+* VPC Transit Gateway, Traceflow y el análisis de tráfico en tiempo real ya están disponibles desde el cliente vSphere.
+* La extensión de VLAN para subredes de VPC permite la incorporación de cargas de trabajo desde grupos de puertos de vswitch distribuidos a subredes de VPC.
+* Posibilidad de definir el alcance de la red para Transit Gateway y VPC, ya sea limitándolo a clústeres específicos o extendiéndolo a todas las instancias de vCenter del dominio de red.
+* Velocidad mejorada de vMotion para migraciones masivas.
+* Políticas de conectividad de VPC para mejorar la seguridad y el control del tráfico de red entre VPC.
+* Compatibilidad con redes VKS Multi-Interface para la gestión aislada y el tráfico de cargas de trabajo.
+* Se incluye una herramienta de migración para la migración in situ de vCloud Director a VCF Automation.
+
+
+Para obtener más información sobre estas funciones y mejoras, consulta la link:https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/release-notes/vmware-cloud-foundation-9-1-0-0-release-notes/what-s-new.html["Documentación técnica de Broadcom sobre las novedades de VCF 9.1"].
+
+La mayor parte de nuestra documentación sigue siendo válida para VCF 9.1, salvo que se indique lo contrario. Antes de usarlo en producción, recuerda siempre consultar https://imt.netapp.com/matrix/#search["Herramienta de matriz de interoperabilidad"] y https://www.vmware.com/resources/compatibility/search.php?deviceCategory=san["Guía de compatibilidad de VMware"] para detalles relacionados con versiones específicas.

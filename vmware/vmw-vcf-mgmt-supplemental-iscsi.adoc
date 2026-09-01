@@ -2,7 +2,7 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-mgmt-supplemental-iscsi.html 
 keywords: netapp, vmware, cloud, foundation, vcf, iscsi, information 
-summary: 'Comience a agregar un almacén de datos iSCSI como almacenamiento complementario para un dominio de administración de VMware Cloud Foundation (VCF).  Configurará una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para iSCSI, configurará redes iSCSI en hosts ESXi, implementará ONTAP tools for VMware vSphere y creará un almacén de datos VMFS.' 
+summary: 'Empieza a añadir un almacén de datos iSCSI como almacenamiento complementario para un dominio de gestión de VMware Cloud Foundation (VCF). Vas a configurar una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para iSCSI, configurar la red iSCSI en los hosts de vSphere, implementar ONTAP tools for VMware vSphere y crear un almacén de datos VMFS.' 
 ---
 = Flujo de trabajo de implementación para agregar un almacén de datos iSCSI como almacenamiento complementario en un dominio de administración de VCF
 :hardbreaks:
@@ -14,7 +14,7 @@ summary: 'Comience a agregar un almacén de datos iSCSI como almacenamiento comp
 
 
 [role="lead"]
-Comience a agregar un almacén de datos iSCSI como almacenamiento complementario para un dominio de administración de VMware Cloud Foundation (VCF).  Configurará una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para iSCSI, configurará redes iSCSI en hosts ESXi, implementará ONTAP tools for VMware vSphere y creará un almacén de datos VMFS.
+Empieza a añadir un almacén de datos iSCSI como almacenamiento complementario para un dominio de gestión de VMware Cloud Foundation (VCF). Vas a configurar una máquina virtual de almacenamiento (SVM) con interfaces lógicas (LIF) para iSCSI, configurar la red iSCSI en los hosts de vSphere, implementar ONTAP tools for VMware vSphere y crear un almacén de datos VMFS.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]link:vmw-vcf-mgmt-supplemental-iscsi-requirements.html["Revisar los requisitos de implementación"]
 [role="quick-margin-para"]
@@ -26,8 +26,16 @@ Cree una SVM con múltiples LIF para el tráfico iSCSI.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Tres"]link:vmw-vcf-mgmt-supplemental-iscsi-network.html["Configurar la red"]
 [role="quick-margin-para"]
-Configurar redes para iSCSI en hosts ESXi.
+Configura la red para iSCSI en hosts vSphere.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["Cuatro"]link:vmw-vcf-mgmt-supplemental-iscsi-storage.html["Configurar el almacenamiento"]
 [role="quick-margin-para"]
 Implementar y utilizar herramientas ONTAP para configurar el almacenamiento.
+
+
+
+[[reference-video]]
+== Vídeo de referencia:
+
+.Multipath iSCSI con AFF y ASA r2
+video::62c2a66c-1a07-4284-bc7b-b4ac00e9aeea[panopto]

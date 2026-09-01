@@ -2,20 +2,20 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-viwld-supp-iscsi-vvols.html 
 keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
-summary: 'Comience a configurar un almacén de datos vVols con iSCSI para almacenamiento complementario en un dominio de carga de trabajo de infraestructura virtual (VI) de VMware Cloud Foundation (VCF).  Creará la SVM y los LIF, configurará la red iSCSI, implementará ONTAP tools for VMware vSphere y aprovisionará el almacén de datos vVols .' 
+summary: 'Empieza a configurar un datastore vVols con iSCSI como almacenamiento complementario en un dominio de cargas de trabajo de VMware Cloud Foundation (VCF). Crearás el SVM y los LIF, configurarás la red iSCSI, implementarás ONTAP tools for VMware vSphere y aprovisionarás el datastore vVols.' 
 ---
-= Flujo de trabajo de implementación para agregar un almacén de datos iSCSI vVols como almacenamiento complementario en un dominio de carga de trabajo VI
+= Flujo de trabajo de implementación para añadir un almacén de datos iSCSI vVols como almacenamiento complementario en un dominio de carga de trabajo
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-Comience a configurar un almacén de datos iSCI vVols como almacenamiento complementario en un dominio de carga de trabajo de infraestructura virtual (VI) de VMware Cloud Foundation (VCF).  Creará la SVM y los LIF, configurará la red iSCSI, implementará ONTAP tools for VMware vSphere y configurará el almacenamiento.
+Empieza a configurar un almacén de datos iSCSI vVols como almacenamiento complementario en un dominio de cargas de trabajo de VMware Cloud Foundation (VCF). Crearás el SVM y los LIF, configurarás la red iSCSI, implementarás ONTAP tools for VMware vSphere y configurarás el almacenamiento.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]link:vmw-vcf-viwld-supp-iscsi-vvols-requirements.html["Revisar los requisitos de implementación"]
 [role="quick-margin-para"]
-Revise los requisitos para implementar iSCSI vVols en un dominio de carga de trabajo de VMware Cloud Foundation VI.
+Revisa los requisitos para implementar iSCSI vVols en un dominio de cargas de trabajo de VMware Cloud Foundation.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Dos"]link:vmw-vcf-viwld-supp-iscsi-vvols-svm-lifs.html["Crear el SVM y los LIF"]
 [role="quick-margin-para"]
@@ -23,7 +23,7 @@ Cree una SVM con múltiples LIF para el tráfico iSCSI.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Tres"]link:vmw-vcf-viwld-supp-iscsi-vvols-network.html["Configurar la red"]
 [role="quick-margin-para"]
-Configurar redes para iSCSI en hosts ESXi.
+Configura la red para iSCSI en hosts vSphere.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["Cuatro"]link:vmw-vcf-viwld-supp-iscsi-vvols-storage.html["Configurar el almacenamiento"]
 [role="quick-margin-para"]

@@ -2,9 +2,9 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-mgmt-nfs.html 
 keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, array, ontap tools, otv, sddc, sddc manager, ontap tools, ontap tools 10 
-summary: Convierta un clúster vSphere 8 existente con almacenes de datos NFS de NetApp ONTAP en un dominio de administración de VMware Cloud Foundation.  Revisará los requisitos de configuración, implementará herramientas ONTAP y aprovisionará almacenes de datos NFS, y utilizará la herramienta de importación VCF para validar y convertir el clúster. 
+summary: Converge un clúster existente de vSphere con almacenes de datos NFS de NetApp ONTAP en un dominio de gestión de VMware Cloud Foundation. Revisarás los requisitos de configuración, implementarás las herramientas de ONTAP y aprovisionarás almacenes de datos NFS, y usarás la VCF Installer Tool para validar y usar tus componentes existentes, implementar los nuevos componentes necesarios y configurar la plataforma 
 ---
-= Flujo de trabajo de implementación para convertir instancias de servidor vCenter en dominios de administración VCF con almacenes de datos NFS
+= Flujo de trabajo de implementación para converger una instancia de servidor vCenter al dominio de gestión de VCF con almacenes de datos NFS
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,18 +14,30 @@ summary: Convierta un clúster vSphere 8 existente con almacenes de datos NFS de
 
 
 [role="lead"]
-Convierta un clúster vSphere 8 existente con almacenes de datos NFS de NetApp ONTAP en un dominio de administración de VMware Cloud Foundation.  Revisará los requisitos de configuración, implementará herramientas ONTAP y aprovisionará almacenes de datos NFS, y utilizará la herramienta de importación VCF para validar y convertir el clúster.
+Converge un clúster existente de vSphere con almacenes de datos NFS de NetApp ONTAP a un dominio de gestión de VMware Cloud Foundation. Vas a revisar los requisitos de configuración, implementar las ONTAP tools y aprovisionar almacenes de datos NFS, y usar la VCF Installer Tool para validar y usar tus componentes existentes, desplegar los nuevos componentes necesarios y configurar la plataforma.
 
-Para obtener una descripción general del proceso de conversión, consulte la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/convert-or-import-a-vsphere-environment-into-vmware-cloud-foundation-admin.html["Convertir un entorno de vSphere en un dominio de administración o importar un entorno de vSphere como un dominio de carga de trabajo de VI en VMware Cloud Foundation"] .
+Este flujo de trabajo también es aplicable si se van a utilizar almacenes de datos ONTAP NFS 4.1 como almacenamiento principal para el dominio de gestión de VCF.
+
+Para obtener una visión general del proceso de convergencia, consulta la documentación de VMware: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/deployment/converging-your-existing-vsphere-infrastructure-to-a-vcf-or-vvf-platform-.html["Convertir la infraestructura virtual existente en un VCF"].
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]link:vmw-vcf-mgmt-nfs-requirements.html["Revisar los requisitos de configuración"]
 [role="quick-margin-para"]
-Revise los requisitos clave para convertir instancias de servidor vCenter en dominios de administración de VCF mediante almacenes de datos NFS.
+Revisa los requisitos clave para la convergencia de instancias del servidor vCenter al dominio de gestión de VCF usando almacenes de datos NFS.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Dos"]link:vmw-vcf-mgmt-nfs-deploy.html["Implementar herramientas ONTAP y aprovisionar un almacén de datos NFS"]
 [role="quick-margin-para"]
 Implemente ONTAP tools for VMware vSphere y aprovisione un almacén de datos NFS.
 
-.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Tres"]link:vmw-vcf-mgmt-nfs-conversion.html["Convertir un clúster de vSphere en un dominio de administración de VCF"]
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Tres"]link:vmw-vcf-mgmt-nfs-converge.html["Convierte el clúster vSphere al dominio de gestión de VCF"]
 [role="quick-margin-para"]
-Utilice la herramienta de importación de VCF para validar y convertir vSphere 8 al dominio de administración de VCF.
+Utiliza la VCF Installer Tool para validar, reutilizar los componentes existentes e implementar otros nuevos que conforman el dominio de gestión de VCF.
+
+
+
+[[reference-video-demo-for-this-solution]]
+== Vídeo de demostración de referencia para esta solución
+
+El siguiente vídeo muestra cómo crear un almacén de datos NFS con ONTAP tools utilizando la función nConnect.
+
+.Clúster escalable para VCF con sincronización activa NAS de SnapMirror
+video::76549cac-a1e3-4471-acf5-b49c00eebcf7[panopto,width=360]

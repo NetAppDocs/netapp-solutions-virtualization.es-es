@@ -14,14 +14,14 @@ summary:
 
 
 [role="lead"]
-Obtenga información sobre las soluciones de NetApp que puede utilizar para integrar la alta disponibilidad de NetApp ONTAP con VMware vSphere Metro Storage Cluster (vMSC).  Esto proporciona soluciones sólidas para la gestión de VMware Cloud Foundation (VCF) y los dominios de carga de trabajo de VI.
+Descubre las soluciones de NetApp que puedes utilizar para integrar la alta disponibilidad de NetApp ONTAP con VMware vSphere Metro Storage Cluster (vMSC). Esto proporciona soluciones sólidas para la gestión y los dominios de cargas de trabajo de VMware Cloud Foundation (VCF).
 
-Esta combinación garantiza la disponibilidad continua de datos, conmutación por error sin inconvenientes y recuperación ante desastres en sitios dispersos geográficamente, lo que mejora la resiliencia y la continuidad operativa para cargas de trabajo críticas.  La sincronización activa de SnapMirror permite que los servicios comerciales sigan funcionando incluso en caso de una falla total del sitio y permite que las aplicaciones conmuten por error de forma transparente mediante una copia secundaria. Con la sincronización activa de SnapMirror , no se requiere intervención manual ni scripts personalizados para activar una conmutación por error.
+Esta combinación garantiza la disponibilidad continua de los datos, una conmutación por error fluida y la recuperación ante desastres en emplazamientos geográficamente dispersos, mejorando la resiliencia y la continuidad operativa de las cargas de trabajo críticas. SnapMirror active sync (SAN y NAS) permite que los servicios empresariales sigan funcionando incluso en caso de un fallo del sitio, permitiendo que las aplicaciones realicen la conmutación por error de forma transparente utilizando una copia secundaria. No se requiere ninguna intervención manual ni scripts personalizados para activar una conmutación por error con SnapMirror active sync (SAN y NAS). Se utiliza un mediador ONTAP para supervisar el estado del sitio primario y realizar automáticamente la conmutación por error al sitio secundario en caso de desastre. El mediador ONTAP se implementa en un servidor o máquina virtual independiente que no forma parte de ninguno de los dos sitios, garantizando la disponibilidad del quórum para evitar situaciones de split brain.
 
 Consulte las siguientes soluciones para obtener más detalles.
 
-* link:vmw-vcf-vmsc-mgmt-smas.html["Clúster extendido para el dominio de administración mediante la sincronización activa de SnapMirror"]
+* link:vmw-vcf-vmsc-mgmt-smas.html["Stretch Cluster para el dominio de gestión usando sincronización activa de SnapMirror (SAN y NAS)"]
 * link:vmw-vcf-vmsc-mgmt-mcc.html["Clúster extensible para el dominio de administración mediante MetroCluster"]
-* link:vmw-vcf-vmsc-viwld-smas.html["Clúster extendido para el dominio de carga de trabajo VI mediante la sincronización activa de SnapMirror"]
-* link:vmw-vcf-vmsc-viwld-mcc.html["Clúster extensible para el dominio de carga de trabajo VI mediante MetroCluster"]
+* link:vmw-vcf-vmsc-viwld-smas.html["Stretch Cluster para Workload Domain usando la sincronización activa SnapMirror (SAN y NAS)"]
+* link:vmw-vcf-vmsc-viwld-mcc.html["Stretch Cluster para un dominio de carga de trabajo usando MetroCluster"]
 

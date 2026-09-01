@@ -2,9 +2,9 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-migrate.html 
 keywords: vmware, vcf, migrate, import 
-summary: La conversión de un entorno vSphere con almacenes de datos Fibre Channel o NFS existentes en ONTAP implica integrar la infraestructura actual en una arquitectura de nube privada moderna. 
+summary: Converger un entorno vSphere con los datastores Fibre Channel o NFS existentes en ONTAP implica integrar la infraestructura actual en una arquitectura moderna de nube privada. 
 ---
-= Obtenga información sobre cómo convertir un entorno de vSphere con almacenes de datos existentes a un dominio de administración de VCF
+= Conoce cómo converger un entorno vSphere con los datastores existentes a un dominio de gestión de VCF
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,16 +14,16 @@ summary: La conversión de un entorno vSphere con almacenes de datos Fibre Chann
 
 
 [role="lead"]
-La conversión de un entorno vSphere con almacenes de datos Fibre Channel o NFS existentes en ONTAP implica integrar la infraestructura actual en una arquitectura de nube privada moderna.
+Cualquier entorno de vSphere compatible puede integrarse en un entorno de nube privada de VCF. Puede converger en un dominio de gestión de VCF o importarse como dominio de carga de trabajo. Esta solución muestra cómo los almacenes de datos VMFS o NFS existentes en vSphere se convierten en el almacenamiento principal cuando el clúster se convierte en un dominio de gestión de VCF.
 
 
 
 [[solution-overview]]
 == Descripción general de la solución
 
-Esta solución demuestra cómo los almacenes de datos FC o NFS existentes en vSphere se convierten en almacenamiento principal cuando el clúster se convierte en un dominio de administración de VCF.
+Esta solución muestra cómo los almacenes de datos VMFS o NFS existentes en vSphere pasan a ser el almacenamiento principal cuando el clúster se integra en un dominio de gestión de VCF.
 
-Este proceso se beneficia de la robustez y flexibilidad del almacenamiento ONTAP para garantizar un acceso y una gestión de datos sin inconvenientes.  Una vez establecido un dominio de administración de VCF a través del proceso de conversión, los administradores pueden importar de manera eficiente entornos vSphere adicionales, incluidos aquellos que utilizan almacenes de datos FC y NFS, en el ecosistema de VCF.
+Este proceso se beneficia de la solidez y flexibilidad del almacenamiento ONTAP para garantizar un acceso y una gestión de datos sin interrupciones. Después de que se establece un dominio de gestión de VCF mediante el proceso de convergencia, los administradores pueden importar de forma eficiente entornos adicionales de vSphere, incluidos aquellos que utilizan tanto almacenes de datos VMFS como NFS, al ecosistema de VCF.
 
 Esta integración no solo mejora el uso de recursos, sino que también simplifica la gestión de la infraestructura de nube privada, lo que garantiza una transición fluida con una interrupción mínima de las cargas de trabajo existentes.
 
@@ -40,13 +40,13 @@ image::vmware-vcf-import-nfs-010.png[Arquitectura de herramientas de ONTAP]
 
 
 
-[[supported-solutions-for-converting-a-vsphere-environment]]
-== Soluciones compatibles para convertir un entorno de vSphere
+[[supported-solutions-for-converging-a-vsphere-environment]]
+== Soluciones compatibles para la convergencia de un entorno vSphere
 
 Consulte las siguientes soluciones para obtener los detalles técnicos necesarios para convertir una instancia de vCenter.
 
-* link:vmw-vcf-mgmt-nfs.html["Convertir una instancia de vCenter al dominio de administración de VCF (almacén de datos NFS)"]
-* link:vmw-vcf-mgmt-fc.html["Convertir la instancia de vCenter al dominio de administración de VCF (almacén de datos FC)"]
+* link:vmw-vcf-mgmt-nfs.html["Convierte una instancia de vCenter al dominio de gestión de VCF (datastore NFS)"]
+* link:vmw-vcf-mgmt-vmfs.html["Convierte una instancia de vCenter al dominio de gestión de VCF (datastore VMFS)"]
 
 
 
@@ -55,8 +55,8 @@ Consulte las siguientes soluciones para obtener los detalles técnicos necesario
 == Información adicional
 
 * Para ver demostraciones en video de estas soluciones, consultelink:../videos/vmware-videos.html#vmware-datastore-provisioning-with-ontap["Aprovisionamiento de almacenes de datos de VMware con ONTAP"] .
-* Para obtener una descripción general del proceso de conversión, consulte la https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/map-for-administering-vcf-5-2/importing-existing-vsphere-environments-admin/convert-or-import-a-vsphere-environment-into-vmware-cloud-foundation-admin.html["Convertir un entorno de vSphere en un dominio de administración o importar un entorno de vSphere como un dominio de carga de trabajo de VI en VMware Cloud Foundation"] .
+* Para obtener una visión general del proceso de convergencia, consulta la  https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/deployment/converging-your-existing-vsphere-infrastructure-to-a-vcf-or-vvf-platform-.html["Convertir la infraestructura virtual existente en un VCF"].
 * Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] .
 * Para obtener información sobre la configuración de VCF, consultelink:https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html["Documentación de VMware Cloud Foundation"] .
-* Para conocer el almacenamiento compatible y otras consideraciones para convertir o importar vSphere a VCF 5.2, consulte https://techdocs.broadcom.com/fr/fr/vmware-cis/vcf/vcf-5-2-and-earlier/5-2/considerations-before-converting-or-importing-existing-vsphere-environments-into-vcf.html["Consideraciones antes de convertir o importar entornos vSphere existentes a VMware Cloud Foundation"] .
+* Para conocer los sistemas de almacenamiento compatibles y otras consideraciones relacionadas con la convergencia, consulta https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/deployment/converging-your-existing-vsphere-infrastructure-to-a-vcf-or-vvf-platform-/supported-and-not-supported-configurations.html["Configuraciones compatibles y no compatibles para converger a VCF"].
 

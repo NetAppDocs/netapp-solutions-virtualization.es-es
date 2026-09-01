@@ -4,7 +4,7 @@ permalink: vmware/vmw-vcf-vmsc-viwld-smas.html
 keywords: netapp, vmware, cloud, foundation, vcf, asa, all-flash, array, ontap tools, otv, sddc, iscsi 
 summary:  
 ---
-= Configurar un clúster extendido para un dominio de carga de trabajo VI mediante SnapMirror Active Sync
+= Configura un clúster extensible para un dominio de carga de trabajo usando la sincronización activa de SnapMirror (SAN y NAS)
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,39 +14,49 @@ summary:
 
 
 [role="lead"]
-En este caso de uso, describimos el procedimiento para configurar un clúster extendido para un dominio de carga de trabajo de infraestructura virtual (VI) mediante SnapMirror Active Sync con ONTAP tools for VMware vSphere.  Este procedimiento incluye la creación de un dominio de carga de trabajo VCF con VMFS en Fibre Channel, el registro de vCenter con herramientas ONTAP , el registro de sistemas de almacenamiento y la protección del clúster vSphere.
+En este caso de uso te mostramos el procedimiento para configurar un clúster extendido para un dominio de carga de trabajo usando SnapMirror active sync con ONTAP tools for VMware vSphere (ONTAP tools 10.6 es compatible con FC e iSCSI). ONTAP admite SnapMirror active sync tanto para SAN (con iSCSI, Fibre Channel y NVMe over Fabrics) como para NAS (NFSv3 y NFSv4.1).
 
-image:vmware-vcf-asa-mgmt-stretchcluster-001.png["Instancia única - Múltiples zonas de disponibilidad"]
+image:vmw-vcf-vmsc-viwld-smas-001.png["Stretch cluster para VCF con sincronización activa de SnapMirror"]
 
+Se admiten tanto configuraciones en clústeres extendidos uniformes como no uniformes para SAN. En el caso de NAS, es una configuración activa-pasiva con ONTAP 9.19.1.
+
+[NOTE]
+====
+Los parámetros de proximidad del host se utilizan junto con la configuración multivía para garantizar la selección óptima de la ruta para el tráfico de almacenamiento. Los parámetros de proximidad del host se configuran en igroup en el caso de SCSI y en subsystem en el caso de NVMe-oF. Por ejemplo, en la configuración de acceso uniforme al host, el host tiene acceso a ambos sistemas de almacenamiento en el clúster extendido. En la configuración multivía, las rutas óptimas y no óptimas se configuran en función de los parámetros de proximidad del host.
+
+====
 
 
 [[scenario-overview]]
 == Descripción general del escenario
 
-Los almacenes de datos en el dominio de carga de trabajo VCF se pueden proteger con la sincronización activa de SnapMirror para proporcionar una solución de clúster extendido.  La protección está habilitada en el nivel del clúster vSphere y todos los almacenes de datos de bloques ONTAP en el clúster estarán protegidos.
+Los almacenes de datos del dominio de carga de trabajo de VCF pueden protegerse con la sincronización activa de SnapMirror para ofrecer una solución de clúster extendido. La protección se habilita a nivel de almacén de datos (grupo de consistencia) para SAN y se protege a nivel de SVM para NAS.
+
+
+
+[[prerequisites]]
+== Prerrequisitos
 
 .Almacenamiento principal en el dominio de carga de trabajo
 [%collapsible%open]
 ====
-El dominio de carga de trabajo se puede crear importándolo mediante la herramienta de importación VCF o implementándolo mediante el administrador SDDC.  La implementación con el administrador SDDC proporcionará más opciones de red que importar un entorno existente.
+El dominio de carga de trabajo se puede crear ya sea mediante importación o mediante la creación usando la herramienta VCF Ops.
 
-. Crear un dominio de carga de trabajo con VMFS en FC
+. Crea un dominio de carga de trabajo con cualquier protocolo compatible.
 . link:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/add-vcenter.html["Registrar el dominio de carga de trabajo vCenter en el administrador de herramientas de ONTAP para implementar el complemento vCenter"]
 . link:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/add-storage-backend.html["Registrar sistemas de almacenamiento en las herramientas ONTAP"]
-. link:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/protect-cluster.html["Proteger el clúster de vSphere"]
+. Para los almacenes de datos iSCSI y FC, consulta link:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/protect/protect-multiple-ds.html["Protege el datastore de vSphere con las herramientas de ONTAP"]
+. Para los almacenes de datos NVMe-oF y NFS, mira el vídeo de demostración a continuación para ver los pasos para proteger los almacenes de datos en el dominio de carga de trabajo con SnapMirror active sync.
 
-
-
-NOTE: Cada vez que se expande o se reduce el clúster, es necesario actualizar la relación del clúster de host en las herramientas de ONTAP para el clúster a fin de indicar los cambios realizados en el origen o el destino.
 
 ====
 .Almacenamiento complementario en el dominio de carga de trabajo
 [%collapsible%open]
 ====
-Una vez que el dominio de carga de trabajo esté en funcionamiento, se pueden crear almacenes de datos adicionales utilizando herramientas ONTAP que activarán la expansión del grupo de consistencia.
+Una vez que el dominio de carga de trabajo esté en funcionamiento, se pueden crear y proteger almacenes de datos adicionales mediante las herramientas de ONTAP. Para obtener más detalles sobre SnapMirror active sync, consulta https://docs.netapp.com/us-en/ontap/snapmirror-active-sync/index.html#benefits["Conoce la sincronización activa de ONTAP SnapMirror"]
 
 
-TIP: Si un clúster de vSphere está protegido, todos los almacenes de datos del clúster estarán protegidos.
+TIP: Con ONTAP tools 10.6 y versiones posteriores, puedes proteger los datastores del dominio de carga de trabajo con SnapMirror active sync. Consulta el video de demostración a continuación para ver los pasos para proteger los datastores del dominio de carga de trabajo con SnapMirror active sync.
 
 ====
 
@@ -63,5 +73,9 @@ Para obtener información sobre la configuración de VCF, consultelink:https://t
 [[video-demo-for-this-solution]]
 == Demostración en vídeo de esta solución
 
-.Ampliar clúster para VCF con herramientas ONTAP
-video::569a91a9-2679-4414-b6dc-b25d00ff0c5a[panopto,width=360]
+.Clúster de extensión para VCF con sincronización activa iSCSI con SnapMirror usando ONTAP tools
+video::4c21ee83-dc11-43bf-a9af-b4ac014aaa0e[panopto,width=360]
+.Clúster extendido para VCF con sincronización activa de SnapMirror NVMe/TCP
+video::f85530ec-ff24-4c7d-abb4-b49b0176402c[panopto,width=360]
+.Clúster escalable para VCF con sincronización activa NAS de SnapMirror
+video::76549cac-a1e3-4471-acf5-b49c00eebcf7[panopto,width=360]

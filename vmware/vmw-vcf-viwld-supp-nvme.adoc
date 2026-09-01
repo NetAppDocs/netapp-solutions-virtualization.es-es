@@ -2,9 +2,9 @@
 sidebar: sidebar 
 permalink: vmware/vmw-vcf-viwld-supp-nvme.html 
 keywords: netapp, vmware, cloud, foundation, vcf, aff, all-flash, nfs, vvol, vvols, array, ontap tools, otv, sddc, iscsi 
-summary: 'Comience a agregar un almacén de datos NVMe sobre TCP (NVMe/TCP) como almacenamiento complementario para un dominio de carga de trabajo de infraestructura virtual (VI) de VMware Cloud Foundation (VCF).  Configurará una máquina virtual de almacenamiento (SVM) habilitada para NVMe/TCP y LIF, creará espacios de nombres NVMe, configurará la red del host ESXi e implementará un almacén de datos VMFS.' 
+summary: 'Empieza a añadir un almacén de datos NVMe sobre TCP (NVMe/TCP) como almacenamiento complementario para un dominio de cargas de trabajo de VMware Cloud Foundation (VCF). Vas a configurar una máquina virtual de almacenamiento (SVM) compatible con NVMe/TCP y LIFs, crear espacios de nombres NVMe, configurar la red del host vSphere y desplegar un almacén de datos VMFS.' 
 ---
-= Flujo de trabajo de implementación para agregar almacenes de datos NVMe vVols como almacenamiento complementario en un dominio de carga de trabajo VI
+= Flujo de trabajo de implementación para añadir vVols almacenes de datos NVMe como almacenamiento complementario en un dominio de carga de trabajo
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,11 +14,11 @@ summary: 'Comience a agregar un almacén de datos NVMe sobre TCP (NVMe/TCP) como
 
 
 [role="lead"]
-Comience a agregar almacenes de datos NVMe/TCP vVols como almacenamiento complementario para un dominio de carga de trabajo de infraestructura virtual (VI) de VMware Cloud Foundation (VCF).  Revisará los requisitos de implementación, configurará SVM y LIF habilitados para NVMe/TCP, configurará la red del host ESXi e implementará el almacén de datos NVMe/TCP.
+Empieza a añadir almacenes de datos NVMe/TCP vVols como almacenamiento complementario para un dominio de cargas de trabajo de VMware Cloud Foundation (VCF). Vas a revisar los requisitos de implementación, configurar SVM y LIF habilitados para NVMe/TCP, configurar la red del host vSphere e implementar el almacén de datos NVMe/TCP vVol.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]link:vmw-vcf-viwld-supp-nvme-requirements.html["Revisar los requisitos de implementación"]
 [role="quick-margin-para"]
-Revise los requisitos para implementar un almacén de datos NVMe/TCP en un dominio de carga de trabajo de VMware Cloud Foundation VI.
+Revisa los requisitos para implementar un almacén de datos NVMe/TCP en un dominio de cargas de trabajo de VMware Cloud Foundation.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Dos"]link:vmw-vcf-viwld-supp-nvme-svm-lifs.html["Cree la SVM y los LIF y el espacio de nombres NVMe"]
 [role="quick-margin-para"]
@@ -26,8 +26,18 @@ Cree una máquina virtual de almacenamiento con interfaces lógicas y el espacio
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Tres"]link:vmw-vcf-viwld-supp-nvme-network.html["Configurar la red"]
 [role="quick-margin-para"]
-Cree grupos de puertos distribuidos y adaptadores vmkernel en los hosts ESXi para el dominio de carga de trabajo VI.
+Crea grupos de puertos distribuidos y adaptadores vmkernel en los hosts de vSphere para el dominio de carga de trabajo de VCF.
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["Cuatro"]link:vmw-vcf-viwld-supp-nvme-storage.html["Configurar el almacenamiento"]
 [role="quick-margin-para"]
 Implementar el almacén de datos NVMe/TCP.
+
+
+
+[[video-demo-for-this-solution]]
+== Demostración en vídeo de esta solución
+
+.Almacén de datos complementario con NVMe/TCP
+video::f85530ec-ff24-4c7d-abb4-b49b0176402c[panopto,width=360]
+.Almacén de datos complementario con NVMe/FC
+video::b2b16a35-05cd-49c9-a91a-b4ac0127813d[panopto,width=360]
