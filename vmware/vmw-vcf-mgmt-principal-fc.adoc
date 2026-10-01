@@ -41,6 +41,7 @@ En este escenario se utilizan los siguientes componentes y configuraciones:
 * Sistema de almacenamiento NetApp con una máquina virtual de almacenamiento (SVM) configurada para permitir tráfico FC.
 * Se han creado interfaces lógicas (LIF) en la estructura FC que transportará el tráfico FC y está asociada con la SVM.
 * La zonificación se ha configurado para utilizar una única zonificación de iniciador-destino en conmutadores FC para HBA de host y destinos de almacenamiento.
+* Crea un almacén de datos VMFS (con LUN FC) en uno de los hosts de vSphere del clúster.
 
 
 Para obtener información sobre la configuración de los sistemas de almacenamiento ONTAP , consultelink:https://docs.netapp.com/us-en/ontap["Documentación de ONTAP 9"] centro.
@@ -70,6 +71,13 @@ Para ampliar el dominio de gestión con un clúster adicional, consulta https://
 
 A grandes rasgos, los pasos para añadir un clúster adicional al dominio de gestión son los siguientes: * asegúrate de que los hosts estén puestos en servicio y de que los grupos de red estén configurados en vCenter. * El LUN está aprovisionado en el sistema de almacenamiento ONTAP y presentado a los hosts del clúster adicional. * Crea un nuevo clúster SDDC en el dominio de gestión en vCenter y sigue las instrucciones del asistente para añadir el clúster adicional al dominio de gestión.
 
+
+
+[[reference-video]]
+== Vídeo de referencia
+
+.Datastore principal con FC
+video::9c51101c-292b-41ef-8dd5-b4cf0131dd62[panopto,width=360]
 
 
 [[additional-information]]
