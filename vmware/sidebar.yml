@@ -150,6 +150,22 @@ entries:
       url: "/vmware/vmw-vcf-vmsc-viwld-smas.html"
   - title: Migrar máquinas virtuales desde vSphere
     url: "/vmware/migrate-vms-to-ontap-datastore.html"
+  - title: Migrar máquinas virtuales de vVols a NFS
+    entries:
+    - title: Infórmate sobre cómo migrar de vVols a NFS
+      url: "/vmware/vmw-vvol-nfs-migration.html"
+    - title: Prácticas recomendadas para la implementación
+      url: "/vmware/vmw-vvol-nfs-migration-best-practices.html"
+    - title: Opciones de almacenamiento
+      url: "/vmware/vmw-vvol-nfs-migration-storage-options.html"
+    - title: Directrices de dimensionamiento
+      url: "/vmware/vmw-vvol-nfs-migration-sizing.html"
+    - title: Herramientas de integración de ONTAP
+      url: "/vmware/vmw-vvol-nfs-migration-integ-tools.html"
+    - title: Opciones de migración
+      url: "/vmware/vmw-vvol-nfs-migration-options.html"
+    - title: Recursos adicionales
+      url: "/vmware/vmw-vvol-nfs-migration-add-info.html"
   - title: Proteger y recuperar datos contra ransomware
     url: "/vmware/vmw-nfs-arp.html"
   - title: Supervise el almacenamiento local con DII

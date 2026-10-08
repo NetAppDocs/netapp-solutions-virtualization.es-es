@@ -160,7 +160,7 @@ image:vmfs-deploy-015.png["Figura que muestra el diálogo de entrada/salida o re
 
 
 
-Consulte estos enlaces para el aprovisionamiento de almacenes de datos vVol, FC, NVMe/TCP.
+Para aprovisionar almacenes de datos vVols o almacenes de datos VMFS mediante FC o NVMe/TCP, consulta link:https://docs.netapp.com/us-en/ontap-tools-vmware-vsphere-10/configure/create-datastore.html["Crear un almacén de datos en ONTAP tools"^]. En esa página también se detalla la configuración del host ESXi necesaria para NVMe/TCP.
 
 
 

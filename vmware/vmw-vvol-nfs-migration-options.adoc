@@ -1,0 +1,48 @@
+---
+sidebar: sidebar 
+permalink: vmware/vmw-vvol-nfs-migration-options.html 
+keywords: netapp, vmware, nfs, migration, vvol, vvols, vmotion, storage vmotion, powercli 
+summary: Descubre las opciones disponibles para migrar máquinas virtuales desde almacenes de datos vVols a almacenes de datos NFS en entornos VMware con ONTAP, incluyendo Storage vMotion, la migración en frío y la migración mediante scripts. 
+---
+= Opciones de migración de almacenes de datos vVols a almacenes de datos NFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Descubre las opciones para migrar máquinas virtuales desde almacenes de datos vVols a almacenes de datos NFS en entornos VMware con ONTAP, incluyendo Storage vMotion, la migración en frío y la migración mediante scripts, para minimizar el tiempo de inactividad y mantener las operaciones en funcionamiento.
+
+Al migrar de almacenes de datos vVols a almacenes de datos NFS en un entorno VMware con ONTAP, ten en cuenta las siguientes opciones:
+
+* *Storage vMotion*: migra los archivos de la máquina virtual desde el almacén de datos vVols al almacén de datos NFS mientras la máquina virtual está en ejecución. Ambos almacenes de datos deben ser accesibles para el host ESXi que ejecuta la máquina virtual.
+* *vMotion con Storage vMotion*: cambia tanto el recurso de computación como el datastore en una sola operación cuando los hosts de origen y destino no comparten almacenamiento.
+* *Migración en frío*: apaga la VM y utiliza la opción *Migrar* en el vSphere Client para moverla al datastore NFS. Este método es sencillo pero requiere tiempo de inactividad.
+* *Copia de seguridad y restauración*: utiliza una aplicación de backup que permita restaurar máquinas virtuales en un datastore diferente. Este método resulta útil cuando los datastores de origen y destino no son accesibles desde los mismos hosts.
+* *Migración mediante scripts*: utiliza PowerCLI u otras herramientas de automatización para realizar migraciones masivas.
+
+
+Antes de iniciar la migración, asegúrate de que el datastore NFS tenga el tamaño adecuado, esté correctamente configurado y lo hayas probado, y realiza una copia de seguridad de los datos críticos.
+
+Para obtener instrucciones paso a paso, incluidos ejemplos de PowerCLI, consulta link:migrate-vms-to-ontap-datastore.html["Migrar máquinas virtuales de VMware vSphere a almacenes de datos de ONTAP"].
+
+
+
+[[why-use-storage-vmotion-for-migration]]
+== ¿Por qué utilizar Storage vMotion para la migración
+
+Storage vMotion es el método recomendado para migrar máquinas virtuales desde almacenes de datos vVols a almacenes de datos NFS, ya que mueve los archivos de las máquinas virtuales sin tiempo de inactividad.
+
+Este método minimiza las interrupciones en las cargas de trabajo y permite a los administradores mover VMs mientras las aplicaciones siguen disponibles. Storage vMotion conserva la configuración y los metadatos de la VM, y permite mantener o cambiar el formato del disco virtual durante la migración.
+
+
+
+[[concurrency-limits]]
+== Límites de concurrencia
+
+vCenter limita el número de migraciones simultáneas. Por defecto, un host puede ejecutar hasta dos operaciones simultáneas de Storage vMotion, y un datastore puede participar en hasta ocho. Las operaciones adicionales se ponen en cola hasta que haya recursos disponibles.
+
+Planifica los lotes de migración en función de estos límites y supervisa la utilización del host, la red y el almacenamiento durante la migración. Para conocer los límites actuales, consulta link:https://configmax.broadcom.com["Límites máximos de configuración de VMware"^].
