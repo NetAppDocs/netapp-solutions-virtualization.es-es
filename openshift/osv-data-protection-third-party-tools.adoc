@@ -18,7 +18,7 @@ OpenShift API for Data Protection (OADP) con Velero proporciona capacidades de r
 
 Las máquinas virtuales en el entorno de virtualización OpenShift son aplicaciones en contenedores que se ejecutan en los nodos de trabajo de su plataforma OpenShift Container. Es importante proteger los metadatos de las máquinas virtuales, así como los discos persistentes de las máquinas virtuales, para que cuando se pierdan o se dañen, se puedan recuperar.
 
-Los discos persistentes de las máquinas virtuales de OpenShift Virtualization pueden respaldarse con almacenamiento ONTAP integrado al clúster OpenShift mediantelink:https://docs.netapp.com/us-en/trident/["Trident CSI"] . En esta sección utilizamoslink:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.html["API de OpenShift para la protección de datos (OADP)"] para realizar copias de seguridad de las máquinas virtuales, incluidos sus volúmenes de datos.
+Los discos persistentes de las máquinas virtuales de OpenShift Virtualization pueden respaldarse con almacenamiento ONTAP integrado en el clúster de OpenShift mediante link:https://docs.netapp.com/us-en/trident/["Trident CSI"]. En esta sección, usamos link:https://docs.openshift.com/en/documentation/openshift_container_platform/4.14/html/backup_and_restore/backup-restore-overview#application-backup-restore-operations-overview["API de OpenShift para la protección de datos (OADP)"] para hacer copias de seguridad de las máquinas virtuales y sus volúmenes de datos en
 
 * Almacenamiento de objetos ONTAP
 * StorageGrid
@@ -60,7 +60,7 @@ Realice copias de seguridad de máquinas virtuales en OpenShift Virtualization u
 [[steps-to-create-a-backup-of-a-vm]]
 === Pasos para crear una copia de seguridad de una máquina virtual
 
-Para crear una copia de seguridad a pedido de toda la VM (metadatos de la VM y discos de la VM), haga clic en la pestaña **Copia de seguridad**.  Esto crea un recurso personalizado de respaldo (CR). Se proporciona un yaml de muestra para crear el CR de respaldo.  Usando este yaml, se realizará una copia de seguridad de la VM y sus discos en el espacio de nombres especificado. Se pueden configurar parámetros adicionales como se muestra en lalink:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.html["documentación"] .
+Para crear una copia de seguridad bajo demanda de toda la VM (metadatos de la VM y discos de la VM), haz clic en la pestaña **Backup**. Esto crea un recurso personalizado (CR) de Backup. Se proporciona un yaml de ejemplo para crear el CR de Backup. Con este yaml, se hará una copia de seguridad de la VM y sus discos en el espacio de nombres especificado. Puedes encontrar información adicional en el link:https://docs.openshift.com/en/documentation/openshift_container_platform/4.14/html/backup_and_restore/backup-restore-overview#application-backup-restore-operations-overview["OpenShift documentación de la plataforma de contenedores"].
 
 El CSI creará una instantánea de los volúmenes persistentes que respaldan los discos.  Se crea una copia de seguridad de la máquina virtual junto con la instantánea de sus discos y se almacena en la ubicación de copia de seguridad especificada en el yaml. La copia de seguridad permanecerá en el sistema durante 30 días según lo especificado en el TTL.
 
