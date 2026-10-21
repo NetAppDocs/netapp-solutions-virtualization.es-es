@@ -312,6 +312,8 @@ image::shift_migration_completed.png[Plan de migración completado con éxito]
 .Qué sigue
 Una vez completada la migración, hay que desconectar cada volumen clonado. El método de desconexión depende de la versión de ONTAP: usa división de clones para ONTAP 9.17.1 y versiones posteriores, o vol move para versiones anteriores.
 
+Para agilizar las operaciones de división de PVC tras la migración, mantén el datastore NFS de origen en 5 TB o menos. Se pueden usar volúmenes más grandes, pero al crear 200–300 clones para migraciones de VM, los volúmenes más pequeños son ideales para completar las divisiones más rápido.
+
 Tanto la división de clones como el traslado de volúmenes son operaciones en segundo plano y no afectan a las cargas de trabajo de producción mientras se están ejecutando. Hay un script disponible para iniciar el proceso de desvinculación en el widget *Post Migrate Detach* dentro del Catálogo de Automatización de la NetApp Console.
 
 
