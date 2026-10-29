@@ -1,0 +1,155 @@
+---
+sidebar: sidebar 
+permalink: nutanix/nutanix-deploy-cluster.html 
+keywords: nutanix, ahv, aos, foundation central, cluster, deploy, ontap, netapp 
+summary: Implementa un clúster de computación de Nutanix mediante Foundation Central y, a continuación, conéctalo al almacenamiento NetApp ONTAP. 
+---
+= Implementar un clúster de computación de Nutanix con almacenamiento ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Implementa un clúster de computación de Nutanix que consuma almacenamiento de NetApp ONTAP. Descargas los paquetes de instalación de AOS y AHV, configuras Foundation Central, creas la imagen e incorporas los nodos de computación, creas el clúster y, a continuación, conectas el almacenamiento ONTAP a él.
+
+.Pasos
+. *Descarga los paquetes de instalación de AOS y AHV.*
++
+Para obtener más información, consulta link:https://portal.nutanix.com/page/documents/details?targetId=AHV-Admin-Guide-v11_2:ahv-ahv-installer-download-t.html["Descarga de los paquetes de instalación de AOS y AHV"^].
+
+. *Configura Foundation Central.*
++
+Nutanix Foundation Central (FCA) es la herramienta de despliegue recomendada para crear imágenes de los servidores OEM compatibles y crear el clúster de computación de Nutanix.
+
++
+.. Descarga el paquete de instalación de Foundation e implementa la VM de Foundation.
+.. Completa link:https://portal.nutanix.com/page/documents/details?targetId=Foundation-Central-Appliance-v1_11:v1-setup-fca-t.html["Configuración de Foundation Central"^].
+.. Actualiza la dirección IP de administración y la configuración de red según sea necesario.
+.. Accede a la interfaz de usuario web de Foundation Central utilizando la dirección IP configurada.
++
+
+NOTE: Si falla la implementación de Foundation Central, inicia sesión en la máquina virtual de FCA, ejecuta  `k3d cluster delete fccluster` y, a continuación, vuelve a ejecutar el proceso de configuración.
+
++
+Para obtener más información, consulta link:https://portal.nutanix.com/page/documents/details?targetId=Field-Installation-Guide:fie-foundation-vm-install-on-workstation-t.html["Instalación de Foundation VM"^].
+
+
+
+. *Carga las imágenes de instalación de AOS y AHV.*
++
+Utiliza la gestión de imágenes de Foundation Central para hacer lo siguiente:
+
++
+.. Sube las imágenes de AOS y AHV a Foundation Central.
+.. Comprueba que las imágenes estén disponibles para su implementación.
+
+
+. *Descubre y crea una imagen de los nodos de cálculo.*
++
+Elige una de las siguientes opciones.
+
++
+*Opción A: proveedor de hardware (recomendado)*
+
++
+Utiliza un link:https://portal.nutanix.com/page/documents/details?targetId=Foundation-Central-Appliance-v2_3_0_1:v2-bare-metal-install-workflow-c.html["proveedor de hardware"^] para automatizar la creación de imágenes y la incorporación de nodos.
+
++
+.. Configura una conexión con un proveedor de hardware mediante HPE iLO o Dell iDRAC.
+.. Detecta automáticamente los servidores de destino.
+.. Selecciona las imágenes de AOS y AHV que has subido.
+.. Instala la imagen en los nodos directamente desde Foundation Central.
++
+*Opción B: obtención manual de imágenes*
+
++
+Si la detección del proveedor de hardware no está disponible, utiliza link:https://portal.nutanix.com/page/documents/details?targetId=Foundation-Central-Appliance-v2_3_0_1:v2-manual-workflow-c.html["creación manual de imágenes"^].
+
++
+Antes de empezar, asegúrate de que se cumplan los siguientes requisitos previos:
+
++
+*** El modo de arranque UEFI está activado.
+*** Secure Boot está desactivado.
+*** Se puede acceder a las redes fuera de banda (OOB) y de datos.
+*** No hay diferencia horaria entre los hosts y Foundation Central.
+*** Hay una dirección IP de AHV disponible para cada host.
++
+
+NOTE: No asignes direcciones IP de una subred que se solape con el espacio de direcciones 192.168.5.0/24 en la VLAN predeterminada.
+
+
+
+.. Crea tokens de reclamación seguros.
+.. Monta la imagen ISO de instalación de AHV en cada nodo de cálculo.
+.. Arranca e instala AHV manualmente.
+
+
+. *Incorpora los nodos.*
++
+El proceso de incorporación registra los servidores detectados en el Foundation Central Appliance y los prepara para los flujos de trabajo de creación de imágenes o de clústeres.
+
++
+.. Selecciona los hosts AHV detectados.
+.. Inicia el proceso de incorporación.
+.. Comprueba que todos los nodos aparezcan en el inventario de nodos.
++
+Una vez finalizada la incorporación, los hosts están listos para crear el clúster.
+
+
+
+. *Crea el clúster de Nutanix.*
++
+.. Selecciona los nodos incorporados.
+.. Haz clic en *Crear clúster*.
+.. Facilita la información sobre la configuración del clúster.
+.. Introduce las direcciones IP de Controller VM (CVM) cuando se te solicite.
++
+El flujo de trabajo de creación de clústeres realiza lo siguiente:
+
++
+*** Implementa las CVM.
+*** Instala AOS.
+*** Configura los servicios del clúster.
+*** Realiza comprobaciones de validación.
++
+image:nutanix-deploy-001.png["Página de inicio de Prism Element de un clúster de Nutanix recién creado que ejecuta AHV"]
+
++
+
+NOTE: Asegúrate de que no haya desfase horario entre los nodos. Los fallos en la sincronización del reloj pueden provocar que falle la implementación del clúster, lo que obligaría a reiniciar el proceso.
+
+
+
+
+
+. *Conecta el almacenamiento ONTAP al clúster de computación de Nutanix.*
++
+Una vez que el clúster de Nutanix esté operativo, haz lo siguiente:
+
++
+.. Comprueba la conectividad entre todos los hosts AHV y las LIF de datos NFS de ONTAP.
+.. Añade las exportaciones NFS de ONTAP al clúster de Nutanix.
+.. Monta los recursos compartidos NFS exportados de FlexVol.
+.. Valida el acceso de lectura/escritura.
+.. Comprueba la visibilidad y la disponibilidad del almacén de datos.
++
+Puedes utilizar el almacenamiento montado en NFS para lo siguiente:
+
++
+*** Cargas de trabajo de máquinas virtuales
+*** Repositorios de imágenes
+*** Plantillas
+*** Datos de la aplicación
++
+Para conocer el procedimiento detallado, consulta link:nutanix-attach-storage.html["Conecta el almacenamiento NFS de ONTAP a un clúster de computación de Nutanix"].
+
+
+
+
+
+

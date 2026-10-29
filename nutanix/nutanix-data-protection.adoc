@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: nutanix/nutanix-data-protection.html 
+keywords: nutanix, ontap, data protection, disaster recovery, snapshot, snapmirror, migration, nutanix move, limitations, ga 
+summary: Descubre cómo funcionan la protección de datos, la recuperación ante desastres y la migración de máquinas virtuales en Nutanix con el almacenamiento externo ONTAP, y qué funciones no son compatibles en la fase de disponibilidad general. 
+---
+= Protección de datos, recuperación ante desastres, migración y limitaciones de Nutanix con ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Comprende cómo funcionan la protección de datos, la recuperación ante desastres y la migración de máquinas virtuales cuando usas ONTAP como almacenamiento externo para un clúster de computación de Nutanix, y revisa las funciones que no son compatibles en la fase de disponibilidad general (GA).
+
+
+
+[[data-protection]]
+== Protección de datos
+
+Las instantáneas de VM gestionadas por Prism utilizan clones de archivo de ONTAP de los discos de la VM, en lugar de instantáneas de volumen de ONTAP. Prism gestiona el ciclo de vida de las instantáneas, mientras que ONTAP proporciona la capacidad subyacente de clonación de archivos.
+
+Un clon de archivo es una copia de lectura/escritura en el sistema de archivos activo. Por sí solo, no se puede bloquear para evitar su eliminación, no es un punto de recuperación de ARP y no se conserva ni se archiva de forma independiente mediante SnapMirror o SnapVault. Cada disco se clona por separado, por lo que los puntos de recuperación entre discos no se capturan en un único momento compartido, a menos que eso se coordine. Las instantáneas de volumen de ONTAP proporcionan estas protecciones de forma nativa. Los clientes que necesiten puntos de recuperación inmutables, resistentes al ransomware y conservados a largo plazo deberían plantearse esperar a la integración de instantáneas de ONTAP.
+
+
+NOTE: Está previsto que la limitación de GA en la compatibilidad con instantáneas de ONTAP se solucione en una futura versión.
+
+
+
+[[disaster-recovery]]
+== Recuperación ante desastres
+
+La recuperación ante desastres asíncrona de Nutanix es el único método de replicación admitido durante la versión GA. ONTAP SnapMirror no está disponible.
+
+SnapMirror es la opción más consolidada para replicar datos de ONTAP entre sitios. Replica únicamente los bloques modificados, mantiene el ahorro derivado de la deduplicación y la compresión tanto durante la transmisión como en el destino, y puede conservar varios puntos de recuperación en el sistema secundario. Dado que la replicación se ejecuta en el sistema de almacenamiento, los hosts no tienen que copiar los datos. Para los clientes que utilizan ONTAP como almacenamiento externo, esto significa que DR utiliza los mismos procesos de replicación, retención y recuperación que el resto de su entorno ONTAP.
+
+
+NOTE: SnapMirror se integrará en una versión futura. Los clientes que quieran estandarizar la recuperación ante desastres (DR) con la replicación de ONTAP deberían plantearse esperar a la integración de SnapMirror.
+
+
+
+[[vm-migrations]]
+== Migraciones de VM
+
+En esta versión, la migración de máquinas virtuales utiliza Nutanix Move. El NetApp Shift toolkit no es compatible. Está prevista la integración de Shift toolkit con Nutanix Move en una futura versión. Utilizará la clonación de ONTAP y la asignación de bloques para evitar copias completas de datos y acelerar las migraciones.
+
+
+
+[[features-not-supported-at-ga]]
+== Funciones no compatibles en la versión GA
+
+Las siguientes configuraciones, funciones e integraciones no son compatibles en la versión de disponibilidad general (GA) para la integración de NetApp y Nutanix:
+
+* Configuraciones que utilizan varios sistemas NetApp, varias máquinas virtuales de almacenamiento (SVM) por clúster de Nutanix o varias interfaces lógicas (LIF)
+* MetroCluster de NetApp
+* Instantáneas de ONTAP y funciones que dependen de ellas
+* Sincronización activa de SnapMirror
+* ONTAP Select
+* NetApp Trident para la plataforma Kubernetes de Nutanix (NKP)
+* NFSv4.1
+* Volúmenes de FlexGroup
+* NetApp kit de herramientas de Shift
+

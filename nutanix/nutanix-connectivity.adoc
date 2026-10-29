@@ -1,0 +1,146 @@
+---
+sidebar: sidebar 
+permalink: nutanix/nutanix-connectivity.html 
+keywords: nutanix, ahv, ontap, nfs, netapp, network, vswitch, lacp, jumbo frames, prerequisites 
+summary: Prepara tu entorno y planifica la conectividad de red entre los hosts dedicados solo a computación de Nutanix AHV y los controladores de almacenamiento ONTAP. 
+---
+= Prepárate para implementar Nutanix Cloud Platform con almacenamiento ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Consulta los requisitos previos y la arquitectura de red recomendada para conectar hosts Nutanix AHV dedicados solo a computación al almacenamiento ONTAP. Este diseño te permite ampliar la capacidad de almacenamiento y el rendimiento de forma independiente de la computación, lo que elimina la necesidad de añadir nodos Nutanix únicamente para el crecimiento del almacenamiento.
+
+El diseño utiliza una red de almacenamiento dedicada entre los hosts de solo computación de Nutanix AHV y los controladores de almacenamiento ONTAP. El tráfico de almacenamiento se aísla del tráfico de gestión y de aplicaciones mediante un conmutador virtual dedicado (vswitch1) y una VLAN de almacenamiento externa. ONTAP proporciona servicios de almacenamiento NFSv3 a través de LIF de datos de SVM dedicados, mientras que los LIF de gestión de SVM se utilizan con las API REST para la administración e integración del almacenamiento.
+
+Para garantizar la resiliencia y el rendimiento, los hosts de solo computación de Nutanix y los controladores ONTAP utilizan LACP (activo/activo) a través de rutas de red redundantes. Si LACP no está disponible, el modo activo/activo con fijación de MAC proporciona equilibrio de carga en la capa del conmutador virtual. El tráfico de almacenamiento debe estar en una VLAN dedicada no enrutada, mientras que el tráfico de gestión, migración en vivo, replicación de recuperación ante desastres y aplicaciones sigue utilizando la red enrutada estándar.
+
+
+
+[[prerequisites]]
+== Prerrequisitos
+
+Antes de integrar el almacenamiento ONTAP con Nutanix Cloud Infrastructure, asegúrate de que se cumplan los siguientes requisitos.
+
+*Clúster de Nutanix*
+
+Se ha implementado y está operativo un clúster de Nutanix que ejecuta AHV, y cumple los siguientes requisitos:
+
+* Un mínimo de tres nodos.
+* Los nodos de cálculo cumplen los requisitos mínimos de Nutanix en cuanto a CPU, memoria, red y dispositivos de arranque. Para obtener información detallada, consulta Minimum Compute Requirements.
+* El hardware y el software figuran en las matrices de compatibilidad de Nutanix correspondientes. Consulta link:https://portal.nutanix.com/page/compatibility-interoperability-matrix/platform-compatibility/compute-platforms["Matriz de compatibilidad e interoperabilidad para plataformas de computación"^].
+
+
+*NetApp ONTAP almacenamiento*
+
+NetApp El almacenamiento ONTAP se ha implementado y configurado con los servicios de NFS habilitados, y cumple los siguientes requisitos:
+
+* Plataformas ONTAP compatibles: AFF A-Series (all-flash), AFF C-Series (all-flash) y FAS (flash híbrido).
+* ONTAP ejecuta una versión compatible: 9.15.1P18 o posterior, 9.16.1P16 o posterior, 9.17.1P8 o posterior, 9.18.1P4 o posterior o 9.19.1P2 o posterior.
+* Licencias de ONTAP One.
+* Una máquina virtual de almacenamiento (SVM) de ONTAP está configurada para proporcionar almacenamiento al clúster de computación de Nutanix.
+* Uno o varios volúmenes FlexVol se exportan como recursos compartidos NFS. El clúster de Nutanix monta las exportaciones NFS y las presenta como almacenamiento compartido para las cargas de trabajo.
+* NetApp recomienda encarecidamente usar un grupo de interfaces como puerto de inicio para el LIF de NFS. Para obtener más información, consulta link:https://docs.netapp.com/us-en/ontap/networking/combine_physical_ports_to_create_interface_groups.html["Combinar puertos físicos para crear grupos de interfaces ONTAP"^].
+
+
+*Redes*
+
+* Hay red de almacenamiento dedicada disponible con un mínimo de 10 GbE. Se recomienda usar 25 GbE o superior.
+* Hay interfaces independientes disponibles para el tráfico de almacenamiento.
+* Las tramas gigantes (MTU 9000) se configuran de forma uniforme en toda la red de almacenamiento donde sean compatibles.
+
+
+[NOTE]
+====
+* Utiliza un conmutador virtual exclusivo para el tráfico de almacenamiento de ONTAP y configura un MTU de 9000 bytes (tramas gigantes).
+* Una vez habilitada la segmentación de red para las redes privadas de ONTAP, no se puede deshabilitar. Si se deshabilita la segmentación de red, la dirección IP privada del almacenamiento queda inaccesible y esto puede provocar fallos críticos en los servicios del clúster.
+
+
+====
+
+
+[[network-architecture]]
+== Arquitectura de red
+
+El siguiente diagrama muestra la conectividad entre un nodo Nutanix AHV y un clúster ONTAP.
+
+image:nutanix-connectivity-001.png["Diagrama de red que muestra un nodo Nutanix AHV con vswitch0 y vswitch1 conectados a través de dos conmutadores externos a un clúster ONTAP 9"]
+
+La siguiente tabla describe cada componente de red, su configuración y su finalidad.
+
+[cols="25,45,30"]
+|===
+| Componente | Configuración | Objetivo 
+
+
+| Nodos de computación de Nutanix | NIC agrupadas para la red de gestión y de VM de usuario (VLAN enrutada) y la red de almacenamiento (VLAN no enrutada). Si no es posible usar NIC agrupadas, utiliza enlaces ascendentes activos/activos para los switches virtuales. | Proporciona redundancia de red al tiempo que aísla el tráfico de gestión, de máquinas virtuales y de almacenamiento. 
+
+
+| Controladores de almacenamiento ONTAP | LIF de gestión de SVM y LIF de datos de SVM. Usa grupos de interfaces para la tolerancia a fallos y el equilibrio de carga siempre que sea posible. | Los LIF de gestión se utilizan para la administración de ONTAP. Los LIF de datos proporcionan acceso al almacenamiento mediante NFSv3 para el clúster de Nutanix. 
+
+
+| Red de máquinas virtuales de gestión y de usuarios (VLAN enrutada) | Gestión de Prism, tráfico de CVM, migración en vivo y tráfico de replicación | Se encarga de la gestión del clúster y del tráfico de máquinas virtuales. 
+
+
+| Red de almacenamiento interna (sin enrutamiento) | Comunicación de CVM a CVM, servicios AHV, tráfico entre nodos del clúster | Red dedicada para servicios de almacenamiento y de clúster. Aislada del tráfico de los usuarios. 
+
+
+| Red de almacenamiento externo (VLAN sin enrutamiento) | Tráfico de almacenamiento NFSv3 entre AHV/CVMs y ONTAP | Ofrece un acceso de baja latencia y alto rendimiento al almacenamiento ONTAP. 
+
+
+| vswitch0 | Gestión de Nutanix, tráfico de aplicaciones, migración en tiempo real y replicación | Conmutador virtual principal para la gestión y las redes de VM. 
+
+
+| vswitch1 | Tráfico de almacenamiento NFSv3 dedicado. Mínimo de dos enlaces ascendentes físicos. Se recomienda LACP (activo/activo). MTU 9000. | Conmutador de almacenamiento específico que ofrece un rendimiento óptimo, resiliencia y aislamiento del tráfico para la conectividad ONTAP. 
+|===
+
+
+[[high-level-deployment-steps]]
+== Pasos de implementación a grandes rasgos
+
+Sigue estos pasos a grandes rasgos para preparar ONTAP, configurar la red de almacenamiento y conectar los hosts de Nutanix al almacenamiento ONTAP.
+
+. Implementa y configura ONTAP.
++
+.. Consulta link:https://docs.netapp.com/us-en/ontap/quick-start.html["Guía de inicio rápido para ONTAP"^].
+.. Crea grupos de interfaces siempre que sea posible. Consulta link:https://docs.netapp.com/us-en/ontap/networking/combine_physical_ports_to_create_interface_groups.html["Combinar puertos físicos para crear grupos de interfaces ONTAP"^].
+.. Crea SVMs para la red de ONTAP. Consulta link:https://docs.netapp.com/us-en/ontap/networking/create_svms.html["Crear SVM para la red de ONTAP"^].
+.. Crea LIF de ONTAP para la gestión y los datos de NFS. Consulta link:https://docs.netapp.com/us-en/ontap/networking/create_a_lif.html["Crear LIF de ONTAP"^].
+.. Añade un volumen con ONTAP System Manager. El volumen debe usar el estilo de seguridad UNIX para servir datos NFSv3. Consulta link:https://docs.netapp.com/us-en/ontap/task_admin_add_a_volume.html["Agrega un volumen con ONTAP System Manager"^] y link:https://docs.netapp.com/us-en/ontap/nfs-admin/create-volumes-specified-junction-task.html["Crear volúmenes NAS de ONTAP con puntos de unión especificados"^].
+.. Configura las políticas de exportación para permitir el acceso desde los hosts de Nutanix dedicados solo a la computación. Consulta link:https://docs.netapp.com/us-en/ontap/nfs-admin/export-policies-client-access-volumes-concept.html["Cómo las políticas de exportación controlan el acceso de los clientes a los volúmenes o qtrees de NFS de ONTAP"^].
+
+
+. Configura la red de almacenamiento.
++
+.. Crea una VLAN dedicada y sin enrutamiento para el tráfico de almacenamiento NFS. Consulta link:https://docs.netapp.com/us-en/ontap/networking/configure_vlans_over_physical_ports.html["Crear una VLAN dedicada sin enrutamiento"^].
+.. Configura una infraestructura de conmutación redundante.
+.. Habilita las tramas jumbo (MTU 9000) de extremo a extremo. Para ONTAP, consulta link:https://docs.netapp.com/us-en/ontap/networking/change_the_mtu_value_for_ports_in_a_broadcast_domain.html["Cambia el valor de MTU de los puertos de un dominio de difusión de ONTAP"^].
+
+
+. Aprovisiona y conecta los hosts de Nutanix a ONTAP.
++
+.. Comprueba la conectividad con los LIF de datos NFS de ONTAP.
+.. Comprueba el equilibrio de carga y la redundancia de rutas.
+
+
+. Crea un conmutador virtual de almacenamiento dedicado.
++
+.. Crea vswitch1 en Nutanix AHV.
+.. Asigna al menos dos NIC físicas dedicadas.
+.. Configura LACP (activo/activo) si es compatible.
+
+
+. Comprobar la resiliencia.
++
+.. Prueba la conmutación por error de la ruta de almacenamiento.
+.. Comprueba que AHV redirija automáticamente el tráfico de almacenamiento en caso de fallos en los enlaces o en los conmutadores sin que ello afecte a las máquinas virtuales en ejecución.
+
+
+
+
+Esta arquitectura te ofrece un entramado de almacenamiento de alto rendimiento y alta disponibilidad para entornos Nutanix, al tiempo que permite que los recursos de computación y almacenamiento puedan escalar de forma independiente. Puedes cubrir el crecimiento del almacenamiento mediante la ampliación de ONTAP sin necesidad de nodos Nutanix adicionales dedicados exclusivamente a la computación, lo que reduce los costes de infraestructura al tiempo que mantiene un rendimiento y una disponibilidad para la gran empresa.

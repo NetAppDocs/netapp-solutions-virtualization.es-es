@@ -1,0 +1,32 @@
+---
+indexpage:
+  title: NetApp soluciones de virtualización de Nutanix
+  summary: NetApp Las soluciones de virtualización de Nutanix muestran cómo usar NetApp
+    ONTAP como almacenamiento NFS externo para Nutanix Cloud Platform, para que puedas
+    escalar la computación y el almacenamiento de forma independiente.
+  lead: NetApp Las soluciones de virtualización de Nutanix muestran cómo usar NetApp
+    ONTAP como almacenamiento NFS externo para Nutanix Cloud Platform, para que puedas
+    escalar la computación y el almacenamiento de forma independiente.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Descubre Nutanix con el almacenamiento ONTAP
+      url: nutanix-overview.html
+    - title: Documentación de Nutanix Cloud Platform
+      url: https://portal.nutanix.com/
+  - title: Implementar Nutanix con ONTAP
+    links:
+    - title: Prepárese para el despliegue
+      url: nutanix-connectivity.html
+    - title: Implementar un clúster de computación de Nutanix
+      url: nutanix-deploy-cluster.html
+    - title: Configurar volúmenes y permisos de ONTAP
+      url: nutanix-ontap-storage.html
+    - title: Conecta el almacenamiento NFS de ONTAP
+      url: nutanix-attach-storage.html
+  - title: Planifica y protege
+    links:
+    - title: Protección de datos, recuperación ante desastres y limitaciones
+      url: nutanix-data-protection.html
+    - title: Dimensionar el almacenamiento ONTAP para migraciones a Nutanix AHV
+      url: nutanix-sizing.html

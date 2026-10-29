@@ -1,0 +1,246 @@
+---
+sidebar: sidebar 
+permalink: nutanix/nutanix-ontap-storage.html 
+keywords: nutanix, ontap, flexvol, nfs, export policy, rest api, role, service account, netapp 
+summary: Crea volúmenes de ONTAP FlexVol, configura políticas de exportación y crea un rol de SVM y una cuenta de servicio con los permisos mínimos de la API de REST que requiere Nutanix. 
+---
+= Configura volúmenes ONTAP, políticas de exportación y permisos para Nutanix
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Crea y configura volúmenes de almacenamiento ONTAP, configura políticas de exportación y define el rol de la SVM y la cuenta de servicio que Nutanix usa para gestionar el almacenamiento ONTAP. Una vez que completes estas tareas, podrás conectar las exportaciones de FlexVol al clúster de Nutanix como almacenamiento compartido para las cargas de trabajo de las máquinas virtuales.
+
+El proceso comienza creando volúmenes ONTAP FlexVol y configurando las políticas de exportación de NFS. Luego defines el rol de SVM necesario y los permisos de la API de REST y, por último, conectas el almacenamiento ONTAP al clúster de computación de Nutanix.
+
+
+
+[[create-ontap-flexvol-volumes]]
+== Crear volúmenes FlexVol de ONTAP
+
+Crea los volúmenes FlexVol necesarios y aplica la configuración recomendada de ONTAP para optimizar el uso de la capacidad, la eficiencia del almacenamiento y el rendimiento de las cargas de trabajo de Nutanix.
+
+.Pasos
+. Crea los volúmenes FlexVol con la siguiente configuración:
++
+[cols="40,60"]
+|===
+| Valor | Configuración 
+
+
+| Garantía de volumen | Ninguno (thin provisioned) 
+
+
+| `fractional_reserve` | 0% 
+
+
+| `snap_reserve` | 0% 
+
+
+| Ajuste automático de tamaño | En 
+
+
+| Eficiencia del almacenamiento | Habilitado 
+
+
+| Eliminación automática | `volume` / `oldest_first` 
+
+
+| Política de organización en niveles de volúmenes | Solo Snapshot 
+
+
+| `try_first` | Autogrow 
+
+
+| Política de SnapVault | Ninguno 
+|===
+
+
+[NOTE]
+====
+* Aprovisiona varios volúmenes FlexVol y añádelos como contenedores de almacenamiento.
+* Crea un mínimo de 4 a 8 volúmenes NFSv3 para alojar los datos de la máquina virtual.
+* Usa un volumen dedicado para el servicio de Nutanix o para el volumen de metadatos. Aunque los datos del servicio pueden compartir un volumen de datos, se recomienda un volumen dedicado.
+* Utiliza las rutas de exportación de FlexVol de forma predeterminada. Si utilizas qtrees, especifica la ruta de exportación del qtree al conectar el contenedor de almacenamiento.
+* Distribuye los volúmenes de manera uniforme entre los nodos de ONTAP, colocándolos en nodos alternos para equilibrar la distribución de la carga de trabajo y el uso de los recursos en todo el clúster.
+
+
+====
+
+
+[[calculate-the-service-volume-size]]
+=== Calcular el tamaño del volumen de servicio
+
+Calcula el tamaño del volumen de metadatos (servicio) asignando un mínimo de 1 TiB por nodo del clúster (N × 1 TiB). Por ejemplo, un clúster de 8 nodos requiere al menos 8 TiB de capacidad disponible.
+
+[NOTE]
+====
+* Crea un único volumen de Thin-Provisioning FlexVol para los metadatos de Nutanix.
+* Si no se especifica una ruta de exportación específica para el volumen de servicio, el sistema utiliza automáticamente la primera ruta de exportación configurada para el volumen de servicios del clúster (metadatos) y aplica la etiqueta *Cluster Services* a esa ruta.
+* No cambies el nombre de los volúmenes FlexVol seleccionados ni de sus rutas de exportación asociadas después de la implementación. Cambiarles el nombre puede interrumpir las operaciones de E/S de las máquinas virtuales y afectar la accesibilidad de las cargas de trabajo.
+* El volumen FlexVol utilizado para el volumen de servicio se puede configurar mediante Thin-Provisioning.
+
+
+====
+
+
+[[calculate-the-data-volume-size]]
+=== Calcular el tamaño del volumen de datos
+
+El ajuste de tamaño de volúmenes de datos es similar al del almacén de datos. Ajusta el tamaño de los volúmenes de contenedores de almacenamiento en función del número previsto de máquinas virtuales, sus requisitos de capacidad y el crecimiento previsto. Planifica suficiente espacio libre para admitir el aprovisionamiento de máquinas virtuales, las instantáneas y la sobrecarga operativa, a la vez que distribuyes las cargas de trabajo entre varios volúmenes para facilitar la escalabilidad y un uso equilibrado de los recursos.
+
+
+
+[[configure-ontap-export-policies]]
+== Configurar las políticas de exportación de ONTAP
+
+Configura las políticas de exportación para que solo las CVM de Nutanix puedan acceder a los volúmenes NFS.
+
+*Volúmenes de datos*
+
+. Crea una política de exportación a nivel de volumen que permita las direcciones IP de la CVM o el rango de subred.
+. Establece las siguientes reglas:
++
+.. Regla de solo lectura (`rorule`): `sys`
+.. Regla de lectura/escritura (`rwrule`): `sys`
+.. Superusuario: `sys`
+
+
+. Si usas qtrees, crea una regla de exportación específica para cada qtree con los mismos permisos.
+
+
+*Volumen de servicio o de metadatos*
+
+. Crea una política de exportación a nivel de volumen que permita las direcciones IP de la CVM o el rango de subred.
+. Establece las siguientes reglas:
++
+.. Regla de solo lectura (`rorule`): `sys`
+.. Regla de lectura/escritura (`rwrule`): `sys`
+.. Superusuario: `sys`
+
+
+
+
+[NOTE]
+====
+* Todas las exportaciones NFS de ONTAP deben permitir el acceso únicamente desde las direcciones IP de las CVM de Nutanix o desde la subred de CVM designada.
+* Usa Prism API o `ncli` para encontrar la lista de direcciones IP de los hosts de CVM y actualizar la política de exportación.
+
+
+====
+
+
+[[configure-ontap-roles-and-permissions]]
+== Configurar roles y permisos de ONTAP
+
+Para conectar el almacenamiento ONTAP a un clúster de computación de Nutanix, Nutanix utiliza la API de REST de ONTAP para las operaciones del plano de control (aprovisionamiento de máquinas virtuales, clonación, instantáneas y gestión del almacenamiento) y NFSv3 para la ruta de datos.
+
+Crea un rol de ONTAP con privilegios mínimos para que no tengas que usar el rol de ONTAP `admin` para realizar operaciones en el clúster de Nutanix dedicado solo a computación. Estos roles mínimos son necesarios a nivel de SVM en el lado del almacenamiento de ONTAP.
+
+[NOTE]
+====
+* Utiliza los parámetros de configuración predeterminados de NFS de ONTAP.
+* También puedes usar el rol  `vsadmin`.
+
+
+====
+
+
+[[minimum-rest-api-permissions]]
+=== Permisos mínimos de la API de REST
+
+Crea un rol de SVM personalizado de ONTAP con los permisos mínimos necesarios de la API de REST para habilitar las operaciones de detección, aprovisionamiento, clonación y gestión del almacenamiento de Nutanix.
+
+[cols="35,15,50"]
+|===
+| Punto final de la API de REST | Acceso | Objetivo 
+
+
+| `/api/cluster` | Solo lectura | Autenticación del clúster y validación de versiones 
+
+
+| `/api/cluster/jobs` | Solo lectura | Supervisar las operaciones asíncronas de almacenamiento 
+
+
+| `/api/network/ip/interfaces` | Solo lectura | Descubre las LIF de datos de ONTAP 
+
+
+| `/api/storage/file/clone` | Leer/Crear | Operaciones de clonación, instantáneas y copias de seguridad de máquinas virtuales 
+
+
+| `/api/storage/volumes` | Solo lectura | Detección y gestión de volúmenes 
+
+
+| `/api/storage/volumes/*/files` | Acceso completo | Crear, modificar, leer y eliminar archivos gestionados por Nutanix 
+|===
+
+
+[[configure-the-service-account]]
+=== Configurar la cuenta de servicio
+
+Puedes crear el rol y el usuario con ONTAP System Manager o con la CLI de ONTAP.
+
+[role="tabbed-block"]
+====
+.System Manager
+--
+.Pasos
+. Crea un rol personalizado a nivel de SVM.
++
+.. Selecciona *Storage > Storage VMs > _SVM designada_ > Settings > Users and Roles*.
+.. Selecciona el icono de flecha (→) junto a *Users and Roles*.
+.. En *Roles*, selecciona *+Add*.
+.. Define las reglas para el rol y haz clic en *Guardar*.
++
+image:nutanix-storage-001.png["Página de atributos del rol de ONTAP System Manager en la que se enumeran las rutas de la API de REST y los niveles de acceso para el rol de Nutanix"]
+
+
+
+. Asigna el rol al usuario administrador de Nutanix.
++
+.. En la página *Users and Roles*, en *Users*, selecciona *+Add*.
+.. Selecciona el nombre de usuario requerido y, a continuación, selecciona el rol que creaste en el paso anterior en el menú desplegable *Role*.
+.. Para los métodos de inicio de sesión de usuario, selecciona *HTTP*.
+.. Haz clic en *Guardar*.
++
+image:nutanix-storage-002.png["Página «Usuarios y roles» de ONTAP System Manager que muestra el usuario de Nutanix asignado al rol personalizado"]
+
++
+image:nutanix-storage-003.png["Página «Usuarios y roles» de ONTAP System Manager, en la que se muestran los usuarios y los niveles de acceso de los roles para la SVM"]
+
+
+
+
+
+--
+.CLI
+--
+.Pasos
+. Crea el rol ejecutando los siguientes comandos. Sustituye  `ntnx-svm` y  `nim-ntnx-role` por los nombres de tu SVM y del rol.
++
+[source, cli]
+----
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/cluster" -access readonly
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/cluster/jobs" -access readonly
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/network/ip/interfaces" -access readonly
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/storage/file/clone" -access read_create
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/storage/volumes" -access readonly
+security login rest-role create -vserver ntnx-svm -role nim-ntnx-role -api "/api/storage/volumes/*/files" -access all
+----
+. Crea el usuario y asígnalo al rol.
++
+[source, cli]
+----
+security login create -vserver ntnx-svm -user-or-group-name nim-ntnx-user -application http -authentication-method password -role nim-ntnx-role
+----
+
+
+--
+====
+
+NOTE: Necesitas el nombre de usuario y la contraseña de la cuenta de servicio de ONTAP al añadir el array de ONTAP al clúster de Nutanix. Utiliza este usuario al configurar la SVM de almacenamiento de ONTAP en Prism Element o Prism Central.

@@ -1,0 +1,81 @@
+---
+sidebar: sidebar 
+permalink: nutanix/nutanix-attach-storage.html 
+keywords: nutanix, prism element, prism central, external storage, ontap, nfs, storage container, attach 
+summary: Conecta volúmenes NFS de ONTAP como contenedores de almacenamiento a un clúster de computación de Nutanix con Prism Element. 
+---
+= Conecta el almacenamiento NFS de ONTAP a un clúster de computación de Nutanix
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Una vez que hayas aprovisionado los volúmenes ONTAP y configurado la conectividad, usa Prism Element o Prism Central para conectar los volúmenes NFS de ONTAP como contenedores de almacenamiento al clúster de computación de Nutanix.
+
+.Antes de empezar
+Asegúrate de que se cumplan los siguientes requisitos previos:
+
+* Se puede acceder al clúster de ONTAP o a la SVM desde el clúster de Nutanix.
+* Tienes disponible un LIF de gestión de ONTAP válido (dirección IP o FQDN).
+* Tienes disponibles las credenciales de ONTAP adecuadas.
+* Se han creado y configurado las rutas de exportación necesarias de FlexVol, qtree o carpeta para el acceso NFS.
+
+
+.Pasos
+. Inicia sesión en la consola web de Prism Element.
+. En el menú principal, selecciona *Storage* y luego haz clic en *+ Attach External Storage*.
+. En la página *Configuración inicial*, revisa la información disponible y haz clic en *Siguiente*.
++
+image:nutanix-attach-001.png["Asistente para conectar almacenamiento externo, página «Configuración inicial»"]
+
+. En la página *Detalles de la conexión*, selecciona *NetApp ONTAP* como proveedor de almacenamiento externo y a continuación introduce los siguientes valores:
++
+** *Dirección IP (IPv4) o nombre de dominio completo (FQDN)*: introduce la dirección de la LIF de gestión o el nombre de dominio completo (FQDN) del clúster ONTAP o de la SVM.
+** *Nombre de usuario*: introduce el nombre de usuario de la cuenta de servicio de ONTAP.
+** *Contraseña*: introduce la contraseña de la cuenta de servicio.
++
+Haz clic en *Next*.
+
++
+image:nutanix-attach-002.png["Asistente para conectar un dispositivo de almacenamiento externo, página «Detalles de la conexión»"]
+
+
+
+. En la página *Detalles de almacenamiento*, especifica un nombre único para el sistema de almacenamiento ONTAP en *Nombre de almacenamiento externo*, introduce una o varias rutas de exportación de almacenamiento en *Ruta de exportación* y luego haz clic en *Add*.
++
+
+NOTE: Las rutas de exportación compatibles incluyen las rutas de exportación de FlexVol y qtree.
+
++
+image:nutanix-attach-003.png["Asistente para conectar almacenamiento externo, página «Detalles de almacenamiento» en la que se muestra la selección de la ruta de exportación del volumen de servicio"]
+
+. Haz clic en *Adjuntar*.
++
+El sistema conecta el almacenamiento ONTAP al clúster de Nutanix. Puedes supervisar el progreso y la información de estado desde *Tasks* en Prism Element.
+
++
+image:nutanix-attach-004.png["Asistente para conectar almacenamiento externo, página «Detalles de almacenamiento» que muestra las rutas de exportación seleccionadas y su capacidad de almacenamiento"]
+
++
+
+NOTE: La opción  `nconnect` se utiliza en las opciones de montaje.
+
+
+
+[NOTE]
+====
+* La primera ruta de exportación añadida durante la configuración se designa automáticamente como contenedor de almacenamiento predeterminado y se etiqueta como *Default Container*.
+* NetApp recomienda utilizar varios volúmenes FlexVol como contenedores de almacenamiento para distribuir las cargas de trabajo de las máquinas virtuales y equilibrar el uso de la capacidad.
+* Utiliza un volumen dedicado para los servicios de metadatos (gestión).
+* Puedes eliminar las rutas de exportación, a menos que estén asignadas al volumen de servicios del clúster (metadatos) o al contenedor de almacenamiento predeterminado.
+* El almacenamiento externo no se puede quitar mientras esté conectado a un clúster de computación de Nutanix.
+* Solo se puede conectar un sistema de almacenamiento externo ONTAP a un clúster de computación de Nutanix.
+* Nutanix recomienda hasta 128 máquinas virtuales por nodo, hasta 32 nodos y hasta 4.800 vDisks de AOS replicados entre clústeres de recuperación ante desastres (replicaciones asíncronas y síncronas combinadas).
+
+
+====
+Una vez conectado el almacenamiento, implementa Prism Central en la plataforma Nutanix Cloud Infrastructure (NCI) para realizar tareas de gestión y configuración del clúster. También puedes conectar almacenamiento ONTAP a través de Prism Central.

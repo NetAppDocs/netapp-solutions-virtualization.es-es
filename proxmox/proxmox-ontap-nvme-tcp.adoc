@@ -43,7 +43,15 @@ nvme show-hostnqn
 Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejor experiencia.
 
 . Asegúrese de que la SVM esté disponible con el protocolo NVMe habilitado. Referirse a link:https://docs.netapp.com/us-en/ontap/san-admin/create-nvme-namespace-subsystem-task.html["Documentación de tareas de NVMe en ONTAP 9"].
-. Crea el espacio de nombres NVMe.
+. Crea el espacio de nombres NVMe con el tipo de sistema operativo establecido en  `linux`.
++
+Proxmox VE se basa en Debian Linux, por lo que debes utilizar el tipo de `linux` sistema operativo para los espacios de nombres a los que acceden los hosts de Proxmox VE. En System Manager, selecciona *Linux* como sistema operativo del host. Si utilizas la CLI de ONTAP, especifica `-ostype linux`.
+
++
+[source, cli]
+----
+vserver nvme namespace create -vserver <svm_name> -path /vol/<volume_name>/<namespace_name> -size <size> -ostype linux
+----
 +
 .Mostrar ejemplo
 [%collapsible]
@@ -51,7 +59,17 @@ Si es nuevo en ONTAP, utilice el Administrador del sistema para obtener una mejo
 image:proxmox-ontap-nvme-tcp-001.png["creación de espacios de nombres nvme"]
 
 ====
-. Cree el subsistema y asigne los NQN del host (si usa CLI). Siga el enlace de referencia arriba.
+. Crea el subsistema con el tipo de SO del host establecido en `linux`, asigna los NQNs del host y asigna el espacio de nombres al subsistema.
++
+System Manager crea el subsistema cuando creas el espacio de nombres y seleccionas *Linux* como sistema operativo del host. Si utilizas la CLI de ONTAP, ejecuta los siguientes comandos.
+
++
+[source, cli]
+----
+vserver nvme subsystem create -vserver <svm_name> -subsystem <subsystem_name> -ostype linux
+vserver nvme subsystem host add -vserver <svm_name> -subsystem <subsystem_name> -host-nqn <host_nqn>
+vserver nvme subsystem map add -vserver <svm_name> -subsystem <subsystem_name> -path /vol/<volume_name>/<namespace_name>
+----
 . Asegúrese de que la protección Anti-Ransomware esté habilitada en la pestaña de seguridad.
 . Notifique al administrador de virtualización que se creó el espacio de nombres NVMe.
 
