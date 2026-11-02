@@ -46,7 +46,7 @@ OADP 1.3 está disponible en el centro de operadores del clúster OpenShift 4.12
 * ONTAP 9.12
 
 
-link:https://docs.netapp.com/us-en/trident/["Trident CSI"] link:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.html["API de OpenShift para la protección de datos (OADP)"] link:https://velero.io/["Velero"]
+link:https://docs.netapp.com/us-en/trident/["Trident CSI"] link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.14/html/backup_and_restore/oadp-application-backup-and-restore#installing-oadp["API de OpenShift para la protección de datos (OADP)"] link:https://velero.io/["Velero"]
 
 
 
@@ -146,7 +146,7 @@ Para restaurar desde una copia de seguridad, supongamos que el espacio de nombre
 
 [%collapsible]
 ====
-Para restaurar desde la copia de seguridad que acabamos de crear, necesitamos crear un recurso de restauración personalizado (CR). Necesitamos proporcionarle un nombre, proporcionar el nombre de la copia de seguridad que queremos restaurar y establecer restorePVs en verdadero. Se pueden configurar parámetros adicionales como se muestra en lalink:https://docs.openshift.com/container-platform/4.14/backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.html["documentación"] . Haga clic en el botón Crear.
+Para restaurar desde la copia de seguridad que acabamos de crear, tienes que crear un Restore Custom Resource (CR). Tienes que darle un nombre, indicar el nombre de la copia de seguridad desde la que quieres restaurar y establecer restorePVs en true. Puedes configurar parámetros adicionales como se muestra en link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.14/html/backup_and_restore/oadp-application-backup-and-restore#oadp-backing-up["documentación"]. Haz clic en el botón Create.
 
 image:redhat-openshift-oadp-restore-001.png["Crear Restaurar CR"]
 
