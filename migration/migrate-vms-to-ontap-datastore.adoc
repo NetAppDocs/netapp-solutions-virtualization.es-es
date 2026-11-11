@@ -27,7 +27,7 @@ Los clientes tienen la flexibilidad de elegir Cloud Insights o Aria Operations o
 Los clientes pueden aprovisionar fácilmente almacenes de datos mediante el complemento vCenter de ONTAP Tools o su API, y las máquinas virtuales se pueden migrar a almacenes de datos de ONTAP incluso mientras están encendidos.
 
 
-NOTE: Algunas máquinas virtuales (VM) que se implementan con una herramienta de gestión externa como VCF Automation, vSphere Supervisor (u otras variantes de Kubernetes), suelen depender de la política de almacenamiento de las máquinas virtuales. Si migras entre los almacenes de datos dentro de la misma política de almacenamiento de máquinas virtuales, el impacto en las aplicaciones debería ser menor. Habla con los responsables de las aplicaciones para migrar correctamente esas máquinas virtuales al nuevo almacén de datos. vSphere 8 introdujo https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management/migrating-virtual-machines-host-management/migration-with-vmotion-host-management/virtual-machine-conditions-and-limitation-for-vmotion-host-management/how-to-prepare-an-application-for-vsphere-vmotion-host-management.html["Notificaciones de vSphere vMotion para aplicaciones sensibles a la latencia"] para preparar las aplicaciones para vMotion.
+NOTE: Algunas máquinas virtuales (VM) que se implementan con una herramienta de gestión externa como VCF Automation, vSphere Supervisor (u otras variantes de Kubernetes), suelen depender de la política de almacenamiento de las máquinas virtuales. Si migras entre los almacenes de datos dentro de la misma política de almacenamiento de máquinas virtuales, el impacto en las aplicaciones debería ser menor. Habla con los responsables de las aplicaciones para migrar correctamente esas máquinas virtuales al nuevo almacén de datos. vSphere 8 introdujo https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management/migrating-virtual-machines/migration-with-vmotion/virtual-machine-conditions-and-limitation-for-vmotion/how-to-prepare-an-application-for-vsphere-vmotion.html["Notificaciones de vSphere vMotion para aplicaciones sensibles a la latencia"] para preparar las aplicaciones para vMotion.
 
 
 
@@ -59,7 +59,7 @@ TIP: Asegúrese de que haya al menos dos NIC de enlace ascendente activas de alt
 vMotion se utiliza a menudo para migrar las máquinas virtuales independientemente de su estado de energía.  A continuación se encuentran disponibles consideraciones adicionales y procedimientos de migración para escenarios específicos.
 
 
-NOTE: Entender https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/migration-with-vmotion-host-management/virtual-machine-conditions-and-limitation-for-vmotion-host-management.html["Condiciones de VM y limitaciones de vSphere vMotion"] antes de continuar con cualquier opción de migración de VM.
+NOTE: Comprende https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/migration-with-vmotion/virtual-machine-conditions-and-limitation-for-vmotion.html["Condiciones de VM y limitaciones de vSphere vMotion"] antes de continuar con cualquier opción de migración de máquinas virtuales.
 
 .Migración de máquinas virtuales desde un almacén de datos de vSphere específico
 [%collapsible%open]
@@ -174,7 +174,7 @@ TIP: Cuando el clúster de almacén de datos se utiliza con DRS (programación d
 [%collapsible%open]
 ====
 
-NOTE: Referirse https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/cpu-compatibility-and-evc-host-management.html["Compatibilidad de CPU y compatibilidad mejorada con vSphere vMotion"] cuando los hosts de origen y destino son de diferentes familias o modelos de CPU.
+NOTE: Consulta https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/cpu-compatibility-and-evc.html["Compatibilidad de CPU y compatibilidad mejorada con vSphere vMotion"] cuando los hosts de origen y destino sean de familias o modelos de CPU diferentes.
 
 Siga el procedimiento a continuación para migrar máquinas virtuales a un nuevo almacén de datos mediante la interfaz de usuario.
 
@@ -247,7 +247,7 @@ $vm, $vmdisk | Get-SPBMEntityConfiguration
 Siga el procedimiento a continuación para migrar máquinas virtuales al nuevo servidor vCenter que aparece en la misma interfaz de usuario de vSphere Client.
 
 
-NOTE: Para conocer requisitos adicionales como versiones de vCenter de origen y destino, etc., consulte https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/vmotion-across-vcenter-server-systems-host-management/requirements-for-migration-across-vcenter-servers-host-management.html["Documentación de vSphere sobre los requisitos para vMotion entre instancias del servidor vCenter"]
+NOTE: Para conocer más requisitos, como las versiones de vCenter de origen y destino, etc., consulta https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/vmotion-across-vcenter-server-systems/requirements-for-migration-across-vcenter-servers.html["Documentación de vSphere sobre los requisitos para vMotion entre instancias del servidor vCenter"]
 
 . Con vSphere Web Client, seleccione el Clúster del inventario de Host y Clúster y haga clic en la pestaña Máquinas virtuales.
 +
@@ -334,7 +334,7 @@ image:migrate-vms-to-ontap-011.png["Exportación entre servidores vCenter"]
 
 +
 
-TIP: La máquina virtual también se puede importar desde el servidor vCenter de destino.  Para ese procedimiento, consulte https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/vmotion-across-vcenter-server-systems-host-management/migrate-a-virtual-machine-from-an-external-vcenter-server-instance-host-management.html["Importar o clonar una máquina virtual con Advanced Cross vCenter vMotion"]
+TIP: También puedes importar la máquina virtual desde el servidor de destino vCenter. Para conocer el procedimiento, consulta https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/vmotion-across-vcenter-server-systems/migrate-a-virtual-machine-from-an-external-vcenter-server-instance.html["Importar o clonar una máquina virtual con Advanced Cross vCenter vMotion"]
 
 . Proporcione los detalles de las credenciales de vCenter y haga clic en Iniciar sesión.
 +
@@ -527,7 +527,7 @@ NOTE: Para obtener detalles adicionales sobre las plantillas de VM en la bibliot
 * Si no es posible la actualización en el lugar, se puede instalar un nuevo entorno y utilizar las opciones de migración anteriores.
 +
 
-TIP: En la opción de migración entre vCenter, importe desde el destino si la opción de exportación no está disponible en el origen.  Para ese procedimiento, consultelink:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/vmotion-across-vcenter-server-systems-host-management/migrate-a-virtual-machine-from-an-external-vcenter-server-instance-host-management.html["Importar o clonar una máquina virtual con Advanced Cross vCenter vMotion"]
+TIP: En la opción de migración Cross vCenter, importa desde el destino si la opción de exportación no está disponible en el origen. Para ese procedimiento, consulta link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/vmotion-across-vcenter-server-systems/migrate-a-virtual-machine-from-an-external-vcenter-server-instance.html["Importar o clonar una máquina virtual con Advanced Cross vCenter vMotion"]
 
 
 
@@ -548,8 +548,8 @@ NOTE: Para permitir la comunicación de red con máquinas virtuales existentes e
 [[additional-resources]]
 == Recursos adicionales
 
-* https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management.html["Migración de máquinas virtuales de vSphere"]
-* https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines-host-management/migration-with-vmotion-host-management.html["Migración de máquinas virtuales con vSphere vMotion"]
+* https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines.html["Migración de máquinas virtuales de vSphere"]
+* https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vcenter-and-host-management-8-0/migrating-virtual-machines/migration-with-vmotion.html["Migración de máquinas virtuales con vSphere vMotion"]
 * https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2/administration-guide/managing-nsx-t-in-multiple-locations/nsx-t-federation/networking-topologies-in-nsx-federation/tier-0-in-federation.html["Configuraciones de puerta de enlace de nivel 0 en NSX Federation"]
 * https://techdocs.broadcom.com/us/en/vmware-cis/hcx/vmware-hcx/4-11/vmware-hcx-user-guide-4-11.html["Guía del usuario de HCX 4.8"]
 * https://techdocs.broadcom.com/us/en/vmware-cis/live-recovery.html["Documentación de VMware Live Recovery"]
